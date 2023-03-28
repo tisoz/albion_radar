@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "buffercursor": "^0.0.12",
+    "cap": "^0.2.1",
+    "npcap": "^0.0.1",
+    "photon-packet-parser": "file:photon-packet-parser"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "main": "main.js"
+}
