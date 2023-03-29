@@ -14,4 +14,7 @@ class Course_done {
         this.vip_count = data[7];
         this.count = data[8];
     }
+
 }
+
+module.exports = Course_done;

@@ -66,11 +66,11 @@ class PhotonCommand {
         this.payload = this.payload.slice(this.payload.length - 2);
 
         let now = new Date().getTime() / 1000;
-        // 编码
-        this.messageType = this.messageType ^ (this.parent.parent.id + (now - now % 10800)) % 255;
-
-        // 解码
-        this.messageType = this.messageType ^ (this.parent.parent.id + this.parent.parent.key) % 255;
+        // // 编码
+        // this.messageType = this.messageType ^ (this.parent.parent.id + (now - now % 10800)) % 255;
+        //
+        // // 解码
+        // this.messageType = this.messageType ^ (this.parent.parent.id + this.parent.parent.key) % 255;
 
         switch (this.messageType) {
             case 2:

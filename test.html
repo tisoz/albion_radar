@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <script src="./pixi.min.js"></script>
+</head>
+<body>
+<script>
+    // Create the application helper and add its render target to the page
+    // PIXI.renderer.plugins.interaction.autoPreventDefault = false;
+    // PIXI.renderer.view.style.touchAction = 'auto';
+
+    let app = new PIXI.Application({width: 800, height: 600});
+    let container = new PIXI.Container();
+    let center = PIXI.Sprite.from('center.png');
+    let sprite2 = PIXI.Sprite.from('es.png');
+    container.addChild(center)
+    container.addChild(sprite2)
+    app.stage.addChild(container)
+
+    document.body.appendChild(app.view);
+
+    container.pivot.set(center.width / 2, center.height / 2);
+    container.position.set(app.screen.width / 2, app.screen.height / 2);
+    center.anchor.set(0.5)
+    window.addEventListener("mousewheel", (event) => {
+        const step = event.wheelDelta > 0 ? 0.02 : -0.02
+        if (app.stage.scale.x + step >= 0.1) {
+            app.stage.scale.x += step
+            app.stage.scale.y += step
+            container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
+            center.scale.x = 1 / app.stage.scale.x
+            center.scale.y = 1 / app.stage.scale.y
+        }
+    })
+    app.ticker.maxFPS = 60;
+    app.ticker.minFPS = 10;
+    app.ticker.add((delta) => {
+    });
+</script>
+</body>
+</html>

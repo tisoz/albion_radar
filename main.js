@@ -65,7 +65,7 @@ function createWindow() {
     ipcMain.on('close-window', () => {
         win.close();
     });
-    win.loadFile("./index.html")
+    win.loadFile("./test.html")
     win.maximize()
     win.webContents.openDevTools()
 }
