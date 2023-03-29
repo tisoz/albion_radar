@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>F:\node_pcap\build\Release\pcap_binding.node</FullPath>
+      <FullPath>F:\albion_radarr\node_pcap\build\Release\pcap_binding.node</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

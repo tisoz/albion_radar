@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcap_binding", "pcap_binding.vcxproj", "{48C108B0-24C9-7B8F-5975-90AB23D90CB3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcap_binding", "pcap_binding.vcxproj", "{02931F4C-D412-BCB4-0290-B7F52F1FC840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,10 +8,10 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48C108B0-24C9-7B8F-5975-90AB23D90CB3}.Debug|x64.ActiveCfg = Debug|x64
-		{48C108B0-24C9-7B8F-5975-90AB23D90CB3}.Debug|x64.Build.0 = Debug|x64
-		{48C108B0-24C9-7B8F-5975-90AB23D90CB3}.Release|x64.ActiveCfg = Release|x64
-		{48C108B0-24C9-7B8F-5975-90AB23D90CB3}.Release|x64.Build.0 = Release|x64
+		{02931F4C-D412-BCB4-0290-B7F52F1FC840}.Debug|x64.ActiveCfg = Debug|x64
+		{02931F4C-D412-BCB4-0290-B7F52F1FC840}.Debug|x64.Build.0 = Debug|x64
+		{02931F4C-D412-BCB4-0290-B7F52F1FC840}.Release|x64.ActiveCfg = Release|x64
+		{02931F4C-D412-BCB4-0290-B7F52F1FC840}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
