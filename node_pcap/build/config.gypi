@@ -7,7 +7,7 @@
     "include_dirs": [],
     "libraries": [],
     "msbuild_toolset": "v143",
-    "msvs_windows_target_platform_version": "10.0.22621.0"
+    "msvs_windows_target_platform_version": "10.0.19041.0"
   },
   "variables": {
     "asan": 0,
@@ -380,18 +380,19 @@
     "v8_trace_maps": 0,
     "v8_use_siphash": 1,
     "want_separate_host_toolset": 0,
-    "nodedir": "C:\\Users\\tisoz\\AppData\\Local\\node-gyp\\Cache\\18.12.1",
+    "nodedir": "C:\\Users\\TISOZ\\AppData\\Local\\node-gyp\\Cache\\18.12.0",
     "standalone_static_library": 1,
-    "msbuild_path": "E:\\program\\vs2019\\MSBuild\\Current\\Bin\\MSBuild.exe",
-    "cache": "C:\\Users\\tisoz\\AppData\\Local\\npm-cache",
-    "globalconfig": "C:\\Users\\tisoz\\AppData\\Roaming\\npm\\etc\\npmrc",
-    "global_prefix": "C:\\Users\\tisoz\\AppData\\Roaming\\npm",
-    "init_module": "C:\\Users\\tisoz\\.npm-init.js",
-    "local_prefix": "F:\\albion_radarr",
+    "msbuild_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
+    "cache": "C:\\Users\\TISOZ\\AppData\\Local\\npm-cache",
+    "force": "true",
+    "globalconfig": "C:\\Users\\TISOZ\\AppData\\Roaming\\npm\\etc\\npmrc",
+    "global_prefix": "C:\\Users\\TISOZ\\AppData\\Roaming\\npm",
+    "init_module": "C:\\Users\\TISOZ\\.npm-init.js",
+    "local_prefix": "G:\\albion_radar",
     "metrics_registry": "https://registry.npmjs.org/",
-    "node_gyp": "C:\\Users\\tisoz\\AppData\\Roaming\\npm\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
-    "prefix": "C:\\Users\\tisoz\\AppData\\Roaming\\npm",
-    "userconfig": "C:\\Users\\tisoz\\.npmrc",
-    "user_agent": "npm/9.6.2 node/v18.12.1 win32 x64 workspaces/false"
+    "node_gyp": "C:\\Users\\TISOZ\\AppData\\Roaming\\npm\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
+    "prefix": "C:\\Users\\TISOZ\\AppData\\Roaming\\npm",
+    "userconfig": "C:\\Users\\TISOZ\\.npmrc",
+    "user_agent": "npm/9.6.2 node/v18.12.0 win32 x64 workspaces/false"
   }
 }

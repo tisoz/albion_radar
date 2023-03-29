@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "buffercursor": "^0.0.12",
-    "cap": "^0.2.1",
-    "electron": "^23.2.0",
     "node-addon-api": "^6.0.0",
     "npcap": "file:./node_pcap",
     "photon-packet-parser": "file:./photon-packet-parser"
@@ -10,5 +7,8 @@
   "scripts": {
     "start": "electron ."
   },
-  "main": "main.js"
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^23.2.0"
+  }
 }
