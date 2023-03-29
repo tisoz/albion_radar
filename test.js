@@ -1,27 +1,16 @@
-const pcap = require("npcap");
-const PhotonParser = require('photon-packet-parser');
+const { exec } = require('child_process');
 
-global.manager = new PhotonParser();
-var sourcePort = 5056;
-var destinationPort = 5056;
-var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
-
-for (let i of pcap.findalldevs()) {
-    if (i.description.indexOf("Realtek") + 1) {
-        var dev = i.name;
+// 运行系统命令，查找名称为 notepad.exe 的进程
+exec('tasklist /FI "IMAGENAME eq fiddler.exe"', (err, stdout, stderr) => {
+    if (err) {
+        console.error(`exec error: ${err}`);
+        return;
     }
-    console.log(i.description)
-}
-global.manager.on('packet', (packet) => {
-    // 在这里处理接收到的结果
-    console.log(packet);
-});
 
-pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 0})
-pcap_session.on('packet', function (raw_packet) {
-    var packet = pcap.decode.packet(raw_packet),
-        data = packet.payload.payload.payload.data;
+    // 解析输出，获取PID
+    const outputLines = stdout.trim().split('\n');
+    const pidLine = outputLines[outputLines.length - 1];
+    const pid = parseInt(pidLine.substr(26, 5));
 
-    console.log(packet.link_type);
-    manager.handle(data)
+    console.log(`notepad.exe 的PID为：${pid}`);
 });

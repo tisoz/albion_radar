@@ -2,15 +2,46 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <style>
+        .button-container {
+            display: flex;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .window-button {
+            width: 25px;
+            height: 25px;
+            background-color: #ccc;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .minimize-button {
+            background-color: yellow;
+        }
+
+        .maximize-button {
+            background-color: green;
+        }
+
+        .close-button {
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
-<h1>Hello World!</h1>
-<p>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
-</p>
+<script>
+    fetch('https://oss.tisoz.com/version.txt')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
+
+</script>
+<script src="./tool_bar.js"></script>
 </body>
 </html>
