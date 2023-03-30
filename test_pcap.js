@@ -3,6 +3,7 @@ const path = require('path')
 const pcap = require("npcap");
 const PhotonParser = require('photon-packet-parser');
 const event_list = require("./event/event_list")
+const request_list = require("./event/request_list")
 
 global.item_list = {}
 global.player_self = []
@@ -30,7 +31,7 @@ global.manager.on('event', (packet) => {
             if (event_list[code]) {
                 (new event_list[code]).parse(packet.parameters)
                 let temp_s = JSON.stringify(packet.parameters);
-                console.log(temp_s)
+                // console.log(temp_s)
             }
         } catch (e) {
             console.log(e)
@@ -40,14 +41,12 @@ global.manager.on('event', (packet) => {
 });
 global.manager.on('request', (packet) => {
     // 在这里处理接收到的结果
-    if (packet.code == 1 && packet.parameters) {
+    if (packet.operationCode == 1 && packet.parameters) {
         //进行事件处理
         try {
-            let code = packet.parameters[252]
-            if (event_list[code]) {
-                (new event_list[code]).parse(packet.parameters)
-                let temp_s = JSON.stringify(packet.parameters);
-                console.log(temp_s)
+            let code = packet.parameters[253]
+            if (request_list[code]) {
+                (new request_list[code]).parse(packet.parameters)
             }
         } catch (e) {
             console.log(e)

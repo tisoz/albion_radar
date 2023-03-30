@@ -32,10 +32,44 @@
             center.scale.y = 1 / app.stage.scale.y
         }
     })
+    PIXI.Ticker.targetFPMS = 1;
+    app.ticker.minFPS = 30;
     app.ticker.maxFPS = 60;
-    app.ticker.minFPS = 10;
     app.ticker.add((delta) => {
+
     });
+    app.stage.interactive = true;
+    app.stage.hitArea = app.screen;
+    app.stage.on('pointerup', onDragEnd);
+    app.stage.on('pointerupoutside', onDragEnd);
+    app.stage.on('pointerdown', onDragStart, container);
+    let dragTarget = null;
+    let old_event = {}
+    let old_position = {}
+
+    function onDragMove(event) {
+        if (dragTarget) {
+            dragTarget.x = old_position.x + event.client.x - old_event.x;
+            dragTarget.y = old_position.y + event.client.y - old_event.y;
+        }
+    }
+
+    function onDragStart(event) {
+        old_event = {x: event.clientX, y: event.clientY};
+        old_position = {x: this.x, y: this.y}
+        this.alpha = 0.5;
+        dragTarget = this;
+        app.stage.on('pointermove', onDragMove);
+    }
+
+    function onDragEnd() {
+        if (dragTarget) {
+            app.stage.off('pointermove', onDragMove);
+            dragTarget.alpha = 1;
+            dragTarget = null;
+        }
+    }
+
 </script>
 </body>
 </html>
