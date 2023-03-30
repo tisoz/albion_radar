@@ -80,8 +80,8 @@ function createWindow() {
         win.setPosition(newPosition[0], newPosition[1], true)
     })
     win.loadFile("./index.html")
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

@@ -50,6 +50,17 @@
 
 
     window.onload = () => {
+        let page_radar = document.createElement("div");
+        page_radar.setAttribute("style", "width:100%;height:100%;position:relative")
+        page_radar.id = "radar"
+        body_container.appendChild(page_radar)
+
+        let page_spider = document.createElement("div")
+        page_spider.setAttribute("style", "width:100%;height:100%;position:relative")
+        page_spider.id = "spider"
+        body_container.appendChild(page_spider)
+
+
         let app = new PIXI.Application({width: 400, height: 300});
         let container = new PIXI.Container();
         let center = PIXI.Sprite.from('center.png');
@@ -58,7 +69,7 @@
         container.addChild(sprite2)
         app.stage.addChild(container)
 
-        body_container.appendChild(app.view);
+        page_radar.appendChild(app.view);
 
         //修改屏幕中心
         container.pivot.set(center.width / 2, center.height / 2);
