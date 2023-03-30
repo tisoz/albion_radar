@@ -9,66 +9,7 @@
     // PIXI.renderer.plugins.interaction.autoPreventDefault = false;
     // PIXI.renderer.view.style.touchAction = 'auto';
 
-    let app = new PIXI.Application({width: 800, height: 600});
-    let container = new PIXI.Container();
-    let center = PIXI.Sprite.from('center.png');
-    let sprite2 = PIXI.Sprite.from('es.png');
-    container.addChild(center)
-    container.addChild(sprite2)
-    app.stage.addChild(container)
 
-    document.body.appendChild(app.view);
-
-    container.pivot.set(center.width / 2, center.height / 2);
-    container.position.set(app.screen.width / 2, app.screen.height / 2);
-    center.anchor.set(0.5)
-    window.addEventListener("mousewheel", (event) => {
-        const step = event.wheelDelta > 0 ? 0.02 : -0.02
-        if (app.stage.scale.x + step >= 0.1) {
-            app.stage.scale.x += step
-            app.stage.scale.y += step
-            container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
-            center.scale.x = 1 / app.stage.scale.x
-            center.scale.y = 1 / app.stage.scale.y
-        }
-    })
-    PIXI.Ticker.targetFPMS = 1;
-    app.ticker.minFPS = 30;
-    app.ticker.maxFPS = 60;
-    app.ticker.add((delta) => {
-
-    });
-    app.stage.interactive = true;
-    app.stage.hitArea = app.screen;
-    app.stage.on('pointerup', onDragEnd);
-    app.stage.on('pointerupoutside', onDragEnd);
-    app.stage.on('pointerdown', onDragStart, container);
-    let dragTarget = null;
-    let old_event = {}
-    let old_position = {}
-
-    function onDragMove(event) {
-        if (dragTarget) {
-            dragTarget.x = old_position.x + event.client.x - old_event.x;
-            dragTarget.y = old_position.y + event.client.y - old_event.y;
-        }
-    }
-
-    function onDragStart(event) {
-        old_event = {x: event.clientX, y: event.clientY};
-        old_position = {x: this.x, y: this.y}
-        this.alpha = 0.5;
-        dragTarget = this;
-        app.stage.on('pointermove', onDragMove);
-    }
-
-    function onDragEnd() {
-        if (dragTarget) {
-            app.stage.off('pointermove', onDragMove);
-            dragTarget.alpha = 1;
-            dragTarget = null;
-        }
-    }
 
 </script>
 </body>

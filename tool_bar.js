@@ -8,6 +8,7 @@ let script_layui = document.createElement("script");
 script_layui.setAttribute("src", "./layui/layui.js");
 
 var tool_container = document.createElement("div");
+tool_container.id = "tool_bar"
 tool_container.setAttribute("style", "width:100%;")
 tool_container.setAttribute("class", "layui-header header header-demo")
 
@@ -24,16 +25,24 @@ tool_container.appendChild(toolbar)
 
 
 var frame_container = document.createElement("div");
-frame_container.setAttribute("style", "height:100%;")
+frame_container.setAttribute("style", "position:relative;float:left;height:100%;width:150px;")
 frame_container.setAttribute("class", "layui-side layui-bg-black")
 
+var body_container = document.createElement("div");
+body_container.setAttribute("style", "position:relative;height:100%;left:0")
+body_container.setAttribute("class", "layui-body layui-bg-black")
+
+var lef_bar = document.createElement("div");
+lef_bar.setAttribute("class", "layui-nav layui-nav-tree")
+lef_bar.setAttribute("style", "")
+
 var menu = document.createElement("ul")
-menu.setAttribute("class", "layui-nav layui-nav-tree")
 menu.setAttribute("lay-filter", "nav")
 menu.innerHTML =
-    `<li class="layui-nav-item"><a href="">云市场</a></li>
-    <li class="layui-nav-item"><a href="">社区</a></li>`
-frame_container.appendChild(menu)
+    `<li class="layui-nav-item"><a href="#radar">雷达</a></li>
+    <li class="layui-nav-item"><a href="#spider">自动采集配置</a></li>`
+lef_bar.appendChild(menu)
+frame_container.appendChild(lef_bar)
 script_layui.onload = () => {
     document.getElementById('minimize-button').addEventListener('click', () => {
         ipcRenderer.send('minimize-window');
@@ -52,6 +61,7 @@ document.head.appendChild(css_layui);
 document.body.appendChild(script_layui);
 document.body.appendChild(tool_container)
 document.body.appendChild(frame_container)
+document.body.appendChild(body_container)
 
 
 

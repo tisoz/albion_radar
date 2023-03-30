@@ -18,16 +18,16 @@ global.manager.on('packet', (packet) => {
     // 在这里处理接收到的结果
     console.log(packet);
 });
-var pcap_session = pcap.createOfflineSession('./1.pcap');
+// var pcap_session = pcap.createOfflineSession('./1.pcap');
 
 // pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 0})
-pcap_session.on('packet', function (raw_packet) {
-    var packet = pcap.decode.packet(raw_packet),
-        data = packet.payload.payload.payload.data;
-
-    console.log(packet.link_type);
-    manager.handle(data)
-});
+// pcap_session.on('packet', function (raw_packet) {
+//     var packet = pcap.decode.packet(raw_packet),
+//         data = packet.payload.payload.payload.data;
+//
+//     console.log(packet.link_type);
+//     manager.handle(data)
+// });
 
 function createWindow() {
     // webSecurity: 如果设置为 false，则禁用跨站点安全策略，允许加载来自不同源的资源。这对于开发和测试时很有用，但在生产环境中禁用跨站点安全策略会带来安全风险。
@@ -36,10 +36,10 @@ function createWindow() {
     // nodeIntegration: 如果设置为 true，则在渲染进程中启用 Node.js 整合。这允许渲染进程使用 Node.js 的 API。
     // contextIsolation: 如果设置为 true，则启用上下文隔离。这样可以防止恶意网站对你的应用程序造成安全威胁，但也会使得在渲染进程和主进程之间传递数据变得更加复杂。如果设置为 false，则禁用上下文隔离。
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        minWidth: 400,
-        minHeight: 300,
+        width: 570,
+        height: 380,
+        minWidth: 570,
+        minHeight: 380,
         frame: false,
         webPreferences: {
             webSecurity: false,
@@ -65,9 +65,23 @@ function createWindow() {
     ipcMain.on('close-window', () => {
         win.close();
     });
+    ipcMain.on('window-drag', (event, arg) => {
+        // 获取当前窗口的位置
+        let win = BrowserWindow.getFocusedWindow()
+        let position = win.getPosition()
+
+        // 计算新的窗口位置
+        const newPosition = [
+            position[0] + arg.x,
+            position[1] + arg.y
+        ]
+
+        // 移动窗口到新的位置
+        win.setPosition(newPosition[0], newPosition[1], true)
+    })
     win.loadFile("./index.html")
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
