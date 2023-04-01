@@ -1,33 +1,7 @@
 const {app, BrowserWindow, session, ipcMain} = require('electron')
 const path = require('path')
-const pcap = require("npcap");
-const PhotonParser = require('photon-packet-parser');
 
-global.manager = new PhotonParser();
-var sourcePort = 5056;
-var destinationPort = 5056;
-var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
-
-for (let i of pcap.findalldevs()) {
-    if (i.description.indexOf("Realtek") + 1) {
-        var dev = i.name;
-    }
-    console.log(i.description)
-}
-global.manager.on('packet', (packet) => {
-    // 在这里处理接收到的结果
-    console.log(packet);
-});
-// var pcap_session = pcap.createOfflineSession('./1.pcap');
-
-// pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 0})
-// pcap_session.on('packet', function (raw_packet) {
-//     var packet = pcap.decode.packet(raw_packet),
-//         data = packet.payload.payload.payload.data;
-//
-//     console.log(packet.link_type);
-//     manager.handle(data)
-// });
+require("./pcap_model.js")
 
 function createWindow() {
     // webSecurity: 如果设置为 false，则禁用跨站点安全策略，允许加载来自不同源的资源。这对于开发和测试时很有用，但在生产环境中禁用跨站点安全策略会带来安全风险。
@@ -79,6 +53,7 @@ function createWindow() {
         // 移动窗口到新的位置
         win.setPosition(newPosition[0], newPosition[1], true)
     })
+    global.web_content = win.webContents;
     win.loadFile("./index.html")
     win.maximize()
     win.webContents.openDevTools()

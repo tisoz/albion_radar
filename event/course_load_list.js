@@ -2,7 +2,8 @@ class Course_load_list {
     constructor() {
         this.id = 0;        //物资ID
         this.type = 0;      //物资类型
-        this.level = 0;     //品质等级
+        this.level = 0;     //物品等级
+        this.quality = 0;   //物品品质
         this.position = []  //物资位置
         this.count = 0;     //剩余数量
     }
@@ -15,8 +16,10 @@ class Course_load_list {
             this.level = data[2][i];
             this.position = [data[3][i * 2], data[3][i * 2 + 1]]
             this.count = data[4][i];
-            let item = JSON.parse(JSON.stringify(this))
-            global.item_list[this.id] = item
+
+            if (this.level < 2) continue
+
+            global.web_content.send("course_item", this)
         }
 
     }

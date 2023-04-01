@@ -39,8 +39,8 @@ lef_bar.setAttribute("style", "")
 var menu = document.createElement("ul")
 menu.setAttribute("lay-filter", "nav")
 menu.innerHTML =
-    `<li class="layui-nav-item"><a href="#radar">雷达</a></li>
-    <li class="layui-nav-item"><a href="#spider">自动采集配置</a></li>`
+    `<li class="layui-nav-item"><a href="#">雷达</a></li>
+    <li class="layui-nav-item layui-disabled"><a href="#">自动采集配置(开发中)</a></li>`
 lef_bar.appendChild(menu)
 frame_container.appendChild(lef_bar)
 script_layui.onload = () => {

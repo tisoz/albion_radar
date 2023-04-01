@@ -38,6 +38,10 @@
             height: 100%;
             overflow: hidden;
         }
+
+        * {
+            user-select: none;
+        }
     </style>
 
 </head>
@@ -64,23 +68,27 @@
         let app = new PIXI.Application({width: 400, height: 300});
         let container = new PIXI.Container();
         let center = PIXI.Sprite.from('center.png');
-        let sprite2 = PIXI.Sprite.from('es.png');
+        // container.sortableChildren = true;
+        center.zIndex = 99999;
         container.addChild(center)
-        container.addChild(sprite2)
         app.stage.addChild(container)
-
+        container.rotation = -(Math.PI / 4 * 3)
+        app.stage.scale.x = 5
+        app.stage.scale.y = 5
+        center.scale.x = 1 / app.stage.scale.x
+        center.scale.y = 1 / app.stage.scale.y
         page_radar.appendChild(app.view);
 
         //修改屏幕中心
         container.pivot.set(center.width / 2, center.height / 2);
         container.position.set(app.screen.width / 2, app.screen.height / 2);
         center.anchor.set(0.5)
+        // 滚轮缩小
         window.addEventListener("mousewheel", (event) => {
-            const step = event.wheelDelta > 0 ? 0.02 : -0.02
+            const step = event.wheelDelta > 0 ? 0.1 : -0.1
             if (app.stage.scale.x + step >= 0.1) {
                 app.stage.scale.x += step
                 app.stage.scale.y += step
-                container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
                 center.scale.x = 1 / app.stage.scale.x
                 center.scale.y = 1 / app.stage.scale.y
             }
@@ -88,10 +96,105 @@
         PIXI.Ticker.targetFPMS = 1;
         app.ticker.minFPS = 30;
         app.ticker.maxFPS = 60;
+
         app.ticker.add((delta) => {
             //修改画板大小
             app.renderer.resize(body_container.getClientRects()[0].width - 150 - 20, body_container.getClientRects()[0].height - 60 - 20)
+            //修改相对位置大小
+            container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
 
+            // 性能优化
+            if (globalThis['local_player_position']['changed_position']) return
+            globalThis['local_player_position']['changed_position'] = true;
+
+            // container.sortChildren()
+            //动态加入物资信息
+            for (let index in item_list) {
+                item = item_list[index]
+                if (item['in_container']) {
+                    let temp_img = container.getChildByName(item['id'].toString());
+
+                    // 更新物资数量
+                    temp_img.getChildAt(0).text = item['count'] || 0;
+
+                    // 计算物资位置与玩家位置 , 当玩家位置更新后 , 分五次进行物资位置更新
+                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                    // temp_img.x = -x;
+                    // temp_img.y = y;
+                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                } else {
+                    if (!item['position']) continue
+
+                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    temp_img.anchor.set(0.5)
+                    temp_img.rotation = (Math.PI / 4 * 3)
+                    temp_img.name = item['id'].toString();
+                    temp_img.zIndex = item['quality']
+
+                    // 创建数量文本
+                    let temp_text = new PIXI.Text(item['count'].toString(), {
+                        fontFamily: 'Arial',
+                        fontSize: 26,
+                        fill: 'white',
+                    });
+                    temp_text.anchor.set(0.5);
+                    temp_text.x = 27;
+                    temp_text.y = 24;
+                    temp_img.addChild(temp_text)
+                    container.addChild(temp_img)
+                    item['in_container_index'] = temp_img.name
+                    item['in_container'] = true
+                    item_list[index] = item
+                }
+            }
+
+            //加载怪物信息
+            for (let index in monster_list) {
+                item = monster_list[index]
+                if (item['in_container']) {
+                    let temp_img = container.getChildAt(item['in_container_index']);
+
+                    // 计算物资位置与玩家位置
+                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                } else {
+                    if (!item['position']) continue
+
+                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    temp_img.anchor.set(0.5)
+                    temp_img.rotation = (Math.PI / 4 * 3)
+                    // temp_img.zIndex = item['quality']
+                    // 创建数量文本
+                    let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
+                        fontFamily: 'Arial',
+                        fontSize: 26,
+                        fill: 'white',
+                    });
+                    temp_text.anchor.set(0.5);
+                    // temp_text.x = ;
+                    temp_text.y = 40;
+                    temp_img.addChild(temp_text)
+                    item['in_container_index'] = container.getChildIndex(container.addChild(temp_img))
+                    item['in_container'] = true
+                    monster_list[index] = item
+                }
+            }
         });
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;
@@ -119,6 +222,7 @@
 
         function onDragEnd() {
             if (dragTarget) {
+                global.radar_move = new Date().getTime()
                 app.stage.off('pointermove', onDragMove);
                 dragTarget.alpha = 1;
                 dragTarget = null;
@@ -127,23 +231,33 @@
 
         let tool_bar = document.getElementById('tool_bar')
         let window_position = []
-        tool_bar.addEventListener('mousedown', (event) => {
+        document.addEventListener('mousedown', (event) => {
             if (event.button === 0) {
                 window_position = {x: event.screenX, y: event.screenY}
+                document.body.style.cursor = "move";
+
             }
         })
-        tool_bar.addEventListener('mouseup', (event) => {
+        document.addEventListener('mouseup', (event) => {
             if (event.button === 0) {
                 window_position.x = event.screenX - window_position.x
                 window_position.y = event.screenY - window_position.y
-                ipcRenderer.send('window-drag', window_position)
+                document.body.style.cursor = "auto";
+                if (new Date().getTime() - global.radar_move > 10) ipcRenderer.send('window-drag', window_position)
             }
         })
+        // 格三秒刷新资源
+        setInterval(() => {
+            globalThis['local_player_position']['changed_position'] = false;
+        }, 3000);
+
     }
 
 
 </script>
 <script src="./tool_bar.js"></script>
 <script src="./pixi.min.js"></script>
+<script src="./TweenMax.min.js"></script>
+<script src="./pcap_deal.js"></script>
 </body>
 </html>
