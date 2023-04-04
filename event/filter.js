@@ -3,6 +3,7 @@ class filter {
     }
 
     parse(data) {
+        // console.log(JSON.stringify(data))
     }
 
 }

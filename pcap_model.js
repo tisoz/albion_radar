@@ -12,12 +12,13 @@ var destinationPort = 5056;
 var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
 
 for (let i of pcap.findalldevs()) {
+    console.log("network", i.description)
     if (i.description == 'TAP-Windows Adapter V9') {
         var dev = i.name;
     }
 }
-BigInt.prototype.toJSON = () => {
-    return this.toString()
+BigInt.prototype.toJSON = function () {
+    return this.toString();
 }
 global.manager.on('event', (packet) => {
     // 在这里处理接收到的结果
@@ -32,9 +33,13 @@ global.manager.on('event', (packet) => {
                 // console.log(JSON.stringify(packet.parameters))
             }
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
 
+    } else if (packet.code == 3) {
+        (new event_list[packet.code]).parse(packet.parameters)
+        // console.log(JSON.stringify([packet.parameters[0],[packet.parameters[1].readFloatLE(9),packet.parameters[1].readFloatLE(13)]]))
+        // console.log(packet.parameters)
     }
 });
 global.manager.on('request', (packet) => {
@@ -49,8 +54,11 @@ global.manager.on('request', (packet) => {
         } catch (e) {
             console.log(e)
         }
-
     }
+});
+global.manager.on('response', (packet) => {
+    // 在这里处理接收到的结果
+    console.log("reponse", packet)
 });
 
 global.manager.on("key_error", () => {

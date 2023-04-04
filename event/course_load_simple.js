@@ -12,7 +12,7 @@ class Course_load_simple {
         this.id = data[0];
         this.type = data[5];
         this.level = data[7];
-        this.quality = data[11]
+        this.quality = data[11] || 0;
         this.position = [data[8][0], data[8][1]]
         this.count = data[10] || 0
         if (typeof data[3] == "object") return

@@ -64,4 +64,17 @@ document.body.appendChild(frame_container)
 document.body.appendChild(body_container)
 
 
+//
+const font = new FontFace('JetBrainsMono-Bold', 'url(./JetBrainsMono-Bold.woff2)', {
+    style: 'normal',
+    weight: 'normal',
+});
+
+font.load().then((loadedFont) => {
+    document.fonts.add(loadedFont);
+    console.log('Font loaded successfully.');
+}).catch((error) => {
+    console.error('Error loading font:', error);
+});
+
 

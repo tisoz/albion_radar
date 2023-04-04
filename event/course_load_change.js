@@ -11,7 +11,7 @@ class Course_load_change {
     parse(data) {
 
         this.id = data[0];        //物资ID
-        this.quality = data[2];   //物品品质
+        this.quality = data[2] || 0;   //物品品质
         this.count = data[1] || 0;     //剩余数量
 
         // console.log(JSON.stringify(this))

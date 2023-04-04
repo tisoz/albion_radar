@@ -14,6 +14,7 @@ class Course_load_list {
             this.id = data[0][i];
             this.type = data[1][i];
             this.level = data[2][i];
+            this.quality = 0;
             this.position = [data[3][i * 2], data[3][i * 2 + 1]]
             this.count = data[4][i];
 

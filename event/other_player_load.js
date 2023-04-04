@@ -22,8 +22,9 @@ class Other_player_load {
         this.lp_max = data[24]
         this.position = data[13];  //玩家位置
         this.backpack = data[34]  //玩家装备
+        this.obj = data;
         // console.log(JSON.stringify(data))
-        global.web_content.send("other_player", this)
+        global.web_content.send("other_player_load", this)
     }
 
 }
