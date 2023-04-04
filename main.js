@@ -54,7 +54,7 @@ function createWindow() {
         win.setPosition(newPosition[0], newPosition[1], true)
     })
     global.web_content = win.webContents;
-    win.loadFile("./index.html")
+    win.loadFile("./login.html")
     win.maximize()
     win.webContents.openDevTools()
 }
