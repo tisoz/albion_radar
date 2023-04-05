@@ -63,7 +63,15 @@
             //修改相对位置大小
             container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
 
-
+            if (global.clear_data) {
+                let center = container.children[0];
+                container.removeChildren()
+                container.addChild(center)
+                player_list = {}
+                monster_list = {}
+                item_list = {}
+                global.clear_data = false;
+            }
 
             // container.sortChildren()
             //加载玩家信息
@@ -121,6 +129,9 @@
                 item = item_list[index]
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['id'].toString());
+                    // 创建一个新纹理
+                    // 将精灵的纹理设置为新纹理
+                    temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
 
                     // 更新物资数量
                     temp_img.getChildAt(0).text = item['count'] || 0;

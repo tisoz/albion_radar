@@ -59,7 +59,17 @@ global.manager.on('request', (packet) => {
 });
 global.manager.on('response', (packet) => {
     // 在这里处理接收到的结果
-    console.log("reponse", packet)
+    if (packet.operationCode == 1 && packet.parameters) {
+        //进行事件处理
+        try {
+            let code = packet.parameters[253]
+            if (request_list[code]) {
+                (new request_list[code]).parse(packet.parameters);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
 });
 
 global.manager.on("key_error", () => {

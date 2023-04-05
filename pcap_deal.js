@@ -5,6 +5,9 @@ globalThis['local_player_position'] ||= {current_postion: [0, 0]}
 ipcRenderer.on("local_player_position", (event, data) => {
     globalThis['local_player_position'] = data;
 })
+ipcRenderer.on("map_load", (event, data) => {
+    global.clear_data = true
+})
 ipcRenderer.on("monster_load", (event, data) => {
 
     // console.log(data)
@@ -86,6 +89,8 @@ ipcRenderer.on("course_item", (event, data) => {
             break
         case 17:
             data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+            data['uni_id'] = "UNIQUE_HIDEOUT"
+
             break
         case 6:
             data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
