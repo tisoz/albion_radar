@@ -21,6 +21,7 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
             contextIsolation: false,
+            partition: 'persist:radar'
         }
     })
     //表示禁用代理，直接连接互联网。
@@ -54,7 +55,7 @@ function createWindow() {
         win.setPosition(newPosition[0], newPosition[1], true)
     })
     global.web_content = win.webContents;
-    win.loadFile("./index.html")
+    win.loadFile("./login.html")
     win.maximize()
     win.webContents.openDevTools()
 }

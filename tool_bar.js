@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron');
+global.token = localStorage.getItem("token")
 //创建公共样式
 let css_layui = document.createElement("link");
 css_layui.setAttribute("rel", "stylesheet");

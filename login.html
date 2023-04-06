@@ -30,6 +30,13 @@
                    autocomplete="off"
                    class="layui-input admin-input">
         </div>
+        <div>
+            <i class="layui-icon layui-icon-template-1 admin-icon admin-icon-username"></i>
+            <input type="text" id="card" name="card"
+                   placeholder="请输入卡密(已激活可忽略)"
+                   autocomplete="off"
+                   class="layui-input admin-input">
+        </div>
         <div align="center">
             <button class="layui-btn admin-button" style="margin: auto" type="button" onclick="login()">登陆</button>
         </div>
@@ -49,8 +56,9 @@
 
     function login() {
         //校验
-        var username = $("#username").val();
-        var password = $("#password").val();
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var card = document.getElementById("card").value;
         if (username == "") {
             alert("账号不能为空");
             return false;
@@ -59,24 +67,33 @@
             alert("密码不能为空");
             return false;
         }
-        $.ajax({
-            url: '/api/login',
-            type: 'POST',
-            data: {
-                username: username,
-                password: password
-            },
-            async: true,
-            cache: false,
-            success: function (data) {
-                data = $.parseJSON(data);
-                if (data.status == true) {
-                    location.href = data.redirect;
+        const formData = new FormData();
+
+        // 将数据添加到 FormData 对象中
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('card', card);
+        fetch('http://localhost/api/login', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === true) {
+                    localStorage.setItem("token", data.token);
+                    layer.msg(data.message, {icon: 1, time: 1000}, function () {
+                        location.href = "./index.html"
+                    });
                 } else {
-                    alert(data.message);
+                    layer.msg(data.message, {icon: 1, time: 3000}, function () {
+                    });
                 }
-            }
-        });
+            })
+            .catch(error => {
+                layer.msg(error, {icon: 1, time: 3000}, function () {
+                });
+            });
+
     }
 </script>
 </body>
@@ -107,7 +124,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
     }
 
     .login-form > div {

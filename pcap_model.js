@@ -73,11 +73,9 @@ global.manager.on('response', (packet) => {
 });
 
 global.manager.on("key_error", () => {
-    // fetch()
-    let now = new Date().getTime() / 1000;
-    let key = (now - now % 10800) % 255;
-    //替换为fetch算法
-    manager.setKey(key)
+    fetch("http://localhost/api/get_key").then((key) => {
+        manager.setKey(key)
+    })
 })
 
 pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 50})
