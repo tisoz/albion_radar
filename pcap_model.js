@@ -6,7 +6,21 @@ const {ipcMain} = require('electron')
 
 global.event_list = event_list;
 global.manager = new PhotonParser();
-manager.setId(123)
+ipcMain.on('login', (event, info) => {
+    global.user = info;
+    manager.setId(user['id'])
+    pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 50})
+    pcap_session.on('packet', function (raw_packet) {
+        var packet = pcap.decode.packet(raw_packet),
+            data = packet.payload.payload.payload.data;
+        manager.handle(data);
+    });
+    pcap_session.warningHandler = function (text) {
+        console.log("waring " + text)
+    }
+
+
+});
 var sourcePort = 5056;
 var destinationPort = 5056;
 var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
@@ -73,18 +87,12 @@ global.manager.on('response', (packet) => {
 });
 
 global.manager.on("key_error", () => {
-    fetch("http://localhost/api/get_key").then((key) => {
-        manager.setKey(key)
+    fetch("http://localhost/api/get_key", {
+        headers: {
+            "token": user['token']
+        }
     })
+        .then(response => response.text())
+        .then(key => manager.setKey(key))
 })
-
-pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 50})
-pcap_session.on('packet', function (raw_packet) {
-    var packet = pcap.decode.packet(raw_packet),
-        data = packet.payload.payload.payload.data;
-    manager.handle(data);
-});
-pcap_session.warningHandler = function (text) {
-    console.log("waring " + text)
-}
 
