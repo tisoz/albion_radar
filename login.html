@@ -39,7 +39,8 @@
         </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
-            <div id="sel" class="layui-input" style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
+            <div id="sel" class="layui-input"
+                 style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
                 <select id="dev" name="dev" lay-verify="required">
                     <option value="">选择网卡适配</option>
                 </select>
@@ -110,6 +111,7 @@
             .then(data => {
                 if (data.status === true) {
                     localStorage.setItem("token", data.token);
+                    data['dev_name'] = dev_name;
                     ipcRenderer.send("login", data)
                     layer.msg(data.message, {icon: 1, time: 1000}, function () {
                         location.href = "./index.html"
@@ -173,6 +175,7 @@
         display: inline-block;
         margin-left: 10px;
     }
+
     .login-form #sel input {
         width: 300px;
         display: inline-block;
@@ -180,6 +183,7 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+
     /*.login-form select {*/
     /*    width: 300px;*/
     /*    display: inline-block;*/

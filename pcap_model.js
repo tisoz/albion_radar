@@ -9,7 +9,7 @@ global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
     global.user = info;
     manager.setId(user['id'])
-    pcap_session = pcap.createSession(dev, {filter: filter, buffer_timeout: 50})
+    pcap_session = pcap.createSession(info['dev_name'], {filter: filter, buffer_timeout: 50})
     pcap_session.on('packet', function (raw_packet) {
         var packet = pcap.decode.packet(raw_packet),
             data = packet.payload.payload.payload.data;
@@ -18,8 +18,6 @@ ipcMain.on('login', (event, info) => {
     pcap_session.warningHandler = function (text) {
         console.log("waring " + text)
     }
-
-
 });
 var sourcePort = 5056;
 var destinationPort = 5056;
