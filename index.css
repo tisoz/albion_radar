@@ -8,6 +8,12 @@ html, body {
     user-select: none;
 }
 
+dd {
+    font-family: "JetBrains Mono Bold Italic", Arial, serif;
+    font-size: 14px;
+    color: #333;
+}
+
 /*@font-face {*/
 /*    font-family: "JetBrains Mono Bold Italic";*/
 /*    src: url("./JetBrainsMono-Bold.woff2") format("woff2");*/

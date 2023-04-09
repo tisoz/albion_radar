@@ -1,4 +1,18 @@
 const {ipcRenderer} = require('electron');
+const resouce_item_list = require('./item_list.json');
+global.item_list_json = {}
+new Promise((resolve) => {
+    for (let item of resouce_item_list) {
+        global.item_list_json[item['Index']] = {
+            unique: item['UniqueName'],
+            name: item['LocalizedNames'] ? item['LocalizedNames']['ZH-CN'] : ""
+        }
+    }
+}).then(() => {
+    console.log("done item load")
+})
+
+
 global.token = localStorage.getItem("token")
 //创建公共样式
 let css_layui = document.createElement("link");
@@ -40,7 +54,8 @@ lef_bar.setAttribute("style", "")
 var menu = document.createElement("ul")
 menu.setAttribute("lay-filter", "nav")
 menu.innerHTML =
-    `<li class="layui-nav-item"><a href="#">雷达</a></li>
+    `<li class="layui-nav-item"><a href="#" id="radar_main">雷达</a></li>
+    <li class="layui-nav-item"><a href="#" id="radar_setting">雷达设置</a></li>
     <li class="layui-nav-item layui-disabled"><a href="#">自动采集配置(开发中)</a></li>`
 lef_bar.appendChild(menu)
 frame_container.appendChild(lef_bar)
@@ -78,4 +93,15 @@ font.load().then((loadedFont) => {
     console.error('Error loading font:', error);
 });
 
-
+document.getElementById("radar_main").onclick = function (){
+    for (let item of body_container.children){
+        item.style.display = "none";
+    }
+    document.getElementById("radar_page").style.display = "block";
+}
+document.getElementById("radar_setting").onclick = function (){
+    for (let item of body_container.children){
+        item.style.display = "none";
+    }
+    document.getElementById("radar_setting_page").style.display = "block";
+}

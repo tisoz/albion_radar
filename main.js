@@ -1,5 +1,6 @@
 const {app, BrowserWindow, session, ipcMain} = require('electron')
 const path = require('path')
+process.env.no_proxy = "game.tisoz.com";
 
 require("./pcap_model.js")
 
@@ -9,12 +10,17 @@ function createWindow() {
     // preload: 设置预加载脚本的路径，这个脚本将在渲染进程中最先被执行。预加载脚本可以访问 Node.js 的 API，这使得在渲染进程中使用 Node.js 的 API 变得容易。
     // nodeIntegration: 如果设置为 true，则在渲染进程中启用 Node.js 整合。这允许渲染进程使用 Node.js 的 API。
     // contextIsolation: 如果设置为 true，则启用上下文隔离。这样可以防止恶意网站对你的应用程序造成安全威胁，但也会使得在渲染进程和主进程之间传递数据变得更加复杂。如果设置为 false，则禁用上下文隔离。
+    app.commandLine.appendSwitch('no-proxy-server');
+    session.defaultSession.setProxy({proxyRules: 'direct://'}).then((res)=>{
+        console.log(res)
+    })
     const win = new BrowserWindow({
         width: 570,
         height: 380,
         minWidth: 570,
         minHeight: 380,
         frame: false,
+        icon: "./favicon.ico",
         webPreferences: {
             webSecurity: false,
             devTools: !app.isPackaged,
@@ -24,8 +30,9 @@ function createWindow() {
             partition: 'persist:radar'
         }
     })
+
     //表示禁用代理，直接连接互联网。
-    session.defaultSession.setProxy({proxyRules: 'direct://'})
+
     ipcMain.on('minimize-window', () => {
         win.minimize();
     });
@@ -56,8 +63,8 @@ function createWindow() {
     })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

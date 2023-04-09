@@ -6,31 +6,123 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
+<script id="setting" type="text/html">
+    <form class="layui-form" action="" lay-filter="setting">
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend>玩家配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示玩家装备</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_player_backpack" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend>物资配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">物资类型</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_item_rock" title="石头">
+                <input type="checkbox" name="filter_item_ore" title="矿物">
+                <input type="checkbox" name="filter_item_wood" title="树木">
+                <input type="checkbox" name="filter_item_fiber" title="棉花">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">物资等级</label>
+            <div class="layui-input-inline">
+                <select name="filter_item_level">
+                    <option value="0">全部</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="filter_item_quality">
+                    <option value="0">全部</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</script>
 <script>
     fetch('https://oss.tisoz.com/version.txt')
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error(error))
 
+    const raw_json_deault = {
+        "filter_show_player_backpack": "off",
+        "filter_item_rock": "off",
+        "filter_item_ore": "off",
+        "filter_item_wood": "off",
+        "filter_item_fiber": "off",
+        "filter_item_level": "0",
+        "filter_item_quality": "0"
+    }
+    setInterval(() => {
+        let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
+            if (value === "on") {
+                return true;
+            } else if (value === "off") {
+                return false;
+            } else {
+                return value;
+            }
+        });
+        let save_config = JSON.stringify(Object.assign(JSON.parse(raw_config_default), layui.form.val()), function (key, value) {
+            if (value === "on") {
+                return true;
+            } else if (value === "off") {
+                return false;
+            } else {
+                return value;
+            }
+        });
+        localStorage.setItem("config", save_config)
+    }, 3000)
 
     window.onload = () => {
+        let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
+            if (value === "on") {
+                return true;
+            } else if (value === "off") {
+                return false;
+            } else {
+                return value;
+            }
+        });
+
         let page_radar = document.createElement("div");
-        page_radar.setAttribute("style", "width:100%;height:100%;position:relative")
-        page_radar.id = "radar"
+        page_radar.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;")
+        page_radar.id = "radar_page"
         body_container.appendChild(page_radar)
 
         let page_spider = document.createElement("div")
-        page_spider.setAttribute("style", "width:100%;height:100%;position:relative")
-        page_spider.id = "spider"
+        page_spider.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;display:none")
+        page_spider.id = "radar_setting_page"
+        page_spider.innerHTML = document.getElementById("setting").innerHTML
         body_container.appendChild(page_spider)
-
+        layui.form.render()
+        layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
 
         let app = new PIXI.Application({width: 400, height: 300});
         global.container = new PIXI.Container();
+        global.backpack_container = new PIXI.Container();
         let center = PIXI.Sprite.from('center.png');
         // container.sortableChildren = true;
         center.zIndex = 99999;
         container.addChild(center)
+        app.stage.addChild(backpack_container)
         app.stage.addChild(container)
         container.rotation = -(Math.PI / 4 * 3)
         app.stage.scale.x = 5
@@ -58,6 +150,7 @@
         app.ticker.maxFPS = 60;
 
         app.ticker.add((delta) => {
+            let config = JSON.parse(localStorage.getItem("config"));
             //修改画板大小
             app.renderer.resize(body_container.getClientRects()[0].width - 150 - 20, body_container.getClientRects()[0].height - 60 - 20)
             //修改相对位置大小
@@ -66,6 +159,7 @@
             if (global.clear_data) {
                 let center = container.children[0];
                 container.removeChildren()
+                backpack_container.removeChildren()
                 container.addChild(center)
                 player_list = {}
                 monster_list = {}
@@ -75,11 +169,20 @@
 
             // container.sortChildren()
             //加载玩家信息
+            let player_count = 0;
             for (let index in player_list) {
+                player_count += 1;
                 item = player_list[index]
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['in_container_index']);
-
+                    if (config['filter_show_player_backpack']) {
+                        let temp_back = backpack_container.getChildByName(item['in_container_index']);
+                        if (temp_back != null) {
+                            temp_back.scale.x = 1 / app.stage.scale.x / 2
+                            temp_back.scale.y = 1 / app.stage.scale.y / 2
+                            temp_back.y = (player_count - 1) * 70 / app.stage.scale.y
+                        }
+                    }
                     // 计算物资位置与玩家位置
                     let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
                     let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
@@ -103,7 +206,7 @@
                     temp_img.name = item['id'].toString();
                     // temp_img.zIndex = item['quality']
                     // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}[L${item['quality']}]`, {
+                    let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
                         fontFamily: 'JetBrainsMono-Bold',
                         fontSize: 14,
                         fill: 'white',
@@ -116,6 +219,32 @@
                     item['in_container_index'] = temp_img.name
                     item['in_container'] = true
                     player_list[index] = item
+
+
+                    // 玩家装备显示
+                    // 创建容器
+                    if (config['filter_show_player_backpack']) {
+                        let backpack = new PIXI.Container();
+                        backpack.name = item['id'].toString();
+                        backpack.scale.x = 1 / app.stage.scale.x / 2
+                        backpack.scale.y = 1 / app.stage.scale.y / 2
+                        backpack.y = (backpack_container.children.length) * 70 / app.stage.scale.y
+                        temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})`, {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 34,
+                            fill: 'white',
+                        });
+                        backpack.addChild(temp_text)
+                        for (let i in item['backpack']) {
+                            let index = item['backpack'][i];
+                            if (index === 0) continue;
+                            let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'])
+                            model.x = i * 100
+                            model.y = 34
+                            backpack.addChild(model);
+                        }
+                        backpack_container.addChild(backpack);
+                    }
                 }
             }
 
@@ -127,6 +256,30 @@
             //动态加入物资信息
             for (let index in item_list) {
                 item = item_list[index]
+                if (item['level'] < config['filter_item_level']) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
+                if (item['quality'] < config['filter_item_quality']) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
+                if (!config['filter_item_ore'] && item['type'] === 23) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
+                if (!config['filter_item_wood'] && item['type'] === 0) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
+                if (!config['filter_item_rock'] && item['type'] === 6) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
+                if (!config['filter_item_fiber'] && item['type'] === 12) {
+                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    continue
+                }
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['id'].toString());
                     // 创建一个新纹理
@@ -244,6 +397,8 @@
             dragTarget = this;
             app.stage.on('pointermove', onDragMove);
         }
+
+        global.radar_move ||= 0;
 
         function onDragEnd() {
             if (dragTarget) {

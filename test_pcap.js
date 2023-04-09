@@ -1,13 +1,13 @@
 const pcap = require("npcap");
 
 
-var sourcePort = 443;
-var destinationPort = 443;
-var filter = "tcp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
+var sourcePort = 5056;
+var destinationPort = 5056;
+var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
 
 for (let i of pcap.findalldevs()) {
     console.log("network", i.description)
-    if (i.description === 'Realtek PCIe 2.5GbE Family Controller') {
+    if (i.description === 'TAP-Windows Adapter V9') {
         var dev = i.name;
     }
 }

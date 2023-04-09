@@ -16,7 +16,15 @@
     <!--</div>-->
     <form class="layui-form login-form">
         <div style="font-size:32px;text-align: center;"></div>
-
+        <div class="layui-form-item">
+            <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
+            <div id="sel" class="layui-input"
+                 style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
+                <select id="dev" name="dev" lay-verify="required">
+                    <option value="">选择网卡适配</option>
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-username admin-icon admin-icon-username"></i>
             <input type="text" id="username" name="username" placeholder="请输入用户名"
@@ -37,15 +45,6 @@
                    autocomplete="off"
                    class="layui-input admin-input">
         </div>
-        <div class="layui-form-item">
-            <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
-            <div id="sel" class="layui-input"
-                 style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
-                <select id="dev" name="dev" lay-verify="required">
-                    <option value="">选择网卡适配</option>
-                </select>
-            </div>
-        </div>
         <div align="center">
             <button class="layui-btn admin-button" style="margin: auto" type="button" onclick="login()">登陆</button>
         </div>
@@ -65,16 +64,20 @@
     document.head.appendChild(css_layui);
     document.body.appendChild(script_layui);
 
-    let dev = document.getElementById("dev")
+    window.onload = () => {
+        let dev = document.getElementById("dev")
+        document.getElementById("username").value = localStorage.getItem("username") || ""
+        document.getElementById("password").value = localStorage.getItem("password") || ""
+        for (let i of pcap.findalldevs()) {
+            let temp = document.createElement("option")
+            temp.value = i.name;
+            temp.textContent = i.description;
+            dev.appendChild(temp);
+        }
 
-    for (let i of pcap.findalldevs()) {
-        let temp = document.createElement("option")
-        temp.value = i.description;
-        temp.textContent = i.description;
-        dev.appendChild(temp);
+        layui.form.render("select");
     }
 
-    layui.render("select");
 
     function login() {
         //校验
@@ -103,7 +106,7 @@
         formData.append('username', username);
         formData.append('password', password);
         formData.append('card', card);
-        fetch('http://localhost/api/login', {
+        fetch('http://game.tisoz.com/api/login', {
             method: 'POST',
             body: formData
         })
@@ -113,7 +116,12 @@
                     localStorage.setItem("token", data.token);
                     data['dev_name'] = dev_name;
                     ipcRenderer.send("login", data)
-                    layer.msg(data.message, {icon: 1, time: 1000}, function () {
+                    layer.msg(`${data.message} , 到期时间 : ${layui.util.toDateString(parseInt(data['vaild_time'] + "000"))}`, {
+                        icon: 1,
+                        time: 2500
+                    }, function () {
+                        localStorage.setItem("username", username)
+                        localStorage.setItem("password", password)
                         location.href = "./index.html"
                     });
                 } else {

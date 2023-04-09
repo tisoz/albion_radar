@@ -19,6 +19,12 @@ ipcRenderer.on("monster_load", (event, data) => {
         case 2:
             data['uni_id'] = "mist_mob.png"
             break;
+        case 3:
+            data['uni_id'] = "mist_mob.png"
+            break;
+        case 8:
+            data['uni_id'] = "mist_mob.png"
+            break;
         default:
             data['uni_id'] = "monster.png";
             break;
@@ -36,7 +42,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
     // this.lp_max = data[24]
     // this.position = data[13];  //玩家位置
     // this.backpack = data[34]  //玩家装备
-    // console.log(data)
+    console.log(data['backpack'])
     globalThis['player_list'][data['id']] ||= {};
     switch (data['obj'][46]) {
         case 255:
@@ -69,13 +75,14 @@ ipcRenderer.on("leave_event", (event, data) => {
     if (data.id in player_list) {
         if (player_list[data.id]['in_container']) {
             container.removeChild(container.getChildByName(data.id.toString()))
+            backpack_container.removeChild(backpack_container.getChildByName(data.id.toString()))
         }
         delete player_list[data.id]
     }
 })
 ipcRenderer.on("course_item", (event, data) => {
     globalThis['item_list'][data['id']] ||= {};
-    console.log(data)
+    // console.log(data)
     Object.assign(globalThis['item_list'][data['id']], data);
 
     data = globalThis['item_list'][data['id']];
