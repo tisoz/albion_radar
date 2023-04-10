@@ -18,6 +18,28 @@
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend>怪物配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示普通怪物</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_monster_normal" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示稀有怪物(附魔品质>1)</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示迷雾精灵</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_monster_mist" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>物资配置</legend>
         </fieldset>
         <div class="layui-form-item">
@@ -67,7 +89,10 @@
         "filter_item_wood": "off",
         "filter_item_fiber": "off",
         "filter_item_level": "0",
-        "filter_item_quality": "0"
+        "filter_item_quality": "0",
+        "filter_show_monster_normal": "off",
+        "filter_show_monster_quality": "off",
+        "filter_show_monster_mist": "off",
     }
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
