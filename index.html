@@ -356,6 +356,24 @@
             //加载怪物信息
             for (let index in monster_list) {
                 item = monster_list[index]
+                if (!config['filter_show_monster_normal']) {
+                    if (item['quality'] < 1 && item['type'] > 10) {
+                        container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                }
+                if (!config['filter_show_monster_quality']) {
+                    if (item['quality'] >= 1 && item['type'] > 10) {
+                        container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                }
+                if (!config['filter_show_monster_mist']) {
+                    if (item['type'] < 10) {
+                        container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                }
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['in_container_index']);
 

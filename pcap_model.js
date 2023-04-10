@@ -43,7 +43,7 @@ global.manager.on('event', (packet) => {
             if (event_list[code]) {
                 (new event_list[code]).parse(packet.parameters)
             } else {
-                // console.log(JSON.stringify(packet.parameters))
+                console.log(JSON.stringify(packet.parameters))
             }
         } catch (e) {
             // console.log(e)

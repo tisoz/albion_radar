@@ -42,7 +42,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
     // this.lp_max = data[24]
     // this.position = data[13];  //玩家位置
     // this.backpack = data[34]  //玩家装备
-    console.log(data['backpack'])
+    // console.log(data['backpack'])
     globalThis['player_list'][data['id']] ||= {};
     switch (data['obj'][46]) {
         case 255:
@@ -106,7 +106,7 @@ ipcRenderer.on("course_item", (event, data) => {
             data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
             break;
         default:
-            console.log("type", data['type'])
+            // console.log("type", data['type'])
             data['uni_id'] = "UNIQUE_HIDEOUT"
             break
     }
@@ -114,6 +114,6 @@ ipcRenderer.on("course_item", (event, data) => {
 
 })
 
-// ipcRenderer.on("course_item_quality", (event, data) => {
-//     globalThis['item_list'][data['id']]['quality'] = data['quality']
-// })
+ipcRenderer.on("dungeon_load", (event, data) => {
+    console.log(data)
+})

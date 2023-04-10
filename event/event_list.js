@@ -9,6 +9,7 @@ let move_event = require("./move_event.js")
 let leave_event = require("./leave_event.js")
 let monster_normal_move_change = require("./monster_normal_move_change.js")
 let monster_load = require("./monster_load.js")
+let dungeon = require("./dungeon.js")
 let filter = require("./filter.js")
 
 let event_list = {
@@ -28,6 +29,7 @@ let event_list = {
     98: filter,
 
     117: monster_load,
+    307: dungeon,
     337: filter,
     342: filter,//钓鱼
     20: filter,//钓鱼
