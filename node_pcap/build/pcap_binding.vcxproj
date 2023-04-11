@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DE54CE14-B39D-CB7C-771E-4319B5BDC5FD}</ProjectGuid>
+    <ProjectGuid>{02931F4C-D412-BCB4-0290-B7F52F1FC840}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pcap_binding</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
   <PropertyGroup Label="Configuration">
@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\TISOZ\.electron-gyp\23.2.0\include\node;C:\Users\TISOZ\.electron-gyp\23.2.0\src;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\uv\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\zlib;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;..\Active;..\code;..\page:;..\65001;G:\albion_radar\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tisoz\.electron-gyp\23.2.0\include\node;C:\Users\tisoz\.electron-gyp\23.2.0\src;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\uv\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\zlib;C:\Users\tisoz\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;F:\albion_radarr\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -72,7 +72,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\TISOZ\\.electron-gyp\\23.2.0\\x64\\node.lib&quot;;G:\albion_radar\node_pcap\npcap\Lib\x64\Packet.lib;G:\albion_radar\node_pcap\npcap\Lib\x64\wpcap.lib;Ws2_32.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\tisoz\\.electron-gyp\\23.2.0\\x64\\node.lib&quot;;F:\albion_radarr\node_pcap\npcap\Lib\x64\Packet.lib;F:\albion_radarr\node_pcap\npcap\Lib\x64\wpcap.lib;Ws2_32.lib</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;wpcap.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -84,13 +84,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\TISOZ\.electron-gyp\23.2.0\include\node;C:\Users\TISOZ\.electron-gyp\23.2.0\src;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\uv\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\zlib;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;..\Active;..\code;..\page:;..\65001;G:\albion_radar\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tisoz\.electron-gyp\23.2.0\include\node;C:\Users\tisoz\.electron-gyp\23.2.0\src;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\uv\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\zlib;C:\Users\tisoz\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;F:\albion_radarr\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=pcap_binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_SHARED_CAGE;V8_ENABLE_SANDBOX;V8_31BIT_SMIS_ON_64BIT_ARCH;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_EXPERIMENTAL;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\TISOZ\.electron-gyp\23.2.0\include\node;C:\Users\TISOZ\.electron-gyp\23.2.0\src;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\uv\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\zlib;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;..\Active;..\code;..\page:;..\65001;G:\albion_radar\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tisoz\.electron-gyp\23.2.0\include\node;C:\Users\tisoz\.electron-gyp\23.2.0\src;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\uv\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\zlib;C:\Users\tisoz\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;F:\albion_radarr\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -117,7 +117,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\TISOZ\\.electron-gyp\\23.2.0\\x64\\node.lib&quot;;G:\albion_radar\node_pcap\npcap\Lib\x64\Packet.lib;G:\albion_radar\node_pcap\npcap\Lib\x64\wpcap.lib;Ws2_32.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\tisoz\\.electron-gyp\\23.2.0\\x64\\node.lib&quot;;F:\albion_radarr\node_pcap\npcap\Lib\x64\Packet.lib;F:\albion_radarr\node_pcap\npcap\Lib\x64\wpcap.lib;Ws2_32.lib</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;wpcap.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,7 +129,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\TISOZ\.electron-gyp\23.2.0\include\node;C:\Users\TISOZ\.electron-gyp\23.2.0\src;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\uv\include;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\zlib;C:\Users\TISOZ\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;..\Active;..\code;..\page:;..\65001;G:\albion_radar\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\tisoz\.electron-gyp\23.2.0\include\node;C:\Users\tisoz\.electron-gyp\23.2.0\src;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\config;C:\Users\tisoz\.electron-gyp\23.2.0\deps\openssl\openssl\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\uv\include;C:\Users\tisoz\.electron-gyp\23.2.0\deps\zlib;C:\Users\tisoz\.electron-gyp\23.2.0\deps\v8\include;..\npcap\Include;F:\albion_radarr\node_pcap\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=pcap_binding;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_SHARED_CAGE;V8_ENABLE_SANDBOX;V8_31BIT_SMIS_ON_64BIT_ARCH;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_EXPERIMENTAL;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
@@ -143,7 +143,7 @@
     <ClCompile Include="..\npcap_session.cpp">
       <ObjectFileName>$(IntDir)\npcap_session.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="G:\albion_radar\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="F:\albion_radarr\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
