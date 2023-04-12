@@ -18,6 +18,21 @@
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend>洞穴配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示普通洞穴</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示稀有洞穴</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>怪物配置</legend>
         </fieldset>
         <div class="layui-form-item">
@@ -93,6 +108,8 @@
         "filter_show_monster_normal": "off",
         "filter_show_monster_quality": "off",
         "filter_show_monster_mist": "off",
+        "filter_show_dungeon_normal": "off",
+        "filter_show_dungeon_quality": "off"
     }
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
@@ -117,6 +134,14 @@
     }, 3000)
 
     window.onload = () => {
+        window.addEventListener('keydown', (event) => {
+            // 如果按下 F5
+            if (event.key === 'F5') {
+                // 向主进程发送 refresh 事件
+                location.reload()
+            }
+        });
+
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
             if (value === "on") {
                 return true;
@@ -273,6 +298,50 @@
                 }
             }
 
+            // 加载宝箱信息
+            for (let index in chest_list) {
+                item = chest_list[index]
+                if (item['in_container']) {
+                    let temp_img = container.getChildByName(item['in_container_index']);
+
+                    // 计算物资位置与玩家位置
+                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                } else {
+                    if (!item['position']) continue
+
+                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    temp_img.anchor.set(0.5)
+                    temp_img.rotation = (Math.PI / 4 * 3)
+                    temp_img.name = item['id'].toString();
+                    // temp_img.zIndex = item['quality']
+                    // 创建数量文本
+                    let temp_text = new PIXI.Text(`${item['name']}`, {
+                        fontFamily: 'JetBrainsMono-Bold',
+                        fontSize: 14,
+                        fill: check_quality(item['quality']),
+                    });
+                    temp_text.anchor.set(0.5);
+                    temp_text.scale.x = 2
+                    temp_text.scale.y = 2
+                    // temp_text.x = ;
+                    temp_text.y = 70;
+                    temp_img.addChild(temp_text)
+                    container.addChild(temp_img)
+                    item['in_container_index'] = temp_img.name
+                    item['in_container'] = true
+                    chest_list[index] = item
+                }
+            }
+
             // 性能优化
             if (globalThis['local_player_position']['changed_position']) return
             globalThis['local_player_position']['changed_position'] = true;
@@ -340,7 +409,7 @@
                     let temp_text = new PIXI.Text(item['count'].toString(), {
                         fontFamily: 'JetBrainsMono-Bold',
                         fontSize: 26,
-                        fill: 'white',
+                        fill: "white",
                     });
                     temp_text.anchor.set(0.5);
                     temp_text.x = 27;
@@ -404,7 +473,7 @@
                     let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}[L${item['quality']}]`, {
                         fontFamily: 'JetBrainsMono-Bold',
                         fontSize: 14,
-                        fill: 'white',
+                        fill: check_quality(item['quality']),
                     });
                     temp_text.anchor.set(0.5);
                     // temp_text.x = ;
@@ -416,6 +485,106 @@
                     monster_list[index] = item
                 }
             }
+
+            // 加载洞穴信息
+            for (let index in dungeon_list) {
+                item = dungeon_list[index]
+                if (!config['filter_show_dungeon_normal']) {
+                    if (item['quality'] < 1) {
+                        container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                }
+                if (!config['filter_show_dungeon_quality']) {
+                    if (item['quality'] >= 1) {
+                        container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                }
+                if (item['in_container']) {
+                    let temp_img = container.getChildByName(item['in_container_index']);
+                    if (temp_img == null)continue
+                    // 计算物资位置与玩家位置
+                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                } else {
+                    if (!item['position']) continue
+
+                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                    temp_img.scale.x = 1 / app.stage.scale.x / 2
+                    temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    temp_img.anchor.set(0.5)
+                    temp_img.rotation = (Math.PI / 4 * 3)
+                    temp_img.name = item['id'].toString();
+                    // temp_img.zIndex = item['quality']
+                    // 创建数量文本
+                    let temp_text = new PIXI.Text(`${item['name']}[L${item['quality']}]`, {
+                        fontFamily: 'JetBrainsMono-Bold',
+                        fontSize: 14,
+                        fill: check_quality(item['quality']),
+                    });
+                    temp_text.anchor.set(0.5);
+                    temp_text.scale.x = 2
+                    temp_text.scale.y = 2
+                    // temp_text.x = ;
+                    temp_text.y = 70;
+                    temp_img.addChild(temp_text)
+                    container.addChild(temp_img)
+                    item['in_container_index'] = temp_img.name
+                    item['in_container'] = true
+                    dungeon_list[index] = item
+                }
+            }
+
+            // 加载临时信息
+            for (let index in temp_list) {
+                item = temp_list[index]
+                if (item['in_container']) {
+                    let temp_img = container.getChildByName(item['in_container_index']);
+
+                    // 计算物资位置与玩家位置
+                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                    temp_img.scale.x = 1 / app.stage.scale.x / 4
+                    temp_img.scale.y = 1 / app.stage.scale.y / 4
+                } else {
+                    if (!item['position']) continue
+
+                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                    temp_img.scale.x = 1 / app.stage.scale.x / 4
+                    temp_img.scale.y = 1 / app.stage.scale.y / 4
+                    temp_img.anchor.set(0.5)
+                    temp_img.rotation = (Math.PI / 4 * 3)
+                    temp_img.name = item['id'].toString();
+                    // temp_img.zIndex = item['quality']
+                    // 创建数量文本
+                    let temp_text = new PIXI.Text(`${item['name']}`, {
+                        fontFamily: 'JetBrainsMono-Bold',
+                        fontSize: 14,
+                        fill: check_quality(item['quality']),
+                    });
+                    temp_text.anchor.set(0.5);
+                    temp_text.scale.x = 4
+                    temp_text.scale.y = 4
+                    // temp_text.x = ;
+                    temp_text.y = 70;
+                    temp_img.addChild(temp_text)
+                    container.addChild(temp_img)
+                    item['in_container_index'] = temp_img.name
+                    item['in_container'] = true
+                    temp_list[index] = item
+                }
+            }
         });
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;
@@ -425,6 +594,23 @@
         let dragTarget = null;
         let old_event = {}
         let old_position = {}
+
+        function check_quality(quality) {
+            switch (quality) {
+                case 0 :
+                    return "white";
+                case 1:
+                    return "green";
+                case 2:
+                    return "blue";
+                case 3:
+                    return "purple";
+                case 4:
+                    return "orange";
+                default:
+                    return "white";
+            }
+        }
 
         function onDragMove(event) {
             if (dragTarget) {

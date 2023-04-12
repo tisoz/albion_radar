@@ -10,6 +10,8 @@ let leave_event = require("./leave_event.js")
 let monster_normal_move_change = require("./monster_normal_move_change.js")
 let monster_load = require("./monster_load.js")
 let dungeon = require("./dungeon.js")
+let chest_load = require("./chest_load.js")
+let cage_load = require("./cage_load.js")
 let filter = require("./filter.js")
 
 let event_list = {
@@ -32,6 +34,8 @@ let event_list = {
     307: dungeon,
     337: filter,
     342: filter,//钓鱼
+    377: chest_load,
+    509: cage_load,//灯笼怪
     20: filter,//钓鱼
 }
 module.exports = event_list;

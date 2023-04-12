@@ -1,7 +1,16 @@
 globalThis['item_list'] ||= {};
 globalThis['monster_list'] ||= {};
 globalThis['player_list'] ||= {};
+globalThis['dungeon_list'] ||= {};
+globalThis['chest_list'] ||= {};
+globalThis['temp_list'] ||= {};
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
+
+// globalThis['monster_white_list'] = {
+//     860: "纵火怪"
+// }
+
+
 ipcRenderer.on("local_player_position", (event, data) => {
     globalThis['local_player_position'] = data;
 })
@@ -13,6 +22,7 @@ ipcRenderer.on("monster_load", (event, data) => {
     // console.log(data)
     if (!data['hp']) return
     if (data['hp'] === 20) return
+    if (data['hp'] === 24) return
 
     globalThis['monster_list'][data['id']] ||= {};
     switch (data['type']) {
@@ -22,6 +32,12 @@ ipcRenderer.on("monster_load", (event, data) => {
         case 3:
             data['uni_id'] = "mist_mob.png"
             break;
+        case 4:
+            data['uni_id'] = "mist_mob.png"
+            break;
+        case 7:
+            data['uni_id'] = "mist_mob.png" //大鬼火
+            break;
         case 8:
             data['uni_id'] = "mist_mob.png"
             break;
@@ -29,6 +45,7 @@ ipcRenderer.on("monster_load", (event, data) => {
             data['uni_id'] = "monster.png";
             break;
     }
+    // if (data['type'] in )
     Object.assign(globalThis['monster_list'][data['id']], data);
 
 })
@@ -72,12 +89,30 @@ ipcRenderer.on("leave_event", (event, data) => {
         }
         delete monster_list[data.id]
     }
+    if (data.id in dungeon_list) {
+        if (dungeon_list[data.id]['in_container']) {
+            container.removeChild(container.getChildByName(data.id.toString()))
+        }
+        delete dungeon_list[data.id]
+    }
     if (data.id in player_list) {
         if (player_list[data.id]['in_container']) {
             container.removeChild(container.getChildByName(data.id.toString()))
             backpack_container.removeChild(backpack_container.getChildByName(data.id.toString()))
         }
         delete player_list[data.id]
+    }
+    if (data.id in chest_list) {
+        if (chest_list[data.id]['in_container']) {
+            container.removeChild(container.getChildByName(data.id.toString()))
+        }
+        delete chest_list[data.id]
+    }
+    if (data.id in temp_list) {
+        if (temp_list[data.id]['in_container']) {
+            container.removeChild(container.getChildByName(data.id.toString()))
+        }
+        delete temp_list[data.id]
     }
 })
 ipcRenderer.on("course_item", (event, data) => {
@@ -116,4 +151,29 @@ ipcRenderer.on("course_item", (event, data) => {
 
 ipcRenderer.on("dungeon_load", (event, data) => {
     console.log(data)
+    globalThis['dungeon_list'][data['id']] ||= {};
+    data['uni_id'] = `dungeon_${data['quality']}.png`
+    if (data['obj']['8']) data['name'] = "腐蚀地下城"
+    if (data['obj']['9']) data['name'] = "2V2炼狱之门"
+    if (data['type'] === 2) data['name'] = "团队地下城"
+    if (data['name'].indexOf("SOLO") + 1 && data['type'] === 1) data['name'] = "单人地下城";
+
+    Object.assign(globalThis['dungeon_list'][data['id']], data);
+})
+ipcRenderer.on("chest_load", (event, data) => {
+    // console.log(data)
+    globalThis['chest_list'][data['id']] ||= {};
+    data['uni_id'] = `chest_2.png`
+    Object.assign(globalThis['chest_list'][data['id']], data);
+})
+
+ipcRenderer.on("cage_load", (event, data) => {
+    console.log(data)
+    globalThis['temp_list'][data['id']] ||= {};
+    if (data['name'].indexOf("FILL_CAGE") + 1) {
+        data['uni_id'] = `heretic.png`;
+        data['name'] = "灯笼怪"
+    }
+
+    Object.assign(globalThis['temp_list'][data['id']], data);
 })
