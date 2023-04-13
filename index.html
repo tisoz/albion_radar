@@ -237,8 +237,9 @@
                     let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
                     let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
+                    let state_text = item['mounted'] ? "骑乘" : "下马";
                     // 更新文本数据
-                    temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]`
+                    temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]\n[${state_text}]`
 
                     TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                     temp_img.scale.x = 1 / app.stage.scale.x
@@ -257,6 +258,7 @@
                     // temp_img.zIndex = item['quality']
                     // 创建数量文本
                     let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
+                        "text-align": "center",
                         fontFamily: 'JetBrainsMono-Bold',
                         fontSize: 14,
                         fill: 'white',
@@ -503,7 +505,7 @@
                 }
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['in_container_index']);
-                    if (temp_img == null)continue
+                    if (temp_img == null) continue
                     // 计算物资位置与玩家位置
                     let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
                     let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
@@ -547,6 +549,7 @@
                 item = temp_list[index]
                 if (item['in_container']) {
                     let temp_img = container.getChildByName(item['in_container_index']);
+                    if (temp_img == null) continue
 
                     // 计算物资位置与玩家位置
                     let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];

@@ -25,6 +25,7 @@ ipcRenderer.on("monster_load", (event, data) => {
     if (data['hp'] === 24) return
 
     globalThis['monster_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['monster_list'][data['id']], data);
     switch (data['type']) {
         case 2:
             data['uni_id'] = "mist_mob.png"
@@ -45,8 +46,8 @@ ipcRenderer.on("monster_load", (event, data) => {
             data['uni_id'] = "monster.png";
             break;
     }
-    // if (data['type'] in )
-    Object.assign(globalThis['monster_list'][data['id']], data);
+
+    globalThis['monster_list'][data['id']] = Object.assign(globalThis['monster_list'][data['id']], data);
 
 })
 ipcRenderer.on("other_player_load", (event, data) => {
@@ -59,8 +60,10 @@ ipcRenderer.on("other_player_load", (event, data) => {
     // this.lp_max = data[24]
     // this.position = data[13];  //玩家位置
     // this.backpack = data[34]  //玩家装备
-    // console.log(data['backpack'])
+    console.log(data)
     globalThis['player_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['player_list'][data['id']], data);
+    if (!data['name'])return
     switch (data['obj'][46]) {
         case 255:
             data['uni_id'] = "player_red.png"
@@ -69,8 +72,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
             data['uni_id'] = "player_green.png";
             break;
     }
-    Object.assign(globalThis['player_list'][data['id']], data);
-
+    globalThis['player_list'][data['id']] = Object.assign(globalThis['player_list'][data['id']], data);
 })
 ipcRenderer.on("move_event", (event, data) => {
     //怪物数据
@@ -118,9 +120,8 @@ ipcRenderer.on("leave_event", (event, data) => {
 ipcRenderer.on("course_item", (event, data) => {
     globalThis['item_list'][data['id']] ||= {};
     // console.log(data)
-    Object.assign(globalThis['item_list'][data['id']], data);
+    data = Object.assign(globalThis['item_list'][data['id']], data);
 
-    data = globalThis['item_list'][data['id']];
     // 加载图片id
     switch (data['type']) {
         case 23:
@@ -145,35 +146,55 @@ ipcRenderer.on("course_item", (event, data) => {
             data['uni_id'] = "UNIQUE_HIDEOUT"
             break
     }
-    globalThis['item_list'][data['id']]['uni_id'] = data['uni_id'].replaceAll("_LEVEL0@0", "");
+    data['uni_id'] = data['uni_id'].replaceAll("_LEVEL0@0", "");
+    globalThis['item_list'][data['id']] = Object.assign(globalThis['item_list'][data['id']], data);
 
 })
 
 ipcRenderer.on("dungeon_load", (event, data) => {
     console.log(data)
     globalThis['dungeon_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['dungeon_list'][data['id']], data);
+
     data['uni_id'] = `dungeon_${data['quality']}.png`
     if (data['obj']['8']) data['name'] = "腐蚀地下城"
     if (data['obj']['9']) data['name'] = "2V2炼狱之门"
     if (data['type'] === 2) data['name'] = "团队地下城"
     if (data['name'].indexOf("SOLO") + 1 && data['type'] === 1) data['name'] = "单人地下城";
+    globalThis['dungeon_list'][data['id']] = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
-    Object.assign(globalThis['dungeon_list'][data['id']], data);
 })
 ipcRenderer.on("chest_load", (event, data) => {
-    // console.log(data)
+    console.log(data)
     globalThis['chest_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['chest_list'][data['id']], data);
+
     data['uni_id'] = `chest_2.png`
-    Object.assign(globalThis['chest_list'][data['id']], data);
+
+    globalThis['chest_list'][data['id']] = Object.assign(globalThis['chest_list'][data['id']], data);
+
 })
 
 ipcRenderer.on("cage_load", (event, data) => {
-    console.log(data)
+    // console.log(data)
     globalThis['temp_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['temp_list'][data['id']], data);
+
     if (data['name'].indexOf("FILL_CAGE") + 1) {
         data['uni_id'] = `heretic.png`;
         data['name'] = "灯笼怪"
     }
 
-    Object.assign(globalThis['temp_list'][data['id']], data);
+    globalThis['temp_list'][data['id']] = Object.assign(globalThis['temp_list'][data['id']], data);
+
+})
+ipcRenderer.on("mounted", (event, data) => {
+    console.log(data)
+    // globalThis['temp_list'][data['id']] ||= {};
+    // if (data['name'].indexOf("FILL_CAGE") + 1) {
+    //     data['uni_id'] = `heretic.png`;
+    //     data['name'] = "灯笼怪"
+    // }
+    //
+    // Object.assign(globalThis['temp_list'][data['id']], data);
 })

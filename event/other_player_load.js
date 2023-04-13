@@ -9,6 +9,7 @@ class Other_player_load {
         this.hp_max = 0;
         this.lp = 0;
         this.lp_max = 0;
+        this.mounted = false;      //怪物类型
         this.position = 0;  //玩家位置
         this.backpack = []  //玩家装备
     }
@@ -23,7 +24,7 @@ class Other_player_load {
         this.position = data[13];  //玩家位置
         this.backpack = data[34]  //玩家装备
         this.obj = data;
-        // console.log(JSON.stringify(data))
+        console.log(JSON.stringify(data))
         global.web_content.send("other_player_load", this)
     }
 

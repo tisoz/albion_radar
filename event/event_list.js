@@ -11,6 +11,8 @@ let monster_normal_move_change = require("./monster_normal_move_change.js")
 let monster_load = require("./monster_load.js")
 let dungeon = require("./dungeon.js")
 let chest_load = require("./chest_load.js")
+let firstmounted = require("./firstmounted.js")
+let secondmounted = require("./secondmounted.js")
 let cage_load = require("./cage_load.js")
 let filter = require("./filter.js")
 
@@ -31,6 +33,8 @@ let event_list = {
     98: filter,
 
     117: monster_load,
+    200: firstmounted,
+    201: secondmounted,
     307: dungeon,
     337: filter,
     342: filter,//钓鱼
