@@ -8,7 +8,7 @@ class Secondmounted {
     parse(data) {
         this.id = data[0];        //物资ID
         this.mounted = data[3];      //怪物类型
-        console.log(JSON.stringify(data))
+        // console.log(JSON.stringify(data))
         global.web_content.send("other_player_load", this)
     }
 

@@ -5,7 +5,7 @@ globalThis['dungeon_list'] ||= {};
 globalThis['chest_list'] ||= {};
 globalThis['temp_list'] ||= {};
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
-
+globalThis['current_map'] ||= {}
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
@@ -60,10 +60,10 @@ ipcRenderer.on("other_player_load", (event, data) => {
     // this.lp_max = data[24]
     // this.position = data[13];  //玩家位置
     // this.backpack = data[34]  //玩家装备
-    console.log(data)
+    globalThis.config ||= {}
     globalThis['player_list'][data['id']] ||= {};
     data = Object.assign(globalThis['player_list'][data['id']], data);
-    if (!data['name'])return
+    if (!data['name']) return
     switch (data['obj'][46]) {
         case 255:
             data['uni_id'] = "player_red.png"
@@ -72,6 +72,16 @@ ipcRenderer.on("other_player_load", (event, data) => {
             data['uni_id'] = "player_green.png";
             break;
     }
+    if (current_map['@rareresourcedistribution']) {
+        if (current_map['@rareresourcedistribution'].indexOf("RED") + 1
+            || current_map['@rareresourcedistribution'].indexOf("OUT") + 1) {
+            data['uni_id'] = "player_red.png";
+        }
+    }
+    if (data['mounted'] && config['filter_show_player_in_danger_show_green']) {
+        data['uni_id'] = "player_green.png";
+    }
+
     globalThis['player_list'][data['id']] = Object.assign(globalThis['player_list'][data['id']], data);
 })
 ipcRenderer.on("move_event", (event, data) => {
@@ -169,7 +179,12 @@ ipcRenderer.on("chest_load", (event, data) => {
     globalThis['chest_list'][data['id']] ||= {};
     data = Object.assign(globalThis['chest_list'][data['id']], data);
 
-    data['uni_id'] = `chest_2.png`
+    if (data['quality'] > 4) data['quality'] = 1;
+    if (data['name'].indexOf("STANDARD") + 1) data['quality'] = 1;
+    if (data['name'].indexOf("UNCOMMON") + 1) data['quality'] = 2;
+    if (data['name'].indexOf("RARE") + 1) data['quality'] = 3;
+    if (data['name'].indexOf("LEGENDARY") + 1) data['quality'] = 4;
+    data['uni_id'] = `chest_${data['quality']}.png`
 
     globalThis['chest_list'][data['id']] = Object.assign(globalThis['chest_list'][data['id']], data);
 
@@ -188,13 +203,6 @@ ipcRenderer.on("cage_load", (event, data) => {
     globalThis['temp_list'][data['id']] = Object.assign(globalThis['temp_list'][data['id']], data);
 
 })
-ipcRenderer.on("mounted", (event, data) => {
-    console.log(data)
-    // globalThis['temp_list'][data['id']] ||= {};
-    // if (data['name'].indexOf("FILL_CAGE") + 1) {
-    //     data['uni_id'] = `heretic.png`;
-    //     data['name'] = "灯笼怪"
-    // }
-    //
-    // Object.assign(globalThis['temp_list'][data['id']], data);
+ipcRenderer.on("map_load", (event, data) => {
+    globalThis['current_map'] = world_list[data['id']]
 })

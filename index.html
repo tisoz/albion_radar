@@ -17,6 +17,13 @@
                 <input type="checkbox" name="filter_show_player_backpack" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">危险区遭遇时在坐骑上显示绿色</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_player_in_danger_show_green" lay-skin="switch"
+                       lay-text="ON|OFF">
+            </div>
+        </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>洞穴配置</legend>
         </fieldset>
@@ -109,7 +116,8 @@
         "filter_show_monster_quality": "off",
         "filter_show_monster_mist": "off",
         "filter_show_dungeon_normal": "off",
-        "filter_show_dungeon_quality": "off"
+        "filter_show_dungeon_quality": "off",
+        "filter_show_player_in_danger_show_green": "off"
     }
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
@@ -185,6 +193,8 @@
         container.pivot.set(center.width / 2, center.height / 2);
         container.position.set(app.screen.width / 2, app.screen.height / 2);
         center.anchor.set(0.5)
+
+
         // 滚轮缩小
         window.addEventListener("mousewheel", (event) => {
             const step = event.wheelDelta > 0 ? 0.1 : -0.1
@@ -199,8 +209,30 @@
         app.ticker.minFPS = 30;
         app.ticker.maxFPS = 60;
 
+
+        // 添加地图信息
+        let temp_world_text = new PIXI.Text(`当前地图:${current_map['@displayname']}`, {
+            "text-align": "center",
+            fontFamily: 'JetBrainsMono-Bold',
+            fontSize: 14,
+            fill: "white",
+        });
+        temp_world_text.anchor.set(1, 0);
+        temp_world_text.name = "map_info"
+        app.stage.addChild(temp_world_text)
         app.ticker.add((delta) => {
-            let config = JSON.parse(localStorage.getItem("config"));
+            globalThis.config = JSON.parse(localStorage.getItem("config"));
+            let temp_world_text = app.stage.getChildByName("map_info");
+            current_map ||= {}
+            temp_world_text.text = `当前地图:${current_map['@displayname']}`
+            let text_color = "white";
+            if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
+            temp_world_text.style.fill = text_color;
+            temp_world_text.name = "map_info"
+            temp_world_text.scale.x = 1 / app.stage.scale.x
+            temp_world_text.scale.y = 1 / app.stage.scale.y
+            temp_world_text.position.set(210 / app.stage.scale.x * 5, 0);
+
             //修改画板大小
             app.renderer.resize(body_container.getClientRects()[0].width - 150 - 20, body_container.getClientRects()[0].height - 60 - 20)
             //修改相对位置大小
@@ -227,6 +259,9 @@
                     item = player_list[index]
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
+                        if (temp_img == null || item == null) continue
+
+                        temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
                         if (config['filter_show_player_backpack']) {
                             let temp_back = backpack_container.getChildByName(item['in_container_index']);
                             if (temp_back != null) {
@@ -307,6 +342,7 @@
                     item = chest_list[index]
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
+                        if (temp_img == null || item == null) continue
 
                         // 计算物资位置与玩家位置
                         let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
@@ -379,6 +415,8 @@
                     }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['id'].toString());
+                        if (temp_img == null || item == null) continue
+
                         // 创建一个新纹理
                         // 将精灵的纹理设置为新纹理
                         temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
@@ -448,6 +486,7 @@
                     }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
+                        if (temp_img == null || item == null) continue
 
                         // 更新文本数据
                         temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
@@ -506,7 +545,7 @@
                     }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
-                        if (temp_img == null) continue
+                        if (temp_img == null || item == null) continue
                         // 计算物资位置与玩家位置
                         let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
                         let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
@@ -550,7 +589,8 @@
                     item = temp_list[index]
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
-                        if (temp_img == null) continue
+                        if (temp_img == null || item == null) continue
+
 
                         // 计算物资位置与玩家位置
                         let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
@@ -591,6 +631,7 @@
                 }
 
             } catch (e) {
+                console.log(e)
                 let formData = new FormData();
 
                 formData.append('type', 1);

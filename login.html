@@ -116,7 +116,7 @@
                     localStorage.setItem("token", data.token);
                     data['dev_name'] = dev_name;
                     ipcRenderer.send("login", data)
-                    layer.msg(`${data.message} , 到期时间 : ${layui.util.toDateString(parseInt(data['vaild_time'] + "000"))}`, {
+                    layer.msg(`${data.message} , 到期时间 : ${layui.util.toDateString(parseInt(data['valid_time'] + "000"))}`, {
                         icon: 1,
                         time: 2500
                     }, function () {

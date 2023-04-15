@@ -1,12 +1,17 @@
 const {ipcRenderer} = require('electron');
-const resouce_item_list = require('./item_list.json');
+const resource_item_list = require('./item_list.json');
+const resource_world = require('./world.json');
 global.item_list_json = {}
+global.world_list = {}
 new Promise((resolve) => {
-    for (let item of resouce_item_list) {
+    for (let item of resource_item_list) {
         global.item_list_json[item['Index']] = {
             unique: item['UniqueName'],
             name: item['LocalizedNames'] ? item['LocalizedNames']['ZH-CN'] : ""
         }
+    }
+    for (let item of resource_world.world.clusters.cluster){
+        world_list[item['@id']] = item
     }
 }).then(() => {
     console.log("done item load")

@@ -15,7 +15,7 @@ class Firstmounted {
                 this.mounted = false;
             }
         }
-        console.log(JSON.stringify(data))
+        // console.log(JSON.stringify(data))
         global.web_content.send("other_player_load", this)
     }
 
