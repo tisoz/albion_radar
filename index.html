@@ -219,375 +219,393 @@
 
             // container.sortChildren()
             //加载玩家信息
-            let player_count = 0;
-            for (let index in player_list) {
-                player_count += 1;
-                item = player_list[index]
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['in_container_index']);
-                    if (config['filter_show_player_backpack']) {
-                        let temp_back = backpack_container.getChildByName(item['in_container_index']);
-                        if (temp_back != null) {
-                            temp_back.scale.x = 1 / app.stage.scale.x / 2
-                            temp_back.scale.y = 1 / app.stage.scale.y / 2
-                            temp_back.y = (player_count - 1) * 70 / app.stage.scale.y
+            try {
+
+                let player_count = 0;
+                for (let index in player_list) {
+                    player_count += 1;
+                    item = player_list[index]
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['in_container_index']);
+                        if (config['filter_show_player_backpack']) {
+                            let temp_back = backpack_container.getChildByName(item['in_container_index']);
+                            if (temp_back != null) {
+                                temp_back.scale.x = 1 / app.stage.scale.x / 2
+                                temp_back.scale.y = 1 / app.stage.scale.y / 2
+                                temp_back.y = (player_count - 1) * 70 / app.stage.scale.y
+                            }
                         }
-                    }
-                    // 计算物资位置与玩家位置
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+                        // 计算物资位置与玩家位置
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
-                    let state_text = item['mounted'] ? "骑乘" : "下马";
-                    // 更新文本数据
-                    temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]\n[${state_text}]`
+                        let state_text = item['mounted'] ? "骑乘" : "下马";
+                        // 更新文本数据
+                        temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]\n[${state_text}]`
 
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x
-                    temp_img.scale.y = 1 / app.stage.scale.y
-                } else {
-                    if (!item['position']) continue
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x
+                        temp_img.scale.y = 1 / app.stage.scale.y
+                    } else {
+                        if (!item['position']) continue
 
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x
-                    temp_img.scale.y = 1 / app.stage.scale.y
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    // temp_img.zIndex = item['quality']
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
-                        "text-align": "center",
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 14,
-                        fill: 'white',
-                    });
-                    temp_text.anchor.set(0.5);
-                    // temp_text.x = ;
-                    temp_text.y = 25;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    player_list[index] = item
-
-
-                    // 玩家装备显示
-                    // 创建容器
-                    if (config['filter_show_player_backpack']) {
-                        let backpack = new PIXI.Container();
-                        backpack.name = item['id'].toString();
-                        backpack.scale.x = 1 / app.stage.scale.x / 2
-                        backpack.scale.y = 1 / app.stage.scale.y / 2
-                        backpack.y = (backpack_container.children.length) * 70 / app.stage.scale.y
-                        temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})`, {
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x
+                        temp_img.scale.y = 1 / app.stage.scale.y
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        // temp_img.zIndex = item['quality']
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
+                            "text-align": "center",
                             fontFamily: 'JetBrainsMono-Bold',
-                            fontSize: 34,
+                            fontSize: 14,
                             fill: 'white',
                         });
-                        backpack.addChild(temp_text)
-                        for (let i in item['backpack']) {
-                            let index = item['backpack'][i];
-                            if (index === 0) continue;
-                            let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'])
-                            model.x = i * 100
-                            model.y = 34
-                            backpack.addChild(model);
+                        temp_text.anchor.set(0.5);
+                        // temp_text.x = ;
+                        temp_text.y = 25;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        player_list[index] = item
+
+
+                        // 玩家装备显示
+                        // 创建容器
+                        if (config['filter_show_player_backpack']) {
+                            let backpack = new PIXI.Container();
+                            backpack.name = item['id'].toString();
+                            backpack.scale.x = 1 / app.stage.scale.x / 2
+                            backpack.scale.y = 1 / app.stage.scale.y / 2
+                            backpack.y = (backpack_container.children.length) * 70 / app.stage.scale.y
+                            temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})`, {
+                                fontFamily: 'JetBrainsMono-Bold',
+                                fontSize: 34,
+                                fill: 'white',
+                            });
+                            backpack.addChild(temp_text)
+                            for (let i in item['backpack']) {
+                                let index = item['backpack'][i];
+                                if (index === 0) continue;
+                                let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'])
+                                model.x = i * 100
+                                model.y = 34
+                                backpack.addChild(model);
+                            }
+                            backpack_container.addChild(backpack);
                         }
-                        backpack_container.addChild(backpack);
                     }
                 }
-            }
 
-            // 加载宝箱信息
-            for (let index in chest_list) {
-                item = chest_list[index]
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['in_container_index']);
+                // 加载宝箱信息
+                for (let index in chest_list) {
+                    item = chest_list[index]
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['in_container_index']);
 
-                    // 计算物资位置与玩家位置
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+                        // 计算物资位置与玩家位置
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                } else {
-                    if (!item['position']) continue
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    } else {
+                        if (!item['position']) continue
 
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    // temp_img.zIndex = item['quality']
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['name']}`, {
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 14,
-                        fill: check_quality(item['quality']),
-                    });
-                    temp_text.anchor.set(0.5);
-                    temp_text.scale.x = 2
-                    temp_text.scale.y = 2
-                    // temp_text.x = ;
-                    temp_text.y = 70;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    chest_list[index] = item
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        // temp_img.zIndex = item['quality']
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(`${item['name']}`, {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 14,
+                            fill: check_quality(item['quality']),
+                        });
+                        temp_text.anchor.set(0.5);
+                        temp_text.scale.x = 2
+                        temp_text.scale.y = 2
+                        // temp_text.x = ;
+                        temp_text.y = 70;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        chest_list[index] = item
+                    }
                 }
-            }
 
-            // 性能优化
-            if (globalThis['local_player_position']['changed_position']) return
-            globalThis['local_player_position']['changed_position'] = true;
+                // 性能优化
+                if (globalThis['local_player_position']['changed_position']) return
+                globalThis['local_player_position']['changed_position'] = true;
 
-
-            //动态加入物资信息
-            for (let index in item_list) {
-                item = item_list[index]
-                if (item['level'] < config['filter_item_level']) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (item['quality'] < config['filter_item_quality']) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (!config['filter_item_ore'] && item['type'] === 23) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (!config['filter_item_wood'] && item['type'] === 0) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (!config['filter_item_rock'] && item['type'] === 6) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (!config['filter_item_fiber'] && item['type'] === 12) {
-                    if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                    continue
-                }
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['id'].toString());
-                    // 创建一个新纹理
-                    // 将精灵的纹理设置为新纹理
-                    temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
-
-                    // 更新物资数量
-                    temp_img.getChildAt(0).text = item['count'] || 0;
-
-                    // 计算物资位置与玩家位置 , 当玩家位置更新后 , 分五次进行物资位置更新
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                    // temp_img.x = -x;
-                    // temp_img.y = y;
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                } else {
-                    if (!item['position']) continue
-
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    temp_img.zIndex = item['quality']
-
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(item['count'].toString(), {
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 26,
-                        fill: "white",
-                    });
-                    temp_text.anchor.set(0.5);
-                    temp_text.x = 27;
-                    temp_text.y = 24;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    item_list[index] = item
-                }
-            }
-
-            //加载怪物信息
-            for (let index in monster_list) {
-                item = monster_list[index]
-                if (!config['filter_show_monster_normal']) {
-                    if (item['quality'] < 1 && item['type'] > 10) {
-                        container.removeChild(container.getChildByName(item['id'].toString()))
+                //动态加入物资信息
+                for (let index in item_list) {
+                    item = item_list[index]
+                    if (item['level'] < config['filter_item_level']) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
                         continue
                     }
-                }
-                if (!config['filter_show_monster_quality']) {
-                    if (item['quality'] >= 1 && item['type'] > 10) {
-                        container.removeChild(container.getChildByName(item['id'].toString()))
+                    if (item['quality'] < config['filter_item_quality']) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
                         continue
                     }
-                }
-                if (!config['filter_show_monster_mist']) {
-                    if (item['type'] < 10) {
-                        container.removeChild(container.getChildByName(item['id'].toString()))
+                    if (!config['filter_item_ore'] && item['type'] === 23) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
                         continue
                     }
+                    if (!config['filter_item_wood'] && item['type'] === 0) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                    if (!config['filter_item_rock'] && item['type'] === 6) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                    if (!config['filter_item_fiber'] && item['type'] === 12) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['id'].toString());
+                        // 创建一个新纹理
+                        // 将精灵的纹理设置为新纹理
+                        temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
+
+                        // 更新物资数量
+                        temp_img.getChildAt(0).text = item['count'] || 0;
+
+                        // 计算物资位置与玩家位置 , 当玩家位置更新后 , 分五次进行物资位置更新
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                        // temp_img.x = -x;
+                        // temp_img.y = y;
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    } else {
+                        if (!item['position']) continue
+
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        temp_img.zIndex = item['quality']
+
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(item['count'].toString(), {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 26,
+                            fill: "white",
+                        });
+                        temp_text.anchor.set(0.5);
+                        temp_text.x = 27;
+                        temp_text.y = 24;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        item_list[index] = item
+                    }
                 }
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['in_container_index']);
 
-                    // 更新文本数据
-                    temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
+                //加载怪物信息
+                for (let index in monster_list) {
+                    item = monster_list[index]
+                    if (!config['filter_show_monster_normal']) {
+                        if (item['quality'] < 1 && item['type'] > 10) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
+                    if (!config['filter_show_monster_quality']) {
+                        if (item['quality'] >= 1 && item['type'] > 10) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
+                    if (!config['filter_show_monster_mist']) {
+                        if (item['type'] < 10) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['in_container_index']);
+
+                        // 更新文本数据
+                        temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
 
 
-                    // 计算物资位置与玩家位置
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+                        // 计算物资位置与玩家位置
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x
-                    temp_img.scale.y = 1 / app.stage.scale.y
-                } else {
-                    if (!item['position']) continue
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x
+                        temp_img.scale.y = 1 / app.stage.scale.y
+                    } else {
+                        if (!item['position']) continue
 
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x
-                    temp_img.scale.y = 1 / app.stage.scale.y
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    // temp_img.zIndex = item['quality']
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}[L${item['quality']}]`, {
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 14,
-                        fill: check_quality(item['quality']),
-                    });
-                    temp_text.anchor.set(0.5);
-                    // temp_text.x = ;
-                    temp_text.y = 25;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    monster_list[index] = item
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x
+                        temp_img.scale.y = 1 / app.stage.scale.y
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        // temp_img.zIndex = item['quality']
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}[L${item['quality']}]`, {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 14,
+                            fill: check_quality(item['quality']),
+                        });
+                        temp_text.anchor.set(0.5);
+                        // temp_text.x = ;
+                        temp_text.y = 25;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        monster_list[index] = item
+                    }
                 }
+
+                // 加载洞穴信息
+                for (let index in dungeon_list) {
+                    item = dungeon_list[index]
+                    if (!config['filter_show_dungeon_normal']) {
+                        if (item['quality'] < 1) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
+                    if (!config['filter_show_dungeon_quality']) {
+                        if (item['quality'] >= 1) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['in_container_index']);
+                        if (temp_img == null) continue
+                        // 计算物资位置与玩家位置
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                    } else {
+                        if (!item['position']) continue
+
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        // temp_img.zIndex = item['quality']
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(`${item['name']}[L${item['quality']}]`, {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 14,
+                            fill: check_quality(item['quality']),
+                        });
+                        temp_text.anchor.set(0.5);
+                        temp_text.scale.x = 2
+                        temp_text.scale.y = 2
+                        // temp_text.x = ;
+                        temp_text.y = 70;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        dungeon_list[index] = item
+                    }
+                }
+
+                // 加载临时信息
+                for (let index in temp_list) {
+                    item = temp_list[index]
+                    if (item['in_container']) {
+                        let temp_img = container.getChildByName(item['in_container_index']);
+                        if (temp_img == null) continue
+
+                        // 计算物资位置与玩家位置
+                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
+                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+
+                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        temp_img.scale.x = 1 / app.stage.scale.x / 4
+                        temp_img.scale.y = 1 / app.stage.scale.y / 4
+                    } else {
+                        if (!item['position']) continue
+
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
+                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
+                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.scale.x = 1 / app.stage.scale.x / 4
+                        temp_img.scale.y = 1 / app.stage.scale.y / 4
+                        temp_img.anchor.set(0.5)
+                        temp_img.rotation = (Math.PI / 4 * 3)
+                        temp_img.name = item['id'].toString();
+                        // temp_img.zIndex = item['quality']
+                        // 创建数量文本
+                        let temp_text = new PIXI.Text(`${item['name']}`, {
+                            fontFamily: 'JetBrainsMono-Bold',
+                            fontSize: 14,
+                            fill: check_quality(item['quality']),
+                        });
+                        temp_text.anchor.set(0.5);
+                        temp_text.scale.x = 4
+                        temp_text.scale.y = 4
+                        // temp_text.x = ;
+                        temp_text.y = 70;
+                        temp_img.addChild(temp_text)
+                        container.addChild(temp_img)
+                        item['in_container_index'] = temp_img.name
+                        item['in_container'] = true
+                        temp_list[index] = item
+                    }
+                }
+
+            } catch (e) {
+                let formData = new FormData();
+
+                formData.append('type', 1);
+                formData.append('text', e.stack);
+
+                fetch('https://game.tisoz.com/api/log', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        "token": localStorage.getItem('token')
+                    }
+                })
             }
 
-            // 加载洞穴信息
-            for (let index in dungeon_list) {
-                item = dungeon_list[index]
-                if (!config['filter_show_dungeon_normal']) {
-                    if (item['quality'] < 1) {
-                        container.removeChild(container.getChildByName(item['id'].toString()))
-                        continue
-                    }
-                }
-                if (!config['filter_show_dungeon_quality']) {
-                    if (item['quality'] >= 1) {
-                        container.removeChild(container.getChildByName(item['id'].toString()))
-                        continue
-                    }
-                }
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['in_container_index']);
-                    if (temp_img == null) continue
-                    // 计算物资位置与玩家位置
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                } else {
-                    if (!item['position']) continue
-
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x / 2
-                    temp_img.scale.y = 1 / app.stage.scale.y / 2
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    // temp_img.zIndex = item['quality']
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['name']}[L${item['quality']}]`, {
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 14,
-                        fill: check_quality(item['quality']),
-                    });
-                    temp_text.anchor.set(0.5);
-                    temp_text.scale.x = 2
-                    temp_text.scale.y = 2
-                    // temp_text.x = ;
-                    temp_text.y = 70;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    dungeon_list[index] = item
-                }
-            }
-
-            // 加载临时信息
-            for (let index in temp_list) {
-                item = temp_list[index]
-                if (item['in_container']) {
-                    let temp_img = container.getChildByName(item['in_container_index']);
-                    if (temp_img == null) continue
-
-                    // 计算物资位置与玩家位置
-                    let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                    let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                    TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                    temp_img.scale.x = 1 / app.stage.scale.x / 4
-                    temp_img.scale.y = 1 / app.stage.scale.y / 4
-                } else {
-                    if (!item['position']) continue
-
-                    let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                    temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                    temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                    temp_img.scale.x = 1 / app.stage.scale.x / 4
-                    temp_img.scale.y = 1 / app.stage.scale.y / 4
-                    temp_img.anchor.set(0.5)
-                    temp_img.rotation = (Math.PI / 4 * 3)
-                    temp_img.name = item['id'].toString();
-                    // temp_img.zIndex = item['quality']
-                    // 创建数量文本
-                    let temp_text = new PIXI.Text(`${item['name']}`, {
-                        fontFamily: 'JetBrainsMono-Bold',
-                        fontSize: 14,
-                        fill: check_quality(item['quality']),
-                    });
-                    temp_text.anchor.set(0.5);
-                    temp_text.scale.x = 4
-                    temp_text.scale.y = 4
-                    // temp_text.x = ;
-                    temp_text.y = 70;
-                    temp_img.addChild(temp_text)
-                    container.addChild(temp_img)
-                    item['in_container_index'] = temp_img.name
-                    item['in_container'] = true
-                    temp_list[index] = item
-                }
-            }
         });
         app.stage.interactive = true;
         app.stage.hitArea = app.screen;

@@ -85,7 +85,7 @@ global.manager.on('response', (packet) => {
 });
 
 global.manager.on("key_error", () => {
-    fetch("http://game.tisoz.com/api/get_key", {
+    fetch("https://game.tisoz.com/api/get_key", {
         headers: {
             "token": user['token']
         }

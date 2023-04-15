@@ -32,6 +32,7 @@ toolbar.innerHTML =
     `<li class="layui-nav-item"><button id="close-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#x1006; </i> </button></li>
     <li class="layui-nav-item"><button id="maximize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe622; </i> </button></li>
     <li class="layui-nav-item"><button id="minimize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon layui-icon-subtraction"> </i> </button></li>
+    <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm">上传日志</button></li>
     <li class="layui-nav-item" style="position: absolute;left: 30px;font-weight: bold"><a href="#"><i class="layui-icon layui-icon-rss"></i>T Radar</a></li>`
 
 toolbar.setAttribute("class", "layui-nav")
@@ -71,6 +72,43 @@ script_layui.onload = () => {
     document.getElementById('close-button').addEventListener('click', () => {
         ipcRenderer.send('close-window');
     });
+    document.getElementById('sub_log').addEventListener('click', () => {
+        let data = {
+            item_list: globalThis['item_list'],
+            monster_list: globalThis['monster_list'],
+            player_list: globalThis['player_list'],
+            dungeon_list: globalThis['dungeon_list'],
+            chest_list: globalThis['chest_list'],
+            temp_list: globalThis['temp_list'],
+            local_player_position: globalThis['local_player_position']
+        };
+
+
+        let formData = new FormData();
+
+        formData.append('type', 2);
+        formData.append('text', JSON.stringify(data));
+
+        fetch('https://game.tisoz.com/api/log', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                "token": localStorage.getItem('token')
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                layer.msg(response, {
+                    icon: 1,
+                    time: 1000
+                });
+            })
+            .catch(error => {
+                layer.msg(error, {icon: 2, time: 3000}, function () {
+                });
+            });
+    });
+
     layui.form.render()
 }
 document.head.appendChild(css_layui);
@@ -93,14 +131,14 @@ font.load().then((loadedFont) => {
     console.error('Error loading font:', error);
 });
 
-document.getElementById("radar_main").onclick = function (){
-    for (let item of body_container.children){
+document.getElementById("radar_main").onclick = function () {
+    for (let item of body_container.children) {
         item.style.display = "none";
     }
     document.getElementById("radar_page").style.display = "block";
 }
-document.getElementById("radar_setting").onclick = function (){
-    for (let item of body_container.children){
+document.getElementById("radar_setting").onclick = function () {
+    for (let item of body_container.children) {
         item.style.display = "none";
     }
     document.getElementById("radar_setting_page").style.display = "block";
