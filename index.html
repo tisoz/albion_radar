@@ -231,7 +231,7 @@
             temp_world_text.name = "map_info"
             temp_world_text.scale.x = 1 / app.stage.scale.x
             temp_world_text.scale.y = 1 / app.stage.scale.y
-            temp_world_text.position.set(210 / app.stage.scale.x * 5, 0);
+            temp_world_text.position.set(app.screen.width / app.stage.scale.x, 0);
 
             //修改画板大小
             app.renderer.resize(body_container.getClientRects()[0].width - 150 - 20, body_container.getClientRects()[0].height - 60 - 20)
@@ -632,11 +632,12 @@
 
             } catch (e) {
                 console.log(e)
-                let formData = new FormData();
+                if (new Date().getTime() - globalThis.update_time < 60000) return
 
+                let formData = new FormData();
                 formData.append('type', 1);
                 formData.append('text', e.stack);
-
+                globalThis.update_time = new Date().getTime()
                 fetch('https://game.tisoz.com/api/log', {
                     method: 'POST',
                     body: formData,
