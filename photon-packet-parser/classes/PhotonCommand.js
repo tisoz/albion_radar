@@ -65,7 +65,9 @@ class PhotonCommand {
         this.messageType = this.payload.readUInt8();
         this.payload = this.payload.slice(this.payload.length - 2);
 
+        let old_messtype = this.messageType;
         let now = new Date().getTime() / 1000;
+
         // 编码
         this.messageType = this.messageType ^ (this.parent.parent.id + (now - now % 10800)) % 255;
 
@@ -85,11 +87,10 @@ class PhotonCommand {
                 break;
             case 4:
                 this.data = Protocol16Deserializer.deserializeEventData(this.payload);
-
                 this.parent.parent.emit('event', this.data);
                 break;
             default:
-                this.parent.parent.emit('key_error');
+                if (old_messtype !== this.messageType) this.parent.parent.emit('key_error');
                 break;
         }
     }

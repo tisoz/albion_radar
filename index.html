@@ -318,20 +318,28 @@
                             backpack.scale.x = 1 / app.stage.scale.x / 2
                             backpack.scale.y = 1 / app.stage.scale.y / 2
                             backpack.y = (backpack_container.children.length) * 70 / app.stage.scale.y
-                            temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})`, {
+
+                            let powersum = 0
+                            for (let i in item['backpack']) {
+                                let index = item['backpack'][i];
+                                if (index === 0) continue;
+                                let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'])
+                                if (item_info_json[item_list_json[index]['unique']] === undefined) {
+                                    console.log(item_list_json[index]['unique'])
+                                }
+                                let itempower = item_info_json[item_list_json[index]['unique']]['itempower'];
+                                powersum += parseInt(itempower)
+                                model.x = i * 100
+                                model.y = 34
+                                backpack.addChild(model);
+                            }
+
+                            temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})(强度:${parseInt(powersum / 6)})`, {
                                 fontFamily: 'JetBrainsMono-Bold',
                                 fontSize: 34,
                                 fill: 'white',
                             });
                             backpack.addChild(temp_text)
-                            for (let i in item['backpack']) {
-                                let index = item['backpack'][i];
-                                if (index === 0) continue;
-                                let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'])
-                                model.x = i * 100
-                                model.y = 34
-                                backpack.addChild(model);
-                            }
                             backpack_container.addChild(backpack);
                         }
                     }
@@ -638,7 +646,7 @@
                 formData.append('type', 1);
                 formData.append('text', e.stack);
                 globalThis.update_time = new Date().getTime()
-                fetch('https://game.tisoz.com/api/log', {
+                fetch('http://43.155.184.183/api/log', {
                     method: 'POST',
                     body: formData,
                     headers: {

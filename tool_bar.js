@@ -1,7 +1,9 @@
 const {ipcRenderer} = require('electron');
 const resource_item_list = require('./item_list.json');
+const resource_item_info = require('./item_info.json');
 const resource_world = require('./world.json');
 global.item_list_json = {}
+global.item_info_json = {}
 global.world_list = {}
 new Promise((resolve) => {
     for (let item of resource_item_list) {
@@ -10,7 +12,33 @@ new Promise((resolve) => {
             name: item['LocalizedNames'] ? item['LocalizedNames']['ZH-CN'] : ""
         }
     }
-    for (let item of resource_world.world.clusters.cluster){
+    for (let items in resource_item_info['items']) {
+        if (!(resource_item_info['items'][items] instanceof Array)) continue
+        for (let item of resource_item_info['items'][items]) {
+            if (!item['@uniquename']) continue
+            global.item_info_json[item['@uniquename']] = {
+                itempower: item['@itempower'] || 0,
+            }
+            global.item_info_json[`${item['@uniquename']}@1`] = {
+                itempower: item['@itempower'] || 0,
+            }
+            if (item['enchantments']) {
+                if (item['enchantments']['enchantment']['@enchantmentlevel']) {
+                    global.item_info_json[`${item['@uniquename']}@${item['enchantments']['enchantment']['@enchantmentlevel']}`] = {
+                        itempower: item['enchantments']['enchantment']['@itempower'] || 0,
+                    }
+                    continue
+                }
+
+                for (let enc of item['enchantments']['enchantment']) {
+                    global.item_info_json[`${item['@uniquename']}@${enc['@enchantmentlevel']}`] = {
+                        itempower: enc['@itempower'] || 0,
+                    }
+                }
+            }
+        }
+    }
+    for (let item of resource_world.world.clusters.cluster) {
         world_list[item['@id']] = item
     }
 }).then(() => {
@@ -66,6 +94,9 @@ menu.innerHTML =
 lef_bar.appendChild(menu)
 frame_container.appendChild(lef_bar)
 script_layui.onload = () => {
+    BigInt.prototype.toJSON = function () {
+        return this.toString();
+    }
     document.getElementById('minimize-button').addEventListener('click', () => {
         ipcRenderer.send('minimize-window');
     });
@@ -94,7 +125,7 @@ script_layui.onload = () => {
         formData.append('type', 2);
         formData.append('text', JSON.stringify(data));
 
-        fetch('https://game.tisoz.com/api/log', {
+        fetch('http://43.155.184.183/api/log', {
             method: 'POST',
             body: formData,
             headers: {

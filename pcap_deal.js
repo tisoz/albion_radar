@@ -21,8 +21,7 @@ ipcRenderer.on("monster_load", (event, data) => {
 
     // console.log(data)
     if (!data['hp']) return
-    if (data['hp'] === 20) return
-    if (data['hp'] === 24) return
+    if (data['hp'] >= 11 && data['hp'] <= 100) return
 
     globalThis['monster_list'][data['id']] ||= {};
     data = Object.assign(globalThis['monster_list'][data['id']], data);
@@ -41,6 +40,10 @@ ipcRenderer.on("monster_load", (event, data) => {
             break;
         case 8:
             data['uni_id'] = "mist_mob.png"
+            break;
+        case 91:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
             break;
         default:
             data['uni_id'] = "monster.png";
@@ -63,6 +66,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
     globalThis.config ||= {}
     globalThis['player_list'][data['id']] ||= {};
     data = Object.assign(globalThis['player_list'][data['id']], data);
+    data['uni_id'] = "player_green.png"
     if (!data['name']) return
     switch (data['obj'][46]) {
         case 255:
@@ -72,7 +76,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
             data['uni_id'] = "player_green.png";
             break;
     }
-    if (current_map['@rareresourcedistribution']) {
+    if (current_map && current_map['@rareresourcedistribution']) {
         if (current_map['@rareresourcedistribution'].indexOf("RED") + 1
             || current_map['@rareresourcedistribution'].indexOf("OUT") + 1) {
             data['uni_id'] = "player_red.png";

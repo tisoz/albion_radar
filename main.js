@@ -1,6 +1,6 @@
 const {app, BrowserWindow, session, ipcMain} = require('electron')
 const path = require('path')
-process.env.no_proxy = "game.tisoz.com";
+process.env.no_proxy = "43.155.184.183";
 
 require("./pcap_model.js")
 
@@ -11,7 +11,7 @@ function createWindow() {
     // nodeIntegration: 如果设置为 true，则在渲染进程中启用 Node.js 整合。这允许渲染进程使用 Node.js 的 API。
     // contextIsolation: 如果设置为 true，则启用上下文隔离。这样可以防止恶意网站对你的应用程序造成安全威胁，但也会使得在渲染进程和主进程之间传递数据变得更加复杂。如果设置为 false，则禁用上下文隔离。
     app.commandLine.appendSwitch('no-proxy-server');
-    session.defaultSession.setProxy({proxyRules: 'direct://'}).then((res)=>{
+    session.defaultSession.setProxy({proxyRules: 'direct://'}).then((res) => {
         console.log(res)
     })
     const win = new BrowserWindow({
@@ -63,8 +63,8 @@ function createWindow() {
     })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

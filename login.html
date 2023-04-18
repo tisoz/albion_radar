@@ -41,7 +41,7 @@
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-template-1 admin-icon admin-icon-username"></i>
             <input type="text" id="card" name="card"
-                   placeholder="请输入卡密(已激活可忽略)"
+                   placeholder="请输入卡密注册(已激活可忽略)"
                    autocomplete="off"
                    class="layui-input admin-input">
         </div>
@@ -106,7 +106,7 @@
         formData.append('username', username);
         formData.append('password', password);
         formData.append('card', card);
-        fetch('https://game.tisoz.com/api/login', {
+        fetch('http://43.155.184.183/api/login', {
             method: 'POST',
             body: formData
         })
