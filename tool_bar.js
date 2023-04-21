@@ -1,11 +1,13 @@
 const {ipcRenderer} = require('electron');
-const resource_item_list = require('./item_list.json');
-const resource_item_info = require('./item_info.json');
-const resource_world = require('./world.json');
-global.item_list_json = {}
-global.item_info_json = {}
-global.world_list = {}
 new Promise((resolve) => {
+    const resource_item_list = require('./item_list.json');
+    const resource_item_info = require('./item_info.json');
+    const resource_world = require('./world.json');
+    const mobs_list = require('./mobs.json');
+    const name_tag_list = require('./name_tag.json');
+    global.item_list_json = {}
+    global.item_info_json = {}
+    global.world_list = {}
     for (let item of resource_item_list) {
         global.item_list_json[item['Index']] = {
             unique: item['UniqueName'],
@@ -41,8 +43,14 @@ new Promise((resolve) => {
     for (let item of resource_world.world.clusters.cluster) {
         world_list[item['@id']] = item
     }
+    for (let item of resource_world.world.clusters.cluster) {
+        world_list[item['@id']] = item
+    }
 }).then(() => {
-    console.log("done item load")
+    console.log("load pcap")
+    let script_pcap = document.createElement("script");
+    script_pcap.setAttribute("src", "./pcap_deal.js");
+    document.body.appendChild(script_pcap)
 })
 
 

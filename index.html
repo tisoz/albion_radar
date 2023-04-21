@@ -96,6 +96,15 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示数量在0以上的资源</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_item_show_zero_count" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            &nbsp;
+        </div>
     </form>
 </script>
 <script>
@@ -117,7 +126,8 @@
         "filter_show_monster_mist": "off",
         "filter_show_dungeon_normal": "off",
         "filter_show_dungeon_quality": "off",
-        "filter_show_player_in_danger_show_green": "off"
+        "filter_show_player_in_danger_show_green": "off",
+        "filter_item_show_zero_count": "off"
     }
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
@@ -166,7 +176,7 @@
         body_container.appendChild(page_radar)
 
         let page_spider = document.createElement("div")
-        page_spider.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;display:none")
+        page_spider.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;display:none;overflow:scroll")
         page_spider.id = "radar_setting_page"
         page_spider.innerHTML = document.getElementById("setting").innerHTML
         body_container.appendChild(page_spider)
@@ -421,6 +431,10 @@
                         if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
                         continue
                     }
+                    if (config['filter_item_show_zero_count'] && item['count'] === 0) {
+                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        continue
+                    }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['id'].toString());
                         if (temp_img == null || item == null) continue
@@ -497,8 +511,11 @@
                         if (temp_img == null || item == null) continue
 
                         // 更新文本数据
-                        temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
-
+                        if (!item['name']) {
+                            temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}]`
+                        } else {
+                            temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
+                        }
 
                         // 计算物资位置与玩家位置
                         let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];

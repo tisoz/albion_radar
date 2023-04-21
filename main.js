@@ -63,8 +63,14 @@ function createWindow() {
     })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
-    win.maximize()
-    win.webContents.openDevTools()
+    // 人物预警功能 , 提示音
+    // 迷雾中上马下马都是绿色
+    // 剥皮怪 , 资源怪
+    // 窗口置顶 , 窗口透明
+    // 隐藏左边工具栏
+
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

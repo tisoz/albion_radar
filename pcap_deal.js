@@ -25,24 +25,71 @@ ipcRenderer.on("monster_load", (event, data) => {
 
     globalThis['monster_list'][data['id']] ||= {};
     data = Object.assign(globalThis['monster_list'][data['id']], data);
+    data['name'] = "";
     switch (data['type']) {
+        case 0:
+            data['uni_id'] = "mist_mob.png"
+            data['name'] = "小鬼火"
+            break;
+        case 1:
+            data['uni_id'] = "mist_mob.png"
+            data['name'] = "小鬼火"
+            break;
         case 2:
             data['uni_id'] = "mist_mob.png"
+            data['name'] = "小鬼火"
             break;
         case 3:
             data['uni_id'] = "mist_mob.png"
+            data['name'] = "小鬼火"
             break;
         case 4:
             data['uni_id'] = "mist_mob.png"
+            data['name'] = "小鬼火"
+            break;
+        case 5:
+            data['uni_id'] = "mist_mob.png"
+            data['name'] = "大鬼火"
+            break;
+        case 6:
+            data['uni_id'] = "mist_mob.png" //大鬼火
+            data['name'] = "大鬼火"
             break;
         case 7:
             data['uni_id'] = "mist_mob.png" //大鬼火
+            data['name'] = "大鬼火"
             break;
         case 8:
             data['uni_id'] = "mist_mob.png"
+            data['name'] = "大鬼火"
+            break;
+        case 9:
+            data['uni_id'] = "mist_mob.png"
+            data['name'] = "大鬼火"
+            break;
+        case 88:
+            data['uni_id'] = "spider_boss.png";
+            data['name'] = "水晶蜘蛛"
+            data['quality'] = 4;
+            break;
+        case 89:
+            data['uni_id'] = "spider_boss.png";
+            data['name'] = "水晶蜘蛛"
+            data['quality'] = 4;
+            break;
+        case 90:
+            data['uni_id'] = "spider_boss.png";
+            data['name'] = "水晶蜘蛛"
+            data['quality'] = 4;
             break;
         case 91:
             data['uni_id'] = "spider_boss.png";
+            data['name'] = "水晶蜘蛛"
+            data['quality'] = 4;
+            break;
+        case 92:
+            data['uni_id'] = "spider_boss.png";
+            data['name'] = "水晶蜘蛛"
             data['quality'] = 4;
             break;
         default:
