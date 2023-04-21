@@ -69,6 +69,10 @@ function createWindow() {
     // 窗口置顶 , 窗口透明
     // 隐藏左边工具栏
 
+    // 大小鬼火已显示
+    // 增加物资数量为0时不显示的选项
+    // 新增水晶蜘蛛怪物显示
+
     // win.maximize()
     // win.webContents.openDevTools()
 }
