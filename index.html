@@ -24,6 +24,12 @@
                        lay-text="ON|OFF">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">红黑区遇敌提示音</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="tip_for_player_sound" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>洞穴配置</legend>
         </fieldset>
@@ -52,6 +58,18 @@
             <label class="layui-form-label" style="width: auto">显示稀有怪物(附魔品质>1)</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">资源怪物图标使用资源图片显示</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">关闭怪物名称显示</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_no_mobs_name" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
@@ -127,7 +145,10 @@
         "filter_show_dungeon_normal": "off",
         "filter_show_dungeon_quality": "off",
         "filter_show_player_in_danger_show_green": "off",
-        "filter_item_show_zero_count": "off"
+        "filter_item_show_zero_count": "off",
+        "filter_show_mobs_icon_for_item": "off",
+        "tip_for_player_sound": "off",
+        "filter_show_no_mobs_name": "off"
     }
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
@@ -293,6 +314,18 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
+
+                        if ((item['uni_id'].indexOf("red") + 1)
+                            || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
+                            || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
+                            || (current_map['@type'].indexOf("BLACK") + 1)
+                            || (current_map['@type'].indexOf("RED") + 1)) {
+                            let temp_audio = new Audio("./resource/tip.mp3");
+                            new Promise((resolve, reject) => {
+                                temp_audio.play()
+                            })
+                        }
+
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
                         temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
@@ -506,15 +539,22 @@
                             continue
                         }
                     }
+                    if (config['filter_show_no_mobs_name']) {
+                        item['name'] = ""
+                    }
+                    if (config['filter_show_mobs_icon_for_item']) {
+                        if (item['res_id']) item['uni_id'] = item['res_id']
+                    }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
 
                         // 更新文本数据
-                        if (!item['name']) {
-                            temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}]`
+                        if (item['resource']) {
+                            temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}][${item['resource']}]`
                         } else {
-                            temp_img.getChildAt(0).text = `${item['hp']}/${item['hp_max']}[L${item['quality']}]`
+                            temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}]`
+
                         }
 
                         // 计算物资位置与玩家位置
@@ -522,16 +562,16 @@
                         let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
                         TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
-                        temp_img.scale.x = 1 / app.stage.scale.x
-                        temp_img.scale.y = 1 / app.stage.scale.y
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
                         temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
                         temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
-                        temp_img.scale.x = 1 / app.stage.scale.x
-                        temp_img.scale.y = 1 / app.stage.scale.y
+                        temp_img.scale.x = 1 / app.stage.scale.x / 2
+                        temp_img.scale.y = 1 / app.stage.scale.y / 2
                         temp_img.anchor.set(0.5)
                         temp_img.rotation = (Math.PI / 4 * 3)
                         temp_img.name = item['id'].toString();
@@ -543,8 +583,10 @@
                             fill: check_quality(item['quality']),
                         });
                         temp_text.anchor.set(0.5);
+                        temp_text.scale.x = 2
+                        temp_text.scale.y = 2
                         // temp_text.x = ;
-                        temp_text.y = 25;
+                        temp_text.y = 50;
                         temp_img.addChild(temp_text)
                         container.addChild(temp_img)
                         item['in_container_index'] = temp_img.name

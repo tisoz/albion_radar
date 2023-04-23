@@ -14,6 +14,7 @@ let chest_load = require("./chest_load.js")
 let firstmounted = require("./firstmounted.js")
 let secondmounted = require("./secondmounted.js")
 let cage_load = require("./cage_load.js")
+let cage_free = require("./cage_free.js")
 let filter = require("./filter.js")
 
 let event_list = {
@@ -40,6 +41,7 @@ let event_list = {
     342: filter,//钓鱼
     377: chest_load,
     509: cage_load,//灯笼怪
+    510: cage_free,
     20: filter,//钓鱼
 }
 module.exports = event_list;

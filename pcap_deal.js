@@ -5,11 +5,19 @@ globalThis['dungeon_list'] ||= {};
 globalThis['chest_list'] ||= {};
 globalThis['temp_list'] ||= {};
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
-globalThis['current_map'] ||= {}
+globalThis['current_map'] ||= {
+    '@rareresourcedistribution': "",
+    "@type": ""
+}
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
 
+function findall(regex, text) {
+    let arr = [...text.matchAll(regex)]
+    arr = Array.from(arr, x => x[arr[0].length - 1])
+    return arr;
+}
 
 ipcRenderer.on("local_player_position", (event, data) => {
     globalThis['local_player_position'] = data;
@@ -19,13 +27,47 @@ ipcRenderer.on("map_load", (event, data) => {
 })
 ipcRenderer.on("monster_load", (event, data) => {
 
-    // console.log(data)
-    if (!data['hp']) return
-    if (data['hp'] >= 11 && data['hp'] <= 100) return
+    console.log(data)
+    // if (!data['hp']) data['hp'] = 0
+    if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
 
     globalThis['monster_list'][data['id']] ||= {};
     data = Object.assign(globalThis['monster_list'][data['id']], data);
-    data['name'] = "";
+    data['name'] = name_tag_list[mobs_list[data['type'] - 2]['@namelocatag']] || name_tag_list[`@MOB_${mobs_list[data['type'] - 2]['@uniquename']}`] || "";
+    if (mobs_list[data['type'] - 2]['Loot'] && mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
+        if (mobs_list[data['type'] - 2]['Loot']['LootListReference'] instanceof Array)
+            for (let i of mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
+                if (i['@name'].indexOf("DIRECTLOOTDROP_GATHERER") + 1) {
+                    let name = findall(/T(\d)_DIRECTLOOTDROP_GATHERER_(\S+)/g, i['@name'])[0]
+                    let level = findall(/T(\d)_DIRECTLOOTDR/g, i['@name'])[0]
+
+                    data['resource'] = name;
+                    data['level'] = level;
+                    data['res_id'] = `T${data['level']}_${data['resource']}_LEVEL${data['quality']}@${data['quality']}`;
+                    data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "");
+
+                    switch (name) {
+                        case "WOOD":
+                            name = "木头";
+                            break
+                        case "ORE":
+                            name = "矿石";
+                            break
+                        case "HIDE":
+                            name = "皮革";
+                            break
+                        case "FIBER":
+                            name = "棉花";
+                            break
+                        case "ROCK":
+                            name = "石头";
+                            break
+                    }
+                    data['resource'] = name;
+                }
+            }
+    }
+
     switch (data['type']) {
         case 0:
             data['uni_id'] = "mist_mob.png"
@@ -125,7 +167,9 @@ ipcRenderer.on("other_player_load", (event, data) => {
     }
     if (current_map && current_map['@rareresourcedistribution']) {
         if (current_map['@rareresourcedistribution'].indexOf("RED") + 1
-            || current_map['@rareresourcedistribution'].indexOf("OUT") + 1) {
+            || current_map['@rareresourcedistribution'].indexOf("OUT") + 1
+            || (current_map['@type'].indexOf("BLACK") + 1)
+            || (current_map['@type'].indexOf("RED") + 1)) {
             data['uni_id'] = "player_red.png";
         }
     }
@@ -255,5 +299,6 @@ ipcRenderer.on("cage_load", (event, data) => {
 
 })
 ipcRenderer.on("map_load", (event, data) => {
+    if (data['id'].toString().indexOf("MIST") + 1) return
     globalThis['current_map'] = world_list[data['id']]
 })

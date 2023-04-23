@@ -63,15 +63,17 @@ function createWindow() {
     })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
-    // 人物预警功能 , 提示音
-    // 迷雾中上马下马都是绿色
-    // 剥皮怪 , 资源怪
     // 窗口置顶 , 窗口透明
     // 隐藏左边工具栏
 
     // 大小鬼火已显示
     // 增加物资数量为0时不显示的选项
     // 新增水晶蜘蛛怪物显示
+    // 迷雾中上马下马都是绿色
+    // 灯笼怪消失修复
+    // 剥皮怪 , 资源怪
+    // 人物预警功能 , 提示音
+    // 修复怪物品质显示错误
 
     // win.maximize()
     // win.webContents.openDevTools()
