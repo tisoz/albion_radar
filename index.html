@@ -315,15 +315,17 @@
                     } else {
                         if (!item['position']) continue
 
-                        if ((item['uni_id'].indexOf("red") + 1)
-                            || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
-                            || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
-                            || (current_map['@type'].indexOf("BLACK") + 1)
-                            || (current_map['@type'].indexOf("RED") + 1)) {
-                            let temp_audio = new Audio("./resource/tip.mp3");
-                            new Promise((resolve, reject) => {
-                                temp_audio.play()
-                            })
+                        if (config['tip_for_player_sound']) {
+                            if ((item['uni_id'].indexOf("red") + 1)
+                                || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
+                                || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
+                                || (current_map['@type'].indexOf("BLACK") + 1)
+                                || (current_map['@type'].indexOf("RED") + 1)) {
+                                let temp_audio = new Audio("./resource/tip.mp3");
+                                new Promise((resolve, reject) => {
+                                    temp_audio.play()
+                                })
+                            }
                         }
 
 
