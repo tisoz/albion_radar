@@ -35,7 +35,7 @@ ipcRenderer.on("monster_load", (event, data) => {
     data = Object.assign(globalThis['monster_list'][data['id']], data);
     data['uni_id'] = "monster.png";
     data['name'] = mobs_list[data['type'] - 2]['@namelocatag'] || `@MOB_${mobs_list[data['type'] - 2]['@uniquename']}` || ""; //英文串
-    if (data['name'].indexOf("BOSS")) data['quality'] = 1;
+    if (data['name'].indexOf("BOSS") + 1) data['quality'] = 1;
     data['name'] = name_tag_list[data['name']]
     switch (data['name']) {
         case "鬼火":

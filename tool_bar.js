@@ -70,11 +70,33 @@ tool_container.setAttribute("class", "layui-header header header-demo")
 
 var toolbar = document.createElement("ul");
 toolbar.innerHTML =
-    `<li class="layui-nav-item"><button id="close-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#x1006; </i> </button></li>
+    `
+    <form class="layui-form" action="">
+    <li class="layui-nav-item"><button id="close-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#x1006; </i> </button></li>
     <li class="layui-nav-item"><button id="maximize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe622; </i> </button></li>
     <li class="layui-nav-item"><button id="minimize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon layui-icon-subtraction"> </i> </button></li>
     <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm">上传日志</button></li>
-    <li class="layui-nav-item" style="position: absolute;left: 30px;font-weight: bold"><a href="#"><i class="layui-icon layui-icon-rss"></i>T Radar</a></li>`
+    <li class="layui-nav-item" style="margin: 0 20px;">
+        <a href="#" >置顶</a>
+        <dl class="layui-nav-child">
+            <dd style="padding: 10px">
+                <div class="layui-inline-block" id="opticate"></div>
+                <div class="layui-inline-block">
+                    <input type="checkbox" lay-filter="set_top" lay-skin="switch" lay-text="ON|OFF">
+                    <span style="font-family: 'Microsoft YaHei UI',serif; font-weight: bold;font-size:16px;">窗口置顶</span>
+                    
+                </div>
+            </dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item" style="position: relative;float: left;font-weight: bold"><i class="layui-icon layui-icon-rss"></i>T Radar</li>
+    <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
+        <a href="#" >雷达</a>
+        <dl class="layui-nav-child">
+          <dd><a id="radar_main" href="#">雷达</a></dd>
+          <dd><a id="radar_setting" href="#">参数设置</a></dd>
+        </dl>
+    </li></form>`
 
 toolbar.setAttribute("class", "layui-nav")
 toolbar.setAttribute("style", "direction:rtl");
@@ -86,21 +108,20 @@ frame_container.setAttribute("style", "position:relative;float:left;height:100%;
 frame_container.setAttribute("class", "layui-side layui-bg-black")
 
 var body_container = document.createElement("div");
-body_container.setAttribute("style", "position:relative;height:100%;left:0")
-body_container.setAttribute("class", "layui-body layui-bg-black")
+body_container.setAttribute("style", "position:relative;height:100%;padding-left:20px;")
+body_container.setAttribute("class", "layui-bg-black")
 
 var lef_bar = document.createElement("div");
 lef_bar.setAttribute("class", "layui-nav layui-nav-tree")
 lef_bar.setAttribute("style", "")
 
-var menu = document.createElement("ul")
-menu.setAttribute("lay-filter", "nav")
-menu.innerHTML =
-    `<li class="layui-nav-item"><a href="#" id="radar_main">雷达</a></li>
-    <li class="layui-nav-item"><a href="#" id="radar_setting">雷达设置</a></li>
-    <li class="layui-nav-item layui-disabled"><a href="#">自动采集配置(开发中)</a></li>`
-lef_bar.appendChild(menu)
-frame_container.appendChild(lef_bar)
+// var menu = document.createElement("ul")
+// menu.setAttribute("lay-filter", "nav")
+// menu.innerHTML =
+//     `
+//     <li class="layui-nav-item layui-disabled"><a href="#">自动采集配置(开发中)</a></li>`
+// lef_bar.appendChild(menu)
+// frame_container.appendChild(lef_bar)
 script_layui.onload = () => {
     BigInt.prototype.toJSON = function () {
         return this.toString();
@@ -152,13 +173,27 @@ script_layui.onload = () => {
                 });
             });
     });
-
+    layui.slider.render({
+        elem: '#opticate'
+        , value: 95 //初始值,
+        , min: 5
+        , setTips: function (value) {
+            ipcRenderer.send('window_opt', value)
+            return `透明度:${value}%`;
+        }
+    });
+    layui.form.on('switch(set_top)', function (obj) {
+        ipcRenderer.send('window_top', obj.elem.checked)
+    });
+    ipcRenderer.on("click_through",function (value) {
+        layer.tip()
+    })
     layui.form.render()
 }
 document.head.appendChild(css_layui);
 document.body.appendChild(script_layui);
 document.body.appendChild(tool_container)
-document.body.appendChild(frame_container)
+// document.body.appendChild(frame_container)
 document.body.appendChild(body_container)
 
 

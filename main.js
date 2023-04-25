@@ -1,7 +1,7 @@
-const {app, BrowserWindow, session, ipcMain} = require('electron')
+const {app, BrowserWindow, session, ipcMain, globalShortcut} = require('electron')
 const path = require('path')
 process.env.no_proxy = "43.155.184.183";
-
+global.ignore = false;
 require("./pcap_model.js")
 
 function createWindow() {
@@ -61,6 +61,19 @@ function createWindow() {
         // 移动窗口到新的位置
         win.setPosition(newPosition[0], newPosition[1], true)
     })
+    ipcMain.on('window_top', (event, arg) => {
+        // 获取当前窗口的位置
+        let win = BrowserWindow.getFocusedWindow()
+        win.setAlwaysOnTop(arg)
+    })
+    ipcMain.on('window_opt', (event, arg) => {
+        // 获取当前窗口的位置
+        if (arg) {
+            let win = BrowserWindow.getFocusedWindow()
+            win.setOpacity(arg / 100)
+        }
+
+    })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
     // 窗口置顶 , 窗口透明
@@ -69,10 +82,14 @@ function createWindow() {
     // 冰蜘蛛触发数据
 
 
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
+app.on('will-quit', () => {
+    // 解除所有的全局热键
+    globalShortcut.unregisterAll()
+})
 app.whenReady().then(() => {
     createWindow()
 
@@ -80,6 +97,13 @@ app.whenReady().then(() => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
         }
+    })
+
+    globalShortcut.register('F6', () => {
+        let win = BrowserWindow.getFocusedWindow()
+        let ignore = !global.ignore;
+        win.setIgnoreMouseEvents(ignore)
+        global.web_content.send("click_through", ignore)
     })
 })
 

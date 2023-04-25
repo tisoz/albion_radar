@@ -192,12 +192,12 @@
         });
 
         let page_radar = document.createElement("div");
-        page_radar.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;")
+        page_radar.setAttribute("style", "width:100%;height:100%;position:absolute;")
         page_radar.id = "radar_page"
         body_container.appendChild(page_radar)
 
         let page_spider = document.createElement("div")
-        page_spider.setAttribute("style", "width:100%;height:100%;position:absolute;padding-left:150px;display:none;overflow:scroll")
+        page_spider.setAttribute("style", "width:100%;height:100%;position:absolute;display:none;overflow:scroll")
         page_spider.id = "radar_setting_page"
         page_spider.innerHTML = document.getElementById("setting").innerHTML
         body_container.appendChild(page_spider)
@@ -236,7 +236,7 @@
                 center.scale.y = 1 / app.stage.scale.y
             }
         })
-        PIXI.Ticker.targetFPMS = 1;
+        // PIXI.Ticker.targetFPMS = 1;
         app.ticker.minFPS = 30;
         app.ticker.maxFPS = 60;
 
@@ -265,7 +265,7 @@
             temp_world_text.position.set(app.screen.width / app.stage.scale.x, 0);
 
             //修改画板大小
-            app.renderer.resize(body_container.getClientRects()[0].width - 150 - 20, body_container.getClientRects()[0].height - 60 - 20)
+            app.renderer.resize(body_container.getClientRects()[0].width - 40, body_container.getClientRects()[0].height - 60 - 20)
             //修改相对位置大小
             container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
 
@@ -776,7 +776,6 @@
             if (event.button === 0) {
                 window_position = {x: event.screenX, y: event.screenY}
                 document.body.style.cursor = "move";
-
             }
         })
         document.addEventListener('mouseup', (event) => {
