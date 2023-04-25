@@ -33,7 +33,23 @@ ipcRenderer.on("monster_load", (event, data) => {
 
     globalThis['monster_list'][data['id']] ||= {};
     data = Object.assign(globalThis['monster_list'][data['id']], data);
+    data['uni_id'] = "monster.png";
     data['name'] = name_tag_list[mobs_list[data['type'] - 2]['@namelocatag']] || name_tag_list[`@MOB_${mobs_list[data['type'] - 2]['@uniquename']}`] || "";
+    switch (data['name']) {
+        case "鬼火":
+            data['name'] = "小鬼火"
+            data['uni_id'] = "mist_mob.png"
+            break
+
+        case "大鬼火":
+            data['uni_id'] = "mist_mob.png"
+            break
+
+        case "水晶蜘蛛":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+    }
     if (mobs_list[data['type'] - 2]['Loot'] && mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
         if (mobs_list[data['type'] - 2]['Loot']['LootListReference'] instanceof Array)
             for (let i of mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
@@ -66,77 +82,6 @@ ipcRenderer.on("monster_load", (event, data) => {
                     data['resource'] = name;
                 }
             }
-    }
-
-    switch (data['type']) {
-        case 0:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "小鬼火"
-            break;
-        case 1:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "小鬼火"
-            break;
-        case 2:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "小鬼火"
-            break;
-        case 3:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "小鬼火"
-            break;
-        case 4:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "小鬼火"
-            break;
-        case 5:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "大鬼火"
-            break;
-        case 6:
-            data['uni_id'] = "mist_mob.png" //大鬼火
-            data['name'] = "大鬼火"
-            break;
-        case 7:
-            data['uni_id'] = "mist_mob.png" //大鬼火
-            data['name'] = "大鬼火"
-            break;
-        case 8:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "大鬼火"
-            break;
-        case 9:
-            data['uni_id'] = "mist_mob.png"
-            data['name'] = "大鬼火"
-            break;
-        case 88:
-            data['uni_id'] = "spider_boss.png";
-            data['name'] = "水晶蜘蛛"
-            data['quality'] = 4;
-            break;
-        case 89:
-            data['uni_id'] = "spider_boss.png";
-            data['name'] = "水晶蜘蛛"
-            data['quality'] = 4;
-            break;
-        case 90:
-            data['uni_id'] = "spider_boss.png";
-            data['name'] = "水晶蜘蛛"
-            data['quality'] = 4;
-            break;
-        case 91:
-            data['uni_id'] = "spider_boss.png";
-            data['name'] = "水晶蜘蛛"
-            data['quality'] = 4;
-            break;
-        case 92:
-            data['uni_id'] = "spider_boss.png";
-            data['name'] = "水晶蜘蛛"
-            data['quality'] = 4;
-            break;
-        default:
-            data['uni_id'] = "monster.png";
-            break;
     }
 
     globalThis['monster_list'][data['id']] = Object.assign(globalThis['monster_list'][data['id']], data);
