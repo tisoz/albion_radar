@@ -247,5 +247,5 @@ ipcRenderer.on("cage_load", (event, data) => {
 })
 ipcRenderer.on("map_load", (event, data) => {
     if (data['id'].toString().indexOf("MIST") + 1) return
-    globalThis['current_map'] = world_list[data['id']]
+    globalThis['current_map'] = world_list[data['id']] || current_map
 })
