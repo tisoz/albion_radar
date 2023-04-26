@@ -76,15 +76,20 @@ toolbar.innerHTML =
     <li class="layui-nav-item"><button id="maximize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe622; </i> </button></li>
     <li class="layui-nav-item"><button id="minimize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon layui-icon-subtraction"> </i> </button></li>
     <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm">上传日志</button></li>
-    <li class="layui-nav-item" style="margin: 0 20px;">
+    <li class="layui-nav-item  layui-nav-itemed" style="margin: 0 20px;direction: ltr">
         <a href="#" >置顶</a>
         <dl class="layui-nav-child">
             <dd style="padding: 10px">
-                <div class="layui-inline-block" id="opticate"></div>
-                <div class="layui-inline-block">
-                    <input type="checkbox" lay-filter="set_top" lay-skin="switch" lay-text="ON|OFF">
-                    <span style="font-family: 'Microsoft YaHei UI',serif; font-weight: bold;font-size:16px;">窗口置顶</span>
-                    
+                <div class="layui-form-item">
+                    <div id="opticate"></div>
+                </div>
+                <div class="layui-form-item">
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;">窗口置顶</lable>
+                
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="set_top" lay-skin="switch" lay-text="ON|OFF">
+                    </div>
+                        
                 </div>
             </dd>
         </dl>
