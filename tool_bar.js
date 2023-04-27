@@ -76,7 +76,16 @@ toolbar.innerHTML =
     <li class="layui-nav-item"><button id="maximize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe622; </i> </button></li>
     <li class="layui-nav-item"><button id="minimize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon layui-icon-subtraction"> </i> </button></li>
     <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm">上传日志</button></li>
-    <li class="layui-nav-item  layui-nav-itemed" style="margin: 0 20px;direction: ltr">
+    
+    <li class="layui-nav-item" style="position: relative;float: left;font-weight: bold"><i class="layui-icon layui-icon-rss"></i>T Radar</li>
+    <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
+        <a href="#" >雷达</a>
+        <dl class="layui-nav-child">
+          <dd><a id="radar_main" href="#">雷达</a></dd>
+          <dd><a id="radar_setting" href="#">参数设置</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item" style="position: relative;float: left;text-align:left;direction: ltr">
         <a href="#" >置顶</a>
         <dl class="layui-nav-child">
             <dd style="padding: 10px">
@@ -84,22 +93,18 @@ toolbar.innerHTML =
                     <div id="opticate"></div>
                 </div>
                 <div class="layui-form-item">
-                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;">窗口置顶</lable>
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口置顶</lable>
                 
                     <div class="layui-input-block">
                         <input type="checkbox" lay-filter="set_top" lay-skin="switch" lay-text="ON|OFF">
                     </div>
                         
                 </div>
+                <div class="layui-form-item">
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口穿透 : F6快捷键</lable>
+                        
+                </div>
             </dd>
-        </dl>
-    </li>
-    <li class="layui-nav-item" style="position: relative;float: left;font-weight: bold"><i class="layui-icon layui-icon-rss"></i>T Radar</li>
-    <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
-        <a href="#" >雷达</a>
-        <dl class="layui-nav-child">
-          <dd><a id="radar_main" href="#">雷达</a></dd>
-          <dd><a id="radar_setting" href="#">参数设置</a></dd>
         </dl>
     </li></form>`
 
@@ -190,8 +195,11 @@ script_layui.onload = () => {
     layui.form.on('switch(set_top)', function (obj) {
         ipcRenderer.send('window_top', obj.elem.checked)
     });
-    ipcRenderer.on("click_through",function (value) {
-        layer.tip()
+    ipcRenderer.on("click_through", function (event, args) {
+        layer.msg(`当前鼠标穿透 : ${args}`, {
+            icon: 1,
+            time: 1000
+        });
     })
     layui.form.render()
 }

@@ -49,7 +49,6 @@ function createWindow() {
     });
     ipcMain.on('window-drag', (event, arg) => {
         // 获取当前窗口的位置
-        let win = BrowserWindow.getFocusedWindow()
         let position = win.getPosition()
 
         // 计算新的窗口位置
@@ -63,13 +62,11 @@ function createWindow() {
     })
     ipcMain.on('window_top', (event, arg) => {
         // 获取当前窗口的位置
-        let win = BrowserWindow.getFocusedWindow()
         win.setAlwaysOnTop(arg)
     })
     ipcMain.on('window_opt', (event, arg) => {
         // 获取当前窗口的位置
         if (arg) {
-            let win = BrowserWindow.getFocusedWindow()
             win.setOpacity(arg / 100)
         }
 
@@ -82,8 +79,8 @@ function createWindow() {
     // 冰蜘蛛触发数据
 
 
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
@@ -100,8 +97,8 @@ app.whenReady().then(() => {
     })
 
     globalShortcut.register('F6', () => {
-        let win = BrowserWindow.getFocusedWindow()
-        let ignore = !global.ignore;
+        let win = BrowserWindow.getAllWindows()[0]
+        global.ignore = !global.ignore;
         win.setIgnoreMouseEvents(ignore)
         global.web_content.send("click_through", ignore)
     })
