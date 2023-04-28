@@ -12,7 +12,6 @@ globalThis['current_map'] ||= {
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
-
 function findall(regex, text) {
     let arr = [...text.matchAll(regex)]
     arr = Array.from(arr, x => x[arr[0].length - 1])
@@ -26,7 +25,6 @@ ipcRenderer.on("map_load", (event, data) => {
     global.clear_data = true
 })
 ipcRenderer.on("monster_load", (event, data) => {
-
     console.log(data)
     // if (!data['hp']) data['hp'] = 0
     if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
@@ -42,12 +40,30 @@ ipcRenderer.on("monster_load", (event, data) => {
             data['name'] = "小鬼火"
             data['uni_id'] = "mist_mob.png"
             break
-
         case "大鬼火":
             data['uni_id'] = "mist_mob.png"
             break
-
         case "水晶蜘蛛":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case "妖精龙":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case "织纱者":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case "狮鹫":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case "无名英雄":
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case "奥术小蜘蛛":
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break

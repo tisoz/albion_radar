@@ -79,8 +79,8 @@ function createWindow() {
     // 冰蜘蛛触发数据
 
 
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
