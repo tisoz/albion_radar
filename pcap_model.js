@@ -3,7 +3,18 @@ const PhotonParser = require('photon-packet-parser');
 const event_list = require("./event/event_list")
 const request_list = require("./event/request_list")
 const {ipcMain} = require('electron')
+const log = require('electron-log');
 
+// 配置日志输出目标
+log.transports.console.format = '{h}:{i}:{s} {text}';
+log.transports.file.level = 'info';
+log.transports.file.format = '{h}:{i}:{s} {text}';
+log.transports.file.maxSize = 100 * 1024 * 1024;
+log.transports.file.resolvePath = () => './log.log';
+// 记录日志
+log.info('Hello, world!');
+log.warn('Something is not right!');
+log.error('Oh no, an error occurred!');
 global.event_list = event_list;
 global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
@@ -43,7 +54,7 @@ global.manager.on('event', (packet) => {
             if (event_list[code]) {
                 (new event_list[code]).parse(packet.parameters)
             } else {
-                console.log(JSON.stringify(packet.parameters))
+                // console.log(JSON.stringify(packet.parameters))
             }
         } catch (e) {
             // console.log(e)
@@ -78,7 +89,7 @@ global.manager.on('response', (packet) => {
             if (request_list[code]) {
                 (new request_list[code]).parse(packet.parameters);
             } else {
-                // console.log(packet)
+                console.log(packet)
             }
         } catch (e) {
             console.log(e)

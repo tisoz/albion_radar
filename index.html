@@ -150,6 +150,8 @@
         "tip_for_player_sound": "off",
         "filter_show_no_mobs_name": "off"
     }
+
+    // 配置文件
     setInterval(() => {
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
             if (value === "on") {
@@ -171,6 +173,7 @@
         });
         localStorage.setItem("config", save_config)
     }, 3000)
+
 
     window.onload = () => {
         window.addEventListener('keydown', (event) => {
@@ -206,25 +209,27 @@
 
         let app = new PIXI.Application({width: 400, height: 300});
         global.container = new PIXI.Container();
+        container.rotation = -(Math.PI / 4 * 3)
         global.backpack_container = new PIXI.Container();
-        let center = PIXI.Sprite.from('center.png');
-        // container.sortableChildren = true;
-        center.zIndex = 99999;
-        container.addChild(center)
+        // container.scale.x = -1
+        // let graphics = new PIXI.Graphics();
+        // graphics.lineStyle(2, 0x666666, 1); // 设置线条样式（宽度、颜色、透明度）
+        // graphics.drawRect(0, 0, 100, 100); // 绘制矩形（x, y, width, height）
+        // container.addChild(graphics);
+
+
         app.stage.addChild(backpack_container)
         app.stage.addChild(container)
-        container.rotation = -(Math.PI / 4 * 3)
         app.stage.scale.x = 5
         app.stage.scale.y = 5
+
+        let center = PIXI.Sprite.from('center.png');
         center.scale.x = 1 / app.stage.scale.x
         center.scale.y = 1 / app.stage.scale.y
-        page_radar.appendChild(app.view);
-
-        //修改屏幕中心
-        container.pivot.set(center.width / 2, center.height / 2);
-        container.position.set(app.screen.width / 2, app.screen.height / 2);
         center.anchor.set(0.5)
+        container.addChild(center)
 
+        page_radar.appendChild(app.view);
 
         // 滚轮缩小
         window.addEventListener("mousewheel", (event) => {
@@ -251,10 +256,10 @@
         temp_world_text.anchor.set(1, 0);
         temp_world_text.name = "map_info"
         app.stage.addChild(temp_world_text)
+
         app.ticker.add((delta) => {
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
-            current_map ||= {}
             temp_world_text.text = `当前地图:${current_map['@displayname']}`
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
@@ -266,9 +271,9 @@
 
             //修改画板大小
             app.renderer.resize(body_container.getClientRects()[0].width - 40, body_container.getClientRects()[0].height - 60 - 20)
-            //修改相对位置大小
-            container.position.set(app.screen.width / 2 / app.stage.scale.x, app.screen.height / 2 / app.stage.scale.y);
 
+
+            // center.position.set()
             if (global.clear_data) {
                 let center = container.children[0];
                 container.removeChildren()
@@ -283,7 +288,6 @@
             // container.sortChildren()
             //加载玩家信息
             try {
-
                 let player_count = 0;
                 for (let index in player_list) {
                     player_count += 1;
@@ -309,7 +313,7 @@
                         // 更新文本数据
                         temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]\n[${state_text}]`
 
-                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
+                        TweenMax.to(temp_img.position, 0.2, {x: -item['position'][0], y: item['position'][1]});
                         temp_img.scale.x = 1 / app.stage.scale.x
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
@@ -330,8 +334,8 @@
 
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -item['position'][0];
+                        temp_img.y = item['position'][1];
                         temp_img.scale.x = 1 / app.stage.scale.x
                         temp_img.scale.y = 1 / app.stage.scale.y
                         temp_img.anchor.set(0.5)
@@ -372,7 +376,12 @@
                                 if (item_info_json[item_list_json[index]['unique']] === undefined) {
                                     console.log(item_list_json[index]['unique'])
                                 }
-                                let itempower = item_info_json[item_list_json[index]['unique']]['itempower'];
+                                let itempower = item_info_json[item_list_json[index]['unique']];
+                                if (itempower['itempower']) {
+                                    itempower = itempower['itempower']
+                                } else {
+                                    continue
+                                }
                                 powersum += parseInt(itempower)
                                 model.x = i * 100
                                 model.y = 34
@@ -397,19 +406,14 @@
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
 
-                        // 计算物资位置与玩家位置
-                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -item['position'][0];
+                        temp_img.y = item['position'][1];
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                         temp_img.anchor.set(0.5)
@@ -439,6 +443,16 @@
                 if (globalThis['local_player_position']['changed_position']) return
                 globalThis['local_player_position']['changed_position'] = true;
 
+                let x_flag = 1;
+                if (globalThis['local_player_position']['current_postion'][0] < 0) x_flag = -1;
+                TweenMax.to(container.position, 0.2, {
+                    x: app.screen.width / 2 / app.stage.scale.x - globalThis['local_player_center_postion'][0] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag,
+                    y: app.screen.height / 2 / app.stage.scale.y + globalThis['local_player_center_postion'][1] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag
+                });
+                TweenMax.to(center.position, 0.2, {
+                    x: -globalThis['local_player_position']['current_postion'][0],
+                    y: globalThis['local_player_position']['current_postion'][1]
+                });
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
@@ -482,20 +496,14 @@
                         temp_img.getChildAt(0).text = item['count'] || 0;
 
                         // 计算物资位置与玩家位置 , 当玩家位置更新后 , 分五次进行物资位置更新
-                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                        // temp_img.x = -x;
-                        // temp_img.y = y;
-                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -(item['position'][0]);
+                        temp_img.y = (item['position'][1]);
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                         temp_img.anchor.set(0.5)
@@ -556,22 +564,17 @@
                             temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}][${item['resource']}]`
                         } else {
                             temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}]`
-
                         }
 
                         // 计算物资位置与玩家位置
-                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -(item['position'][0]);
+                        temp_img.y = (item['position'][1]);
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                         temp_img.anchor.set(0.5)
@@ -616,18 +619,14 @@
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
                         // 计算物资位置与玩家位置
-                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
-
-                        TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -item['position'][0];
+                        temp_img.y = item['position'][1];
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                         temp_img.anchor.set(0.5)
@@ -662,8 +661,8 @@
 
 
                         // 计算物资位置与玩家位置
-                        let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
-                        let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
+                        let x = item['position'][0];
+                        let y = item['position'][1];
 
                         TweenMax.to(temp_img.position, 0.2, {x: -x, y: y});
                         temp_img.scale.x = 1 / app.stage.scale.x / 4
@@ -672,8 +671,8 @@
                         if (!item['position']) continue
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
-                        temp_img.x = -(item['position'][0] - globalThis['local_player_position']['current_postion'][0]);
-                        temp_img.y = (item['position'][1] - globalThis['local_player_position']['current_postion'][1]);
+                        temp_img.x = -item['position'][0];
+                        temp_img.y = item['position'][1];
                         temp_img.scale.x = 1 / app.stage.scale.x / 4
                         temp_img.scale.y = 1 / app.stage.scale.y / 4
                         temp_img.anchor.set(0.5)
@@ -746,8 +745,8 @@
 
         function onDragMove(event) {
             if (dragTarget) {
-                dragTarget.x = old_position.x + event.client.x - old_event.x;
-                dragTarget.y = old_position.y + event.client.y - old_event.y;
+                dragTarget.x = old_position.x + (event.client.x - old_event.x) / app.stage.scale.x;
+                dragTarget.y = old_position.y + (event.client.y - old_event.y) / app.stage.scale.y;
             }
         }
 

@@ -1,16 +1,13 @@
-const { exec } = require('child_process');
+function rotatePoint(x1, y1, angle) {
+    const radians = (Math.PI / 180) * angle;
+    const cosTheta = Math.cos(radians);
+    const sinTheta = Math.sin(radians);
 
-// 运行系统命令，查找名称为 notepad.exe 的进程
-exec('tasklist /FI "IMAGENAME eq fiddler.exe"', (err, stdout, stderr) => {
-    if (err) {
-        console.error(`exec error: ${err}`);
-        return;
-    }
+    const x2 = x1 * cosTheta - y1 * sinTheta;
+    const y2 = x1 * sinTheta + y1 * cosTheta;
 
-    // 解析输出，获取PID
-    const outputLines = stdout.trim().split('\n');
-    const pidLine = outputLines[outputLines.length - 1];
-    const pid = parseInt(pidLine.substr(26, 5));
+    return [x2, y2];
+}
 
-    console.log(`notepad.exe 的PID为：${pid}`);
-});
+const [x2, y2] = rotatePoint(100, 100, 135);
+console.log(`旋转后的坐标: (${x2.toFixed(2)}, ${y2.toFixed(2)})`);
