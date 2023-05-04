@@ -1,5 +1,8 @@
 const {app, BrowserWindow, session, ipcMain, globalShortcut} = require('electron')
 const path = require('path')
+
+
+
 process.env.no_proxy = "43.155.184.183";
 global.ignore = false;
 require("./pcap_model.js")
@@ -73,12 +76,8 @@ function createWindow() {
     })
     global.web_content = win.webContents;
     win.loadFile("./login.html")
-    // 窗口置顶 , 窗口透明
-    // 隐藏左边工具栏
-    // 2V2炼狱无数据
     // 冰蜘蛛触发数据
-
-
+    // 隐藏普通怪物 , 隐藏资源怪物
     win.maximize()
     win.webContents.openDevTools()
 }

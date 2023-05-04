@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "electron-builder-squirrel-windows": "^24.2.0",
+    "electron-log": "^4.4.8",
     "html-webpack-plugin": "^5.5.0",
     "node-addon-api": "^6.0.0",
     "npcap": "file:./node_pcap",

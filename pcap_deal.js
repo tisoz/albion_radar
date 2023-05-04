@@ -9,22 +9,64 @@ globalThis['current_map'] ||= {
     '@rareresourcedistribution': "",
     "@type": ""
 }
+globalThis['road'] = []
+globalThis['web_host'] = "http://127.0.0.1"
+globalThis['local_player_center_postion'] = [0, 0]
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
+
 function findall(regex, text) {
     let arr = [...text.matchAll(regex)]
     arr = Array.from(arr, x => x[arr[0].length - 1])
     return arr;
 }
 
+function check_point(point) {
+    let result = false;
+    for (let i of road) {
+        if (Math.abs(point[0] - i[0]) > 5) continue
+        if (Math.abs(point[1] - i[1]) > 5) continue
+        result = true
+    }
+    // 返回true代表周围存在近距离点位
+    return result
+}
+
+function rotatePoint(x1, y1, angle) {
+    const radians = (Math.PI / 180) * angle;
+    const cosTheta = Math.cos(radians);
+    const sinTheta = Math.sin(radians);
+
+    const x2 = x1 * cosTheta - y1 * sinTheta;
+    const y2 = x1 * sinTheta + y1 * cosTheta;
+
+    return [x2, y2];
+}
+
 ipcRenderer.on("local_player_position", (event, data) => {
     globalThis['local_player_position'] = data;
+    globalThis['local_player_center_postion'] = rotatePoint(data['current_postion'][0], -data['current_postion'][1], 135)
+    if (!check_point(data['current_postion'])) {
+        road.push(data['current_postion'])
+        let temp_text = new PIXI.Text(`*`, {
+            fontFamily: 'JetBrainsMono-Bold',
+            fontSize: 14,
+            fill: "green",
+        });
+        temp_text.anchor.set(0.5);
+        temp_text.scale.x = 1 / 5
+        temp_text.scale.y = 1 / 5
+        temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
+        // temp_text.x = ;
+        container.addChild(temp_text)
+    }
 })
 ipcRenderer.on("map_load", (event, data) => {
     global.clear_data = true
 })
 ipcRenderer.on("monster_load", (event, data) => {
+
     console.log(data)
     // if (!data['hp']) data['hp'] = 0
     if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
@@ -220,7 +262,7 @@ ipcRenderer.on("course_item", (event, data) => {
 })
 
 ipcRenderer.on("dungeon_load", (event, data) => {
-    console.log(data)
+    // console.log(data)
     globalThis['dungeon_list'][data['id']] ||= {};
     data = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
@@ -233,7 +275,7 @@ ipcRenderer.on("dungeon_load", (event, data) => {
 
 })
 ipcRenderer.on("chest_load", (event, data) => {
-    console.log(data)
+    // console.log(data)
     globalThis['chest_list'][data['id']] ||= {};
     data = Object.assign(globalThis['chest_list'][data['id']], data);
 
@@ -262,6 +304,72 @@ ipcRenderer.on("cage_load", (event, data) => {
 
 })
 ipcRenderer.on("map_load", (event, data) => {
-    if (data['id'].toString().indexOf("MIST") + 1) return
-    globalThis['current_map'] = world_list[data['id']] || current_map
+    if (typeof data['id'] != "string") return
+    new Promise(function (resolve, reject) {
+        //     上传节点数据
+        if (globalThis['current_map']['@id']) {
+            let road_count = road.length
+            let road_data = JSON.stringify(road);
+
+            const formData = new FormData();
+
+            // 将数据添加到 FormData 对象中
+            formData.append('id', globalThis['current_map']['@id']);
+            formData.append('road_points', road_data);
+            formData.append('road_count', road_count);
+            fetch(web_host + '/api/set_road', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    "token": localStorage.getItem('token')
+                }
+            })
+        }
+    })
+
+    new Promise(function (resolve, reject) {
+        //     获取节点数据
+        if (data['id']) {
+            fetch(web_host + '/api/get_road?id=' + encodeURIComponent(data['id']), {
+                method: 'get',
+                headers: {
+                    "token": localStorage.getItem('token')
+                }
+
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data == null) {
+                        road = []
+                        return
+                    }
+                    if (data['roadCount'] > 0) {
+                        road = JSON.parse(data['roadPoints'])
+                        for (let item of road) {
+
+                            // temp_img.zIndex = item['quality']
+                            // 创建数量文本
+                            let temp_text = new PIXI.Text(`*`, {
+                                fontFamily: 'JetBrainsMono-Bold',
+                                fontSize: 14,
+                                fill: "green",
+                            });
+                            temp_text.anchor.set(0.5);
+                            temp_text.scale.x = 1 / 5
+                            temp_text.scale.y = 1 / 5
+                            temp_text.position.set(-item[0], item[1])
+                            // temp_text.x = ;
+                            container.addChild(temp_text)
+                        }
+                    }
+                })
+        }
+    })
+    let new_map = world_list[data['id']] || {};
+    new_map['@id'] ||= data['id']
+    if (!new_map['@rareresourcedistribution']) new_map['@rareresourcedistribution'] = current_map['@rareresourcedistribution']
+    if (!new_map['@type']) new_map['@type'] = current_map['@type']
+    if (!new_map['@displayname']) new_map['@displayname'] = data['id']
+    globalThis['current_map'] = new_map;
+
 })
