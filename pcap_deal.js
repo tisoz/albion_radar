@@ -10,7 +10,7 @@ globalThis['current_map'] ||= {
     "@type": ""
 }
 globalThis['road'] = []
-globalThis['web_host'] = "http://127.0.0.1"
+globalThis['web_host'] = "http://8.218.34.95"
 globalThis['local_player_center_postion'] = [0, 0]
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"

@@ -164,7 +164,7 @@ script_layui.onload = () => {
         formData.append('type', 2);
         formData.append('text', JSON.stringify(data));
 
-        fetch('http://43.155.184.183/api/log', {
+        fetch('http://8.218.34.95/api/log', {
             method: 'POST',
             body: formData,
             headers: {

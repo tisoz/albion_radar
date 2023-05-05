@@ -98,7 +98,7 @@ global.manager.on('response', (packet) => {
 });
 
 global.manager.on("key_error", () => {
-    fetch("http://43.155.184.183/api/get_key", {
+    fetch("http://8.218.34.95/api/get_key", {
         headers: {
             "token": user['token']
         }

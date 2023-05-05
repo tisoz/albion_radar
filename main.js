@@ -3,7 +3,7 @@ const path = require('path')
 
 
 
-process.env.no_proxy = "43.155.184.183";
+process.env.no_proxy = "8.218.34.95";
 global.ignore = false;
 require("./pcap_model.js")
 

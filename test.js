@@ -3391,21 +3391,36 @@ var F0 = (r0, J, x0) => (Mr(r0, typeof J != "symbol" ? J + "" : J, x0),
     }
 )();
 
-function enc(text) {
-    let encoder = new TextEncoder();
-    let uint8Array = encoder.encode(text);
-    let arrayBuffer = uint8Array.buffer;
+function hash(sha1) {
+    let sha1_obj = {
+        words: bytesToWords(hexToBytes(sha1)),
+        sigBytes: 20
+    };
     Pr.create()
-    Pr.calculate(arrayBuffer, getchunksize(arrayBuffer.byteLength))
+    Pr.gcidSHA1.update(sha1_obj)
     Pr.finalize()
     return Pr.gcid
 }
 
-function getchunksize(_0x1afc9e) {
-    let _0xcb7e59 = 0x0;
-    return _0xcb7e59 = _0x1afc9e >= 0x0 && _0x1afc9e <= 0x80 << 0x14 ? 0x40000 : _0x1afc9e > 0x80 << 0x14 && _0x1afc9e <= 0x100 << 0x14 ? 0x80000 : _0x1afc9e > 0x100 << 0x14 && _0x1afc9e <= 0x200 << 0x14 ? 0x100000 : 0x200000,
-        this['chunkSize'] = _0xcb7e59,
-        _0xcb7e59;
+function hexToBytes(hex) {
+    const bytes = new Uint8Array(Math.ceil(hex.length / 2));
+    for (let i = 0; i < bytes.length; i++) {
+        bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return bytes;
 }
 
-console.log(enc("test"))
+function bytesToWords(byteArray) {
+    const words = [];
+    for (let i = 0; i < byteArray.length; i += 4) {
+        words.push(
+            (byteArray[i] << 24) |
+            (byteArray[i + 1] << 16) |
+            (byteArray[i + 2] << 8) |
+            byteArray[i + 3]
+        );
+    }
+    return words;
+}
+
+// console.log(hash("17ba0791499db908433b80f37c5fbc89b870084b"))
