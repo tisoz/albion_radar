@@ -32,18 +32,27 @@ function check_point(point) {
         if (Math.abs(point[1] - i[1]) > 5) continue
         result = true
     }
+    for (let i of black_road) {
+        if (Math.abs(point[0] - i[0]) > 6) continue
+        if (Math.abs(point[1] - i[1]) > 6) continue
+        result = true
+    }
     // 返回true代表周围存在近距离点位
     return result
 }
 
-function del_range_point(meter) {
-    for (let i of white_road) {
+function del_range_point(point, meter) {
+    let temp = []
+    for (let index in white_road) {
+        let i = white_road[index]
         if (Math.abs(point[0] - i[0]) > meter) continue
         if (Math.abs(point[1] - i[1]) > meter) continue
-        white_road
+        temp.push(index);
     }
-    // 返回true代表周围存在近距离点位
-    return result
+    temp.reverse()
+    for (let index of temp) {
+        white_road.splice(index, 1)
+    }
 }
 
 function get_speed(temp) {
@@ -75,7 +84,9 @@ ipcRenderer.on("local_player_position", (event, data) => {
     if (temp_road.length > 5) {
         temp_road.shift()
         if (data['speed'] < 1) {
-
+            let point = local_player_position['current_postion']
+            del_range_point(point, 8);
+            black_road.push(point)
         }
     }
     globalThis['local_player_position'] = data;
@@ -342,7 +353,11 @@ ipcRenderer.on("map_load", (event, data) => {
         //     上传节点数据
         if (globalThis['current_map']['@id']) {
             let road_count = white_road.length
-            let road_data = JSON.stringify(white_road);
+            let road_obj = {
+                white_road: white_road,
+                black_road: black_road
+            }
+            let road_data = JSON.stringify(road_obj);
 
             const formData = new FormData();
 
@@ -377,8 +392,8 @@ ipcRenderer.on("map_load", (event, data) => {
                         return
                     }
                     if (data['roadCount'] > 0) {
-                        white_road = JSON.parse(data['roadPoints'])
-                        for (let item of white_road) {
+                        road_obj = JSON.parse(data['roadPoints'])
+                        for (let item of road_obj['white_road']) {
 
                             // temp_img.zIndex = item['quality']
                             // 创建数量文本
@@ -386,6 +401,22 @@ ipcRenderer.on("map_load", (event, data) => {
                                 fontFamily: 'JetBrainsMono-Bold',
                                 fontSize: 14,
                                 fill: "green",
+                            });
+                            temp_text.anchor.set(0.5);
+                            temp_text.scale.x = 1 / 5
+                            temp_text.scale.y = 1 / 5
+                            temp_text.position.set(-item[0], item[1])
+                            // temp_text.x = ;
+                            container.addChild(temp_text)
+                        }
+                        for (let item of road_obj['black_road']) {
+
+                            // temp_img.zIndex = item['quality']
+                            // 创建数量文本
+                            let temp_text = new PIXI.Text(`*`, {
+                                fontFamily: 'JetBrainsMono-Bold',
+                                fontSize: 14,
+                                fill: "red",
                             });
                             temp_text.anchor.set(0.5);
                             temp_text.scale.x = 1 / 5
