@@ -248,10 +248,11 @@
 
         // 添加地图信息
         let temp_world_text = new PIXI.Text(`当前地图:${current_map['@displayname']}`, {
-            "text-align": "center",
+            align: "right",
             fontFamily: 'JetBrainsMono-Bold',
             fontSize: 14,
             fill: "white",
+
         });
         temp_world_text.anchor.set(1, 0);
         temp_world_text.name = "map_info"
@@ -260,7 +261,7 @@
         app.ticker.add((delta) => {
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
-            temp_world_text.text = `当前地图:${current_map['@displayname']}`
+            temp_world_text.text = `当前地图:${current_map['@displayname']}\n当前速度:${local_player_position['speed']}`
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
             temp_world_text.style.fill = text_color;

@@ -9,9 +9,12 @@ globalThis['current_map'] ||= {
     '@rareresourcedistribution': "",
     "@type": ""
 }
-globalThis['road'] = []
+globalThis['white_road'] = []
+globalThis['black_road'] = []
+globalThis['temp_road'] = []
 globalThis['web_host'] = "http://8.218.34.95"
 globalThis['local_player_center_postion'] = [0, 0]
+
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
@@ -24,13 +27,34 @@ function findall(regex, text) {
 
 function check_point(point) {
     let result = false;
-    for (let i of road) {
+    for (let i of white_road) {
         if (Math.abs(point[0] - i[0]) > 5) continue
         if (Math.abs(point[1] - i[1]) > 5) continue
         result = true
     }
     // 返回true代表周围存在近距离点位
     return result
+}
+
+function del_range_point(meter) {
+    for (let i of white_road) {
+        if (Math.abs(point[0] - i[0]) > meter) continue
+        if (Math.abs(point[1] - i[1]) > meter) continue
+        white_road
+    }
+    // 返回true代表周围存在近距离点位
+    return result
+}
+
+function get_speed(temp) {
+    let base = temp[0] || [0, 0];
+    let speed = 0;
+    for (let i of temp) {
+        let dist = Math.sqrt(Math.pow(i[0] - base[0], 2) + Math.pow(i[1] - base[1], 2));
+        speed += dist
+        base = i;
+    }
+    return (speed / (temp.length - 1) * 10).toFixed(4)
 }
 
 function rotatePoint(x1, y1, angle) {
@@ -45,10 +69,19 @@ function rotatePoint(x1, y1, angle) {
 }
 
 ipcRenderer.on("local_player_position", (event, data) => {
+    console.log(data['current_postion'])
+    temp_road.push(data['current_postion'])
+    data['speed'] = get_speed(temp_road)
+    if (temp_road.length > 5) {
+        temp_road.shift()
+        if (data['speed'] < 1) {
+
+        }
+    }
     globalThis['local_player_position'] = data;
     globalThis['local_player_center_postion'] = rotatePoint(data['current_postion'][0], -data['current_postion'][1], 135)
     if (!check_point(data['current_postion'])) {
-        road.push(data['current_postion'])
+        white_road.push(data['current_postion'])
         let temp_text = new PIXI.Text(`*`, {
             fontFamily: 'JetBrainsMono-Bold',
             fontSize: 14,
@@ -308,8 +341,8 @@ ipcRenderer.on("map_load", (event, data) => {
     new Promise(function (resolve, reject) {
         //     上传节点数据
         if (globalThis['current_map']['@id']) {
-            let road_count = road.length
-            let road_data = JSON.stringify(road);
+            let road_count = white_road.length
+            let road_data = JSON.stringify(white_road);
 
             const formData = new FormData();
 
@@ -340,12 +373,12 @@ ipcRenderer.on("map_load", (event, data) => {
                 .then(response => response.json())
                 .then(data => {
                     if (data == null) {
-                        road = []
+                        white_road = []
                         return
                     }
                     if (data['roadCount'] > 0) {
-                        road = JSON.parse(data['roadPoints'])
-                        for (let item of road) {
+                        white_road = JSON.parse(data['roadPoints'])
+                        for (let item of white_road) {
 
                             // temp_img.zIndex = item['quality']
                             // 创建数量文本
