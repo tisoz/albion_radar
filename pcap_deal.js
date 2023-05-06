@@ -129,6 +129,12 @@ ipcRenderer.on("monster_load", (event, data) => {
         case "大鬼火":
             data['uni_id'] = "mist_mob.png"
             break
+        case "阿瓦隆探宝无人机":
+            data['quality'] = 3;
+            break
+        case "隐藏宝藏":
+            data['quality'] = 3;
+            break
         case "水晶蜘蛛":
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
