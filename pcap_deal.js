@@ -53,7 +53,7 @@ function del_range_point(point, meter) {
     for (let index of temp) {
         let item = white_road[index];
         let hashid = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10);
-        container.removeChild(container.getChildByName(hashid))
+        // container.removeChild(container.getChildByName(hashid))
         white_road.splice(index, 1)
     }
 }
@@ -102,7 +102,7 @@ ipcRenderer.on("local_player_position", (event, data) => {
                 temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
                 temp_text.name = point.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
                 // temp_text.x = ;
-                container.addChild(temp_text)
+                // container.addChild(temp_text)
             }
         }
     }
@@ -121,7 +121,7 @@ ipcRenderer.on("local_player_position", (event, data) => {
         temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
         temp_text.name = data['current_postion'].toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
         // temp_text.x = ;
-        container.addChild(temp_text)
+        // container.addChild(temp_text)
     }
 })
 ipcRenderer.on("monster_load", (event, data) => {
@@ -371,6 +371,7 @@ ipcRenderer.on("cage_load", (event, data) => {
 ipcRenderer.on("map_load", (event, data) => {
     global.clear_data = true
     if (typeof data['id'] != "string") return
+    if (data['id'].indexOf("MIST") + 1) data['id'] = "MIST_" + data['type']
     temp_road = []
     new Promise(function (resolve, reject) {
         //     上传节点数据
@@ -432,7 +433,7 @@ ipcRenderer.on("map_load", (event, data) => {
                             temp_text.position.set(-item[0], item[1])
                             temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
                             // temp_text.x = ;
-                            container.addChild(temp_text)
+                            // container.addChild(temp_text)
                         }
                         for (let item of road_obj['black_road']) {
                             black_road.push(item)
@@ -450,7 +451,7 @@ ipcRenderer.on("map_load", (event, data) => {
                             temp_text.position.set(-item[0], item[1])
                             temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
                             // temp_text.x = ;
-                            container.addChild(temp_text)
+                            // container.addChild(temp_text)
                         }
                     }
                 })
