@@ -1,5 +1,5 @@
 const BufferCursor = require('buffercursor');
-const PhotonCommand = require('./PhotonCommand.js');
+const PhotonCommand = require('./PhotonCommand_ob.js');
 
 
 class PhotonPacket {
