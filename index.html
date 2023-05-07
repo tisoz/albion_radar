@@ -55,15 +55,15 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示稀有怪物(附魔品质>1)</label>
+            <label class="layui-form-label" style="width: auto">显示资源怪物</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
+                <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">资源怪物图标使用资源图片显示</label>
+            <label class="layui-form-label" style="width: auto">显示稀有怪物(附魔品质>1)</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
+                <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
@@ -533,7 +533,7 @@
                 for (let index in monster_list) {
                     item = monster_list[index]
                     if (!config['filter_show_monster_normal']) {
-                        if (item['quality'] < 1 && item['type'] > 10) {
+                        if (item['quality'] < 1 && item['type'] > 10 && !item['resource']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             continue
                         }
@@ -553,8 +553,11 @@
                     if (config['filter_show_no_mobs_name']) {
                         item['name'] = ""
                     }
-                    if (config['filter_show_mobs_icon_for_item']) {
-                        if (item['res_id']) item['uni_id'] = item['res_id']
+                    if (!config['filter_show_mobs_icon_for_item']) {
+                        if (item['resource']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
                     }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
@@ -572,7 +575,7 @@
                         temp_img.scale.y = 1 / app.stage.scale.y / 2
                     } else {
                         if (!item['position']) continue
-
+                        if (item['res_id']) item['uni_id'] = item['res_id']
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
                         temp_img.x = -(item['position'][0]);
                         temp_img.y = (item['position'][1]);
