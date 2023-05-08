@@ -36,12 +36,12 @@ let event_list = {
     117: monster_load,
     200: firstmounted,
     201: secondmounted,
-    307: dungeon,
+    308: dungeon,
     337: filter,
     342: filter,//钓鱼
-    377: chest_load,
-    509: cage_load,//灯笼怪
-    510: cage_free,
+    378: chest_load,
+    512: cage_load,//灯笼怪
+    513: cage_free,
     20: filter,//钓鱼
 }
 module.exports = event_list;
