@@ -7,6 +7,7 @@ class Map_load {
     parse(data) {
 
         this.id = data[0];        //物资ID
+        this.type = data[1] || ""
         console.log(JSON.stringify(this))
         global.web_content.send("map_load", this)
 

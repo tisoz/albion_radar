@@ -51,6 +51,9 @@ function del_range_point(point, meter) {
     }
     temp.reverse()
     for (let index of temp) {
+        let item = white_road[index];
+        let hashid = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10);
+        // container.removeChild(container.getChildByName(hashid))
         white_road.splice(index, 1)
     }
 }
@@ -85,8 +88,22 @@ ipcRenderer.on("local_player_position", (event, data) => {
         temp_road.shift()
         if (data['speed'] < 1) {
             let point = local_player_position['current_postion']
-            del_range_point(point, 8);
-            black_road.push(point)
+            del_range_point(point, 6);
+            if (!check_point(data['current_postion'])) {
+                black_road.push(data['current_postion'])
+                let temp_text = new PIXI.Text(`*`, {
+                    fontFamily: 'JetBrainsMono-Bold',
+                    fontSize: 14,
+                    fill: "red",
+                });
+                temp_text.anchor.set(0.5);
+                temp_text.scale.x = 1 / 5
+                temp_text.scale.y = 1 / 5
+                temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
+                temp_text.name = point.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
+                // temp_text.x = ;
+                // container.addChild(temp_text)
+            }
         }
     }
     globalThis['local_player_position'] = data;
@@ -102,12 +119,10 @@ ipcRenderer.on("local_player_position", (event, data) => {
         temp_text.scale.x = 1 / 5
         temp_text.scale.y = 1 / 5
         temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
+        temp_text.name = data['current_postion'].toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
         // temp_text.x = ;
-        container.addChild(temp_text)
+        // container.addChild(temp_text)
     }
-})
-ipcRenderer.on("map_load", (event, data) => {
-    global.clear_data = true
 })
 ipcRenderer.on("monster_load", (event, data) => {
 
@@ -354,7 +369,10 @@ ipcRenderer.on("cage_load", (event, data) => {
 
 })
 ipcRenderer.on("map_load", (event, data) => {
+    global.clear_data = true
     if (typeof data['id'] != "string") return
+    if (data['id'].indexOf("MIST") + 1) data['id'] = "MIST_" + data['type']
+    temp_road = []
     new Promise(function (resolve, reject) {
         //     上传节点数据
         if (globalThis['current_map']['@id']) {
@@ -364,7 +382,8 @@ ipcRenderer.on("map_load", (event, data) => {
                 black_road: black_road
             }
             let road_data = JSON.stringify(road_obj);
-
+            black_road = []
+            white_road = []
             const formData = new FormData();
 
             // 将数据添加到 FormData 对象中
@@ -400,7 +419,7 @@ ipcRenderer.on("map_load", (event, data) => {
                     if (data['roadCount'] > 0) {
                         road_obj = JSON.parse(data['roadPoints'])
                         for (let item of road_obj['white_road']) {
-
+                            white_road.push(item)
                             // temp_img.zIndex = item['quality']
                             // 创建数量文本
                             let temp_text = new PIXI.Text(`*`, {
@@ -412,10 +431,12 @@ ipcRenderer.on("map_load", (event, data) => {
                             temp_text.scale.x = 1 / 5
                             temp_text.scale.y = 1 / 5
                             temp_text.position.set(-item[0], item[1])
+                            temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
                             // temp_text.x = ;
-                            container.addChild(temp_text)
+                            // container.addChild(temp_text)
                         }
                         for (let item of road_obj['black_road']) {
+                            black_road.push(item)
 
                             // temp_img.zIndex = item['quality']
                             // 创建数量文本
@@ -428,8 +449,9 @@ ipcRenderer.on("map_load", (event, data) => {
                             temp_text.scale.x = 1 / 5
                             temp_text.scale.y = 1 / 5
                             temp_text.position.set(-item[0], item[1])
+                            temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
                             // temp_text.x = ;
-                            container.addChild(temp_text)
+                            // container.addChild(temp_text)
                         }
                     }
                 })
