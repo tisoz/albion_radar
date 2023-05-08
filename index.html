@@ -33,18 +33,21 @@
         <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>洞穴配置</legend>
         </fieldset>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示普通洞穴</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <label class="layui-form-label" style="width: auto">显示普通洞穴</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <label class="layui-form-label" style="width: auto">显示稀有洞穴</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示稀有洞穴</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
+
         <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>怪物配置</legend>
         </fieldset>
@@ -110,6 +113,7 @@
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
+
                     <option value="4">4</option>
                 </select>
             </div>
