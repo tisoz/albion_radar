@@ -81,7 +81,12 @@
                 <input type="checkbox" name="filter_show_monster_mist" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
-
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">显示灯笼怪</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_show_cage_mist" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>物资配置</legend>
         </fieldset>
@@ -152,7 +157,8 @@
         "filter_item_show_zero_count": "off",
         "filter_show_mobs_icon_for_item": "off",
         "tip_for_player_sound": "off",
-        "filter_show_no_mobs_name": "off"
+        "filter_show_no_mobs_name": "off",
+        "filter_show_cage_mist": "off"
     }
 
     // 配置文件
@@ -663,6 +669,12 @@
                 // 加载临时信息
                 for (let index in temp_list) {
                     item = temp_list[index]
+                    if (!config['filter_show_cage_mist']) {
+                        if (item['uni_id'] === "heretic.png") {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            continue
+                        }
+                    }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue

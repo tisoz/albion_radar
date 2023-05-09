@@ -81,7 +81,7 @@ function rotatePoint(x1, y1, angle) {
 }
 
 ipcRenderer.on("local_player_position", (event, data) => {
-    console.log(data['current_postion'])
+    // console.log(data['current_postion'])
     temp_road.push(data['current_postion'])
     data['speed'] = get_speed(temp_road)
     if (temp_road.length > 5) {

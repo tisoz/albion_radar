@@ -28,8 +28,12 @@
     },
     "win": {
       "target": "nsis"
-    }
+    },
+    "files": [
+      "**/*",
+      "!photon-packet-parser/classes/PhotonCommand.js"
+    ]
   },
-  "version": "1.1.6",
+  "version": "1.1.9",
   "name": "Tradar"
 }
