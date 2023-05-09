@@ -369,6 +369,7 @@ ipcRenderer.on("cage_load", (event, data) => {
 
 })
 ipcRenderer.on("map_load", (event, data) => {
+    if (data['id'] === current_map['@id']) return
     global.clear_data = true
     if (typeof data['id'] != "string") return
     if (data['id'].indexOf("MIST") + 1) data['id'] = "MIST_" + data['type']

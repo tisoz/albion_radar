@@ -79,8 +79,8 @@ function createWindow() {
     // 冰蜘蛛触发数据
     // 隐藏普通怪物 , 隐藏资源怪物
     // 修复部分玩家不显示装备的bug
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
