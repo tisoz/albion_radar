@@ -388,6 +388,7 @@
                                     console.log(item_list_json[index]['unique'])
                                 }
                                 let itempower = item_info_json[item_list_json[index]['unique']];
+                                if (item_list_json[index]['unique'] === "UNIQUE_HIDEOUT") continue
                                 if (itempower['itempower']) {
                                     itempower = itempower['itempower']
                                 } else {
