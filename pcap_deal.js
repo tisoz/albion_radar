@@ -83,6 +83,12 @@ function rotatePoint(x1, y1, angle) {
 ipcRenderer.on("local_player_position", (event, data) => {
     // console.log(data['current_postion'])
     temp_road.push(data['current_postion'])
+    // 判断是否发生漏载数据位移
+    if (Math.sqrt(Math.pow(local_player_position['current_postion'][0] - data['current_postion'][0], 2) + Math.pow(local_player_position['current_postion'][1] - data['current_postion'][1], 2)) > 20) {
+        if (new Date().getTime() - current_map['update_time'] > 10) {
+            current_map['@id'] = undefined
+        }
+    }
     data['speed'] = get_speed(temp_road)
     if (temp_road.length > 5) {
         temp_road.shift()
@@ -378,7 +384,7 @@ ipcRenderer.on("map_load", (event, data) => {
         current_map['@rareresourcedistribution'] = data['id']
     }
     temp_road = []
-    new Promise(function (resolve, reject) {
+    new Promise(function () {
         //     上传节点数据
         if (globalThis['current_map']['@id']) {
             let road_count = white_road.length
@@ -467,6 +473,7 @@ ipcRenderer.on("map_load", (event, data) => {
     if (!new_map['@rareresourcedistribution']) new_map['@rareresourcedistribution'] = current_map['@rareresourcedistribution']
     if (!new_map['@type']) new_map['@type'] = current_map['@type']
     if (!new_map['@displayname']) new_map['@displayname'] = data['id']
+    new_map['update_time'] = new Date().getTime()
     globalThis['current_map'] = new_map;
 
 })

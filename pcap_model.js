@@ -34,7 +34,7 @@ var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPo
 
 for (let i of pcap.findalldevs()) {
     console.log("network", i.description)
-    if (i.description == 'TAP-Windows Adapter V9') {
+    if (i.description === 'TAP-Windows Adapter V9') {
         var dev = i.name;
     }
 }
