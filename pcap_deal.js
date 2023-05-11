@@ -236,10 +236,11 @@ ipcRenderer.on("other_player_load", (event, data) => {
             break;
     }
     if (current_map && current_map['@rareresourcedistribution']) {
-        if (current_map['@rareresourcedistribution'].indexOf("RED") + 1
-            || current_map['@rareresourcedistribution'].indexOf("OUT") + 1
-            || (current_map['@type'].indexOf("BLACK") + 1)
-            || (current_map['@type'].indexOf("RED") + 1)) {
+        let temp = `${current_map['@rareresourcedistribution']}${current_map['@type']}${current_map['@id']}`
+        if (temp.indexOf("RED") + 1
+            || temp.indexOf("OUT") + 1
+            || temp.indexOf("BLACK") + 1
+            || temp.indexOf("RED") + 1) {
             data['uni_id'] = "player_red.png";
         }
     }
@@ -372,7 +373,10 @@ ipcRenderer.on("map_load", (event, data) => {
     if (data['id'] === current_map['@id']) return
     global.clear_data = true
     if (typeof data['id'] != "string") return
-    if (data['id'].indexOf("MIST") + 1) data['id'] = "MIST_" + data['type']
+    if (data['id'].indexOf("MIST") + 1) {
+        data['id'] = "MIST_" + data['type']
+        current_map['@rareresourcedistribution'] = data['id']
+    }
     temp_road = []
     new Promise(function (resolve, reject) {
         //     上传节点数据
