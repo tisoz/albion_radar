@@ -83,6 +83,10 @@ function rotatePoint(x1, y1, angle) {
 ipcRenderer.on("local_player_position", (event, data) => {
     // console.log(data['current_postion'])
     temp_road.push(data['current_postion'])
+    // 判断是否发生漏载数据位移
+    if (Math.sqrt(Math.pow(local_player_position['current_postion'][0] - data['current_postion'][0], 2) + Math.pow(local_player_position['current_postion'][1] - data['current_postion'][1], 2)) > 20){
+        current_map['@id'] = undefined
+    }
     data['speed'] = get_speed(temp_road)
     if (temp_road.length > 5) {
         temp_road.shift()
