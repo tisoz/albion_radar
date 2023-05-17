@@ -580,7 +580,7 @@
                         } else {
                             temp_img.getChildAt(0).text = `${item['name']}[hp:${item['hp']}][L${item['quality']}]`
                         }
-
+                        TweenMax.to(temp_img.position, 0.2, {x: -item['position'][0], y: item['position'][1]});
                         // 计算物资位置与玩家位置
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
                         temp_img.scale.y = 1 / app.stage.scale.y / 2

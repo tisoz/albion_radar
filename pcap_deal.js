@@ -132,7 +132,7 @@ ipcRenderer.on("local_player_position", (event, data) => {
 })
 ipcRenderer.on("monster_load", (event, data) => {
 
-    console.log(data)
+    // console.log(data)
     // if (!data['hp']) data['hp'] = 0
     if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
 
@@ -334,7 +334,7 @@ ipcRenderer.on("course_item", (event, data) => {
 })
 
 ipcRenderer.on("dungeon_load", (event, data) => {
-    // console.log(data)
+    console.log(data)
     globalThis['dungeon_list'][data['id']] ||= {};
     data = Object.assign(globalThis['dungeon_list'][data['id']], data);
 

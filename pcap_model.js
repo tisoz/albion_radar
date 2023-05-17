@@ -44,8 +44,9 @@ BigInt.prototype.toJSON = function () {
 }
 global.manager.on('event', (packet) => {
     // 在这里处理接收到的结果
-    if (packet.code == 1 && packet.parameters) {
-        log.info("event | " + JSON.stringify(packet.parameters))
+    if (packet.code === 1 && packet.parameters) {
+        log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
+
         //进行事件处理
         try {
             let code = packet.parameters[252]
@@ -58,7 +59,7 @@ global.manager.on('event', (packet) => {
             // console.log(e)
         }
 
-    } else if (packet.code == 3) {
+    } else if (packet.code === 3) {
         (new event_list[packet.code]).parse(packet.parameters)
         // console.log(JSON.stringify([packet.parameters[0],[packet.parameters[1].readFloatLE(9),packet.parameters[1].readFloatLE(13)]]))
         // console.log(packet.parameters)
