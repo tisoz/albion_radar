@@ -31,6 +31,15 @@
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend>友方单位配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto">屏蔽队友/盟友</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_green_friend" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
             <legend>洞穴配置</legend>
         </fieldset>
         <div class="layui-row">
@@ -158,7 +167,8 @@
         "filter_show_mobs_icon_for_item": "off",
         "tip_for_player_sound": "off",
         "filter_show_no_mobs_name": "off",
-        "filter_show_cage_mist": "off"
+        "filter_show_cage_mist": "off",
+        "filter_green_friend": "off"
     }
 
     // 配置文件
@@ -303,6 +313,14 @@
                 for (let index in player_list) {
                     player_count += 1;
                     item = player_list[index]
+                    if (config['filter_green_friend'] && globalThis.white_player_list.indexOf(item['name']) + 1) {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            backpack_container.removeChild(backpack_container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
@@ -321,17 +339,29 @@
                         let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
                         let state_text = item['mounted'] ? "骑乘" : "下马";
+                        let distance = Math.sqrt(x * x + y * y).toFixed(2)
+                        if (distance > 80) {
+                            if (globalThis['local_player_position']['current_postion'][0] !== 0) {
+                                if (globalThis.white_player_list.indexOf(item['name']) === -1) {
+                                    globalThis.white_player_list.push(item['name'])
+                                }
+                            }
+                        }
                         // 更新文本数据
-                        temp_img.getChildAt(0).text = `${item['name']}[${Math.sqrt(x * x + y * y).toFixed(2)}m]\n[${state_text}]`
+                        temp_img.getChildAt(0).text = `${item['name']}[${distance}m]\n[${state_text}][hp:${item['hp']}/${item['hp_max']}]`
 
                         TweenMax.to(temp_img.position, 0.2, {x: -item['position'][0], y: item['position'][1]});
                         temp_img.scale.x = 1 / app.stage.scale.x
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
-
-                        if (config['tip_for_player_sound']) {
-                            if ((item['uni_id'].indexOf("red") + 1)
+                        if (globalThis['club'] === item['club']) {
+                            if (globalThis.white_player_list.indexOf(item['name']) === -1) {
+                                globalThis.white_player_list.push(item['name'])
+                            }
+                        }
+                        if (config['tip_for_player_sound'] && globalThis.white_player_list.indexOf(item['name']) === -1) {
+                            if (current_map['@rareresourcedistribution'] !== "DEFAULT" && (item['uni_id'].indexOf("red") + 1)
                                 || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
                                 || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
                                 || (current_map['@type'].indexOf("BLACK") + 1)
@@ -354,11 +384,15 @@
                         temp_img.name = item['id'].toString();
                         // temp_img.zIndex = item['quality']
                         // 创建数量文本
+                        let fill = "white";
+                        if (globalThis.white_player_list.indexOf(item['name']) + 1) {
+                            fill = "green"
+                        }
                         let temp_text = new PIXI.Text(`${item['hp']}/${item['hp_max']}`, {
-                            "text-align": "center",
+                            align: "center",
                             fontFamily: 'JetBrainsMono-Bold',
                             fontSize: 14,
-                            fill: 'white',
+                            fill: fill,
                         });
                         temp_text.anchor.set(0.5);
                         // temp_text.x = ;

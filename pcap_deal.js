@@ -1,9 +1,11 @@
 globalThis['item_list'] ||= {};
 globalThis['monster_list'] ||= {};
 globalThis['player_list'] ||= {};
+globalThis['white_player_list'] ||= [];
 globalThis['dungeon_list'] ||= {};
 globalThis['chest_list'] ||= {};
 globalThis['temp_list'] ||= {};
+globalThis['club'] ||= "tradar";
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
 globalThis['current_map'] ||= {
     '@rareresourcedistribution': "",
@@ -86,6 +88,7 @@ ipcRenderer.on("local_player_position", (event, data) => {
     // 判断是否发生漏载数据位移
     if (Math.sqrt(Math.pow(local_player_position['current_postion'][0] - data['current_postion'][0], 2) + Math.pow(local_player_position['current_postion'][1] - data['current_postion'][1], 2)) > 20) {
         if (new Date().getTime() - current_map['update_time'] > 10) {
+            globalThis['local_player_position'] = {current_postion: [0, 0]}
             current_map['@id'] = undefined
         }
     }
@@ -228,6 +231,7 @@ ipcRenderer.on("other_player_load", (event, data) => {
     // this.lp_max = data[24]
     // this.position = data[13];  //玩家位置
     // this.backpack = data[34]  //玩家装备
+    console.log(data.id, data)
     globalThis.config ||= {}
     globalThis['player_list'][data['id']] ||= {};
     data = Object.assign(globalThis['player_list'][data['id']], data);
@@ -253,11 +257,19 @@ ipcRenderer.on("other_player_load", (event, data) => {
     if (data['mounted'] && config['filter_show_player_in_danger_show_green']) {
         data['uni_id'] = "player_green.png";
     }
+    if (globalThis['white_player_list'].indexOf(data['name']) + 1) data['uni_id'] = "player_green.png";
 
     globalThis['player_list'][data['id']] = Object.assign(globalThis['player_list'][data['id']], data);
 })
 ipcRenderer.on("move_event", (event, data) => {
     //怪物数据
+    // let buffer = new ArrayBuffer(data['data'][1].length); // 创建一个长度为4个字节的缓冲区
+    // let view = new DataView(buffer);
+    //
+    // for (let i = 0; i < data['data'][1].length; i++) {
+    //     view.setUint8(i, data['data'][1][i]);
+    // }
+    // console.log(data.id, data) //sudu
     if (data.id in monster_list) {
         monster_list[data.id] = Object.assign(monster_list[data.id], data)
     }
@@ -346,6 +358,16 @@ ipcRenderer.on("dungeon_load", (event, data) => {
     globalThis['dungeon_list'][data['id']] = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
 })
+ipcRenderer.on("club_load", (event, data) => {
+    globalThis.club = data['club']
+    // club = "Sun Never Set"
+})
+ipcRenderer.on("friend_load", (event, data) => {
+    for (let name of data['friend_list']) {
+        if (white_player_list.indexOf(name) + 1) continue
+        white_player_list.push(name)
+    }
+})
 ipcRenderer.on("chest_load", (event, data) => {
     // console.log(data)
     globalThis['chest_list'][data['id']] ||= {};
@@ -376,6 +398,8 @@ ipcRenderer.on("cage_load", (event, data) => {
 
 })
 ipcRenderer.on("map_load", (event, data) => {
+    globalThis['local_player_position'] = {current_postion: [0, 0]}
+
     if (data['id'] === current_map['@id']) return
     global.clear_data = true
     if (typeof data['id'] != "string") return

@@ -15,12 +15,17 @@ let firstmounted = require("./firstmounted.js")
 let secondmounted = require("./secondmounted.js")
 let cage_load = require("./cage_load.js")
 let cage_free = require("./cage_free.js")
+let damage = require("./damage.js")
+let new_monster_damage = require("./new_monster_damage.js")
+let club_load = require("./club_load.js")
+let firend_load = require("./firend_load.js")
+let firend_list = require("./firend_list.js")
 let filter = require("./filter.js")
 
 let event_list = {
     1: leave_event, //玩家离开事件
     3: move_event,
-    6: filter, //攻击伤害事件
+    6: damage, //攻击伤害事件
     10: filter,
     18: filter, //待处理
     21: filter,//路上装饰
@@ -30,12 +35,16 @@ let event_list = {
     42: course_load_change,
     43: monster_quality_change,
     57: course_done,
+    86: new_monster_damage, //新怪物攻击事件
+
     90: monster_normal_move_change,             //脱战事件
-    98: filter,
+    98: club_load,
 
     117: monster_load,
     200: firstmounted,
     201: secondmounted,
+    220: firend_list,
+    229: firend_load,
     308: dungeon,
     337: filter,
     342: filter,//钓鱼
