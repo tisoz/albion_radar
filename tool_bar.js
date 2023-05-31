@@ -155,7 +155,8 @@ script_layui.onload = () => {
             dungeon_list: globalThis['dungeon_list'],
             chest_list: globalThis['chest_list'],
             temp_list: globalThis['temp_list'],
-            local_player_position: globalThis['local_player_position']
+            local_player_position: globalThis['local_player_position'],
+            current_map: globalThis['current_map']
         };
 
 
