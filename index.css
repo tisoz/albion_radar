@@ -3,11 +3,9 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
-
 * {
     user-select: none;
 }
-
 dd {
     font-family: "JetBrains Mono Bold Italic", Arial, serif;
     font-size: 14px;

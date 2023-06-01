@@ -227,7 +227,10 @@
         layui.form.render()
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
 
-        let app = new PIXI.Application({width: 400, height: 300});
+        let app = new PIXI.Application({
+            width: 400, height: 300, backgroundColor: 0x000000,
+            transparent: true
+        });
         global.container = new PIXI.Container();
         container.rotation = -(Math.PI / 4 * 3)
         global.backpack_container = new PIXI.Container();
@@ -355,7 +358,7 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
-                        if (globalThis['club'] === item['club'] && item['name'] !== "PA") {
+                        if (globalThis['club'] === item['club']) {
                             if (globalThis.white_player_list.indexOf(item['name']) === -1) {
                                 globalThis.white_player_list.push(item['name'])
                             }

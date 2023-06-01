@@ -118,7 +118,7 @@ frame_container.setAttribute("style", "position:relative;float:left;height:100%;
 frame_container.setAttribute("class", "layui-side layui-bg-black")
 
 var body_container = document.createElement("div");
-body_container.setAttribute("style", "position:relative;height:100%;padding-left:20px;")
+body_container.setAttribute("style", "position:relative;height:100%;padding-left:20px;background-color: transparent!important;")
 body_container.setAttribute("class", "layui-bg-black")
 
 var lef_bar = document.createElement("div");
