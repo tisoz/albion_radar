@@ -156,6 +156,7 @@ script_layui.onload = () => {
             chest_list: globalThis['chest_list'],
             temp_list: globalThis['temp_list'],
             local_player_position: globalThis['local_player_position'],
+            white_player_list: globalThis['white_player_list'],
             current_map: globalThis['current_map']
         };
 
