@@ -189,7 +189,7 @@ script_layui.onload = () => {
         , value: 95 //初始值,
         , min: 5
         , setTips: function (value) {
-            ipcRenderer.send('window_opt', value)
+            document.getElementById("tool_bar").style.setProperty("opacity", (value / 100).toFixed(2))
             return `透明度:${value}%`;
         }
     });

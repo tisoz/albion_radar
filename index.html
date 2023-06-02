@@ -228,9 +228,14 @@
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
 
         let app = new PIXI.Application({
-            width: 400, height: 300, backgroundColor: 0x000000,
-            transparent: true
+            width: 400, height: 300, backgroundAlpha: 0,
+
         });
+        app.renderer.background.alpha = 0;
+        // app.stage.alpha = 0
+        // var renderer = PIXI.autoDetectRenderer(256, 256, {antialias: false, transparent: true, resolution: 1});
+        // renderer.render(app.stage)
+
         global.container = new PIXI.Container();
         container.rotation = -(Math.PI / 4 * 3)
         global.backpack_container = new PIXI.Container();
