@@ -287,6 +287,11 @@
         app.stage.addChild(temp_world_text)
 
         app.ticker.add((delta) => {
+            if (global['transparent']){
+                app.renderer.background.alpha = 0;
+            }else{
+                app.renderer.background.alpha = 1;
+            }
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
             temp_world_text.text = `当前地图:${current_map['@displayname']}\n当前速度:${local_player_position['speed']}`
@@ -332,7 +337,10 @@
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
-
+                        if (item['hp_max'] && !item['hp']){
+                            item['hp'] = 0
+                            item['uni_id'] = "player_dead.png"
+                        }
                         temp_img.texture = PIXI.Texture.from('./resource/' + item['uni_id']);
                         if (config['filter_show_player_backpack']) {
                             let temp_back = backpack_container.getChildByName(item['in_container_index']);

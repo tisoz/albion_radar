@@ -7,6 +7,7 @@ new Promise((resolve) => {
     global.name_tag_list = require('./name_tag.json');
     global.item_list_json = {}
     global.item_info_json = {}
+    global['transparent'] = false
     global.world_list = {}
     for (let item of resource_item_list) {
         global.item_list_json[item['Index']] = {
@@ -100,6 +101,14 @@ toolbar.innerHTML =
                     </div>
                         
                 </div>
+                 <div class="layui-form-item">
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">透明模式</lable>
+                
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="set_transparent" lay-skin="switch" lay-text="ON|OFF">
+                    </div>
+                        
+                </div>
                 <div class="layui-form-item">
                     <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口穿透 : F6快捷键</lable>
                         
@@ -118,7 +127,7 @@ frame_container.setAttribute("style", "position:relative;float:left;height:100%;
 frame_container.setAttribute("class", "layui-side layui-bg-black")
 
 var body_container = document.createElement("div");
-body_container.setAttribute("style", "position:relative;height:100%;padding-left:20px;background-color: transparent!important;")
+body_container.setAttribute("style", "position:relative;height:100%;padding-left:20px;")
 body_container.setAttribute("class", "layui-bg-black")
 
 var lef_bar = document.createElement("div");
@@ -190,12 +199,27 @@ script_layui.onload = () => {
         , value: 95 //初始值,
         , min: 5
         , setTips: function (value) {
-            document.getElementById("tool_bar").style.setProperty("opacity", (value / 100).toFixed(2))
+            if (global.transparent) {
+                document.getElementById("tool_bar").style.setProperty("opacity", (value / 100).toFixed(2))
+            } else {
+                ipcRenderer.send('window_opt', value)
+            }
             return `透明度:${value}%`;
         }
     });
     layui.form.on('switch(set_top)', function (obj) {
         ipcRenderer.send('window_top', obj.elem.checked)
+    });
+    layui.form.on('switch(set_transparent)', function (obj) {
+        global['transparent'] = obj.elem.checked
+        let style = document.getElementsByClassName("layui-bg-black")[0].style;
+
+        if (global['transparent']){
+            style.setProperty('background-color', 'transparent', 'important');
+        }else{
+            style.removeProperty('background-color');
+        }
+
     });
     ipcRenderer.on("click_through", function (event, args) {
         layer.msg(`当前鼠标穿透 : ${args}`, {
