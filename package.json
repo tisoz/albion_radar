@@ -20,7 +20,7 @@
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "productName": "Tradar",
+    "productName": "Rtadar",
     "appId": "com.tisoz.tradar",
     "icon": "icon_512.png",
     "directories": {
@@ -36,5 +36,5 @@
     ]
   },
   "version": "1.2.2",
-  "name": "Tradar"
+  "name": "Rtadar"
 }
