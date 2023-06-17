@@ -6,6 +6,7 @@ globalThis['dungeon_list'] ||= {};
 globalThis['chest_list'] ||= {};
 globalThis['temp_list'] ||= {};
 globalThis['club'] ||= "tradar";
+globalThis['union'] ||= "tradar";
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
 globalThis['current_map'] ||= {
     '@rareresourcedistribution': "",
@@ -89,49 +90,49 @@ ipcRenderer.on("local_player_position", (event, data) => {
     if (Math.sqrt(Math.pow(local_player_position['current_postion'][0] - data['current_postion'][0], 2) + Math.pow(local_player_position['current_postion'][1] - data['current_postion'][1], 2)) > 20) {
         if (new Date().getTime() - current_map['update_time'] > 10) {
             globalThis['local_player_position'] = {current_postion: [0, 0]}
-            current_map['@id'] = undefined
+            globalThis['clear_data'] = true
         }
     }
     data['speed'] = get_speed(temp_road)
     if (temp_road.length > 5) {
         temp_road.shift()
-        if (data['speed'] < 1) {
-            let point = local_player_position['current_postion']
-            del_range_point(point, 6);
-            if (!check_point(data['current_postion'])) {
-                black_road.push(data['current_postion'])
-                let temp_text = new PIXI.Text(`*`, {
-                    fontFamily: 'JetBrainsMono-Bold',
-                    fontSize: 14,
-                    fill: "red",
-                });
-                temp_text.anchor.set(0.5);
-                temp_text.scale.x = 1 / 5
-                temp_text.scale.y = 1 / 5
-                temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
-                temp_text.name = point.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
-                // temp_text.x = ;
-                // container.addChild(temp_text)
-            }
-        }
+        // if (data['speed'] < 1) {
+        //     let point = local_player_position['current_postion']
+        //     del_range_point(point, 6);
+        //     if (!check_point(data['current_postion'])) {
+        //         black_road.push(data['current_postion'])
+        //         let temp_text = new PIXI.Text(`*`, {
+        //             fontFamily: 'JetBrainsMono-Bold',
+        //             fontSize: 14,
+        //             fill: "red",
+        //         });
+        //         temp_text.anchor.set(0.5);
+        //         temp_text.scale.x = 1 / 5
+        //         temp_text.scale.y = 1 / 5
+        //         temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
+        //         temp_text.name = point.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
+        //         // temp_text.x = ;
+        //         // container.addChild(temp_text)
+        //     }
+        // }
     }
     globalThis['local_player_position'] = data;
     globalThis['local_player_center_postion'] = rotatePoint(data['current_postion'][0], -data['current_postion'][1], 135)
-    if (!check_point(data['current_postion'])) {
-        white_road.push(data['current_postion'])
-        let temp_text = new PIXI.Text(`*`, {
-            fontFamily: 'JetBrainsMono-Bold',
-            fontSize: 14,
-            fill: "green",
-        });
-        temp_text.anchor.set(0.5);
-        temp_text.scale.x = 1 / 5
-        temp_text.scale.y = 1 / 5
-        temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
-        temp_text.name = data['current_postion'].toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
-        // temp_text.x = ;
-        // container.addChild(temp_text)
-    }
+    // if (!check_point(data['current_postion'])) {
+    //     white_road.push(data['current_postion'])
+    //     let temp_text = new PIXI.Text(`*`, {
+    //         fontFamily: 'JetBrainsMono-Bold',
+    //         fontSize: 14,
+    //         fill: "green",
+    //     });
+    //     temp_text.anchor.set(0.5);
+    //     temp_text.scale.x = 1 / 5
+    //     temp_text.scale.y = 1 / 5
+    //     temp_text.position.set(-data['current_postion'][0], data['current_postion'][1])
+    //     temp_text.name = data['current_postion'].toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
+    //     // temp_text.x = ;
+    //     // container.addChild(temp_text)
+    // }
 })
 ipcRenderer.on("monster_load", (event, data) => {
 
@@ -360,6 +361,7 @@ ipcRenderer.on("dungeon_load", (event, data) => {
 })
 ipcRenderer.on("club_load", (event, data) => {
     globalThis.club = data['club']
+    globalThis.union = data['union']
     // club = "Sun Never Set"
 })
 ipcRenderer.on("friend_load", (event, data) => {
@@ -408,90 +410,90 @@ ipcRenderer.on("map_load", (event, data) => {
         current_map['@rareresourcedistribution'] = data['id']
     }
     temp_road = []
-    new Promise(function () {
-        //     上传节点数据
-        if (globalThis['current_map']['@id']) {
-            let road_count = white_road.length
-            let road_obj = {
-                white_road: white_road,
-                black_road: black_road
-            }
-            let road_data = JSON.stringify(road_obj);
-            black_road = []
-            white_road = []
-            const formData = new FormData();
-
-            // 将数据添加到 FormData 对象中
-            formData.append('id', globalThis['current_map']['@id']);
-            formData.append('road_points', road_data);
-            formData.append('road_count', road_count);
-            fetch(web_host + '/api/set_road', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    "token": localStorage.getItem('token')
-                }
-            })
-        }
-    })
-
-    new Promise(function (resolve, reject) {
-        //     获取节点数据
-        if (data['id']) {
-            fetch(web_host + '/api/get_road?id=' + encodeURIComponent(data['id']), {
-                method: 'get',
-                headers: {
-                    "token": localStorage.getItem('token')
-                }
-
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data == null) {
-                        white_road = []
-                        return
-                    }
-                    if (data['roadCount'] > 0) {
-                        road_obj = JSON.parse(data['roadPoints'])
-                        for (let item of road_obj['white_road']) {
-                            white_road.push(item)
-                            // temp_img.zIndex = item['quality']
-                            // 创建数量文本
-                            let temp_text = new PIXI.Text(`*`, {
-                                fontFamily: 'JetBrainsMono-Bold',
-                                fontSize: 14,
-                                fill: "green",
-                            });
-                            temp_text.anchor.set(0.5);
-                            temp_text.scale.x = 1 / 5
-                            temp_text.scale.y = 1 / 5
-                            temp_text.position.set(-item[0], item[1])
-                            temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
-                            // temp_text.x = ;
-                            // container.addChild(temp_text)
-                        }
-                        for (let item of road_obj['black_road']) {
-                            black_road.push(item)
-
-                            // temp_img.zIndex = item['quality']
-                            // 创建数量文本
-                            let temp_text = new PIXI.Text(`*`, {
-                                fontFamily: 'JetBrainsMono-Bold',
-                                fontSize: 14,
-                                fill: "red",
-                            });
-                            temp_text.anchor.set(0.5);
-                            temp_text.scale.x = 1 / 5
-                            temp_text.scale.y = 1 / 5
-                            temp_text.position.set(-item[0], item[1])
-                            temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
-                            // temp_text.x = ;
-                            // container.addChild(temp_text)
-                        }
-                    }
-                })
-        }
-    })
+    // new Promise(function () {
+    //     //     上传节点数据
+    //     if (globalThis['current_map']['@id']) {
+    //         let road_count = white_road.length
+    //         let road_obj = {
+    //             white_road: white_road,
+    //             black_road: black_road
+    //         }
+    //         let road_data = JSON.stringify(road_obj);
+    //         black_road = []
+    //         white_road = []
+    //         const formData = new FormData();
+    //
+    //         // 将数据添加到 FormData 对象中
+    //         formData.append('id', globalThis['current_map']['@id']);
+    //         formData.append('road_points', road_data);
+    //         formData.append('road_count', road_count);
+    //         fetch(web_host + '/api/set_road', {
+    //             method: 'POST',
+    //             body: formData,
+    //             headers: {
+    //                 "token": localStorage.getItem('token')
+    //             }
+    //         })
+    //     }
+    // })
+    //
+    // new Promise(function (resolve, reject) {
+    //     //     获取节点数据
+    //     if (data['id']) {
+    //         fetch(web_host + '/api/get_road?id=' + encodeURIComponent(data['id']), {
+    //             method: 'get',
+    //             headers: {
+    //                 "token": localStorage.getItem('token')
+    //             }
+    //
+    //         })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 if (data == null) {
+    //                     white_road = []
+    //                     return
+    //                 }
+    //                 if (data['roadCount'] > 0) {
+    //                     road_obj = JSON.parse(data['roadPoints'])
+    //                     for (let item of road_obj['white_road']) {
+    //                         white_road.push(item)
+    //                         // temp_img.zIndex = item['quality']
+    //                         // 创建数量文本
+    //                         let temp_text = new PIXI.Text(`*`, {
+    //                             fontFamily: 'JetBrainsMono-Bold',
+    //                             fontSize: 14,
+    //                             fill: "green",
+    //                         });
+    //                         temp_text.anchor.set(0.5);
+    //                         temp_text.scale.x = 1 / 5
+    //                         temp_text.scale.y = 1 / 5
+    //                         temp_text.position.set(-item[0], item[1])
+    //                         temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
+    //                         // temp_text.x = ;
+    //                         // container.addChild(temp_text)
+    //                     }
+    //                     for (let item of road_obj['black_road']) {
+    //                         black_road.push(item)
+    //
+    //                         // temp_img.zIndex = item['quality']
+    //                         // 创建数量文本
+    //                         let temp_text = new PIXI.Text(`*`, {
+    //                             fontFamily: 'JetBrainsMono-Bold',
+    //                             fontSize: 14,
+    //                             fill: "red",
+    //                         });
+    //                         temp_text.anchor.set(0.5);
+    //                         temp_text.scale.x = 1 / 5
+    //                         temp_text.scale.y = 1 / 5
+    //                         temp_text.position.set(-item[0], item[1])
+    //                         temp_text.name = item.toString().replaceAll("-", "").replaceAll(",", "").replaceAll(".", "").substring(1, 10)
+    //                         // temp_text.x = ;
+    //                         // container.addChild(temp_text)
+    //                     }
+    //                 }
+    //             })
+    //     }
+    // })
     let new_map = world_list[data['id']] || {};
     new_map['@id'] ||= data['id']
     if (!new_map['@rareresourcedistribution']) new_map['@rareresourcedistribution'] = current_map['@rareresourcedistribution']

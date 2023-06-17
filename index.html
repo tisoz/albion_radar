@@ -287,9 +287,9 @@
         app.stage.addChild(temp_world_text)
 
         app.ticker.add((delta) => {
-            if (global['transparent']){
+            if (global['transparent']) {
                 app.renderer.background.alpha = 0;
-            }else{
+            } else {
                 app.renderer.background.alpha = 1;
             }
             globalThis.config = JSON.parse(localStorage.getItem("config"));
@@ -337,7 +337,7 @@
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
-                        if (item['hp_max'] && !item['hp']){
+                        if (item['hp_max'] && !item['hp']) {
                             item['hp'] = 0
                             item['uni_id'] = "player_dead.png"
                         }
@@ -371,7 +371,7 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
-                        if (globalThis['club'] === item['club']) {
+                        if (globalThis['club'] === item['club'] || globalThis['union'] === item['union']) {
                             if (globalThis.white_player_list.indexOf(item['name']) === -1) {
                                 globalThis.white_player_list.push(item['name'])
                             }

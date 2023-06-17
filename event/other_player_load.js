@@ -19,6 +19,7 @@ class Other_player_load {
         this.id = data[0];        //物资ID
         this.name = data[1];        //名称
         this.club = data[8] || "";     //名称
+        this.union = data[44] || "";     //名称
         this.hp = data[19]
         this.hp_max = data[20]
         this.lp = data[23]
