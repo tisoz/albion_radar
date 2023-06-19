@@ -371,7 +371,7 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
-                        if (globalThis['club'] === item['club'] || globalThis['union'] === item['union']) {
+                        if ((item['club'] !== "" && globalThis['club'] === item['club']) || (item['union'] !== "" && globalThis['union'] === item['union'])) {
                             if (globalThis.white_player_list.indexOf(item['name']) === -1) {
                                 globalThis.white_player_list.push(item['name'])
                             }
