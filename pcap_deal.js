@@ -160,6 +160,9 @@ ipcRenderer.on("monster_load", (event, data) => {
         case "隐藏宝藏":
             data['quality'] = 3;
             break
+        case "纪元造物":
+            data['quality'] = 3;
+            break
         case "水晶蜘蛛":
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
@@ -187,7 +190,7 @@ ipcRenderer.on("monster_load", (event, data) => {
     }
     if (mobs_list[data['type'] - 2]['Loot'] && mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
         if (mobs_list[data['type'] - 2]['Loot']['LootListReference'] instanceof Array)
-            for (let i of mobs_list[data['type'] - 3]['Loot']['LootListReference']) {
+            for (let i of mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
                 if (i['@name'].indexOf("DIRECTLOOTDROP_GATHERER") + 1) {
                     let name = findall(/T(\d)_DIRECTLOOTDROP_GATHERER_(\S+)/g, i['@name'])[0]
                     let level = findall(/T(\d)_DIRECTLOOTDR/g, i['@name'])[0]
