@@ -15,7 +15,7 @@ globalThis['current_map'] ||= {
 globalThis['white_road'] = []
 globalThis['black_road'] = []
 globalThis['temp_road'] = []
-globalThis['web_host'] = "http://8.218.34.95"
+globalThis['web_host'] = "http://game.tisoz.com"
 globalThis['local_player_center_postion'] = [0, 0]
 
 // globalThis['monster_white_list'] = {

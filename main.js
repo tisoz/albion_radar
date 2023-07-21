@@ -1,9 +1,8 @@
-const {app, BrowserWindow, session, ipcMain, globalShortcut} = require('electron')
+const {app, BrowserWindow, session, ipcMain, globalShortcut, clipboard} = require('electron')
 const path = require('path')
 
 
-
-process.env.no_proxy = "8.218.34.95";
+process.env.no_proxy = "game.tisoz.com";
 global.ignore = false;
 require("./pcap_model.js")
 
@@ -75,6 +74,9 @@ function createWindow() {
         }
 
     })
+    ipcMain.on('copy', (event, text) => {
+        clipboard.writeText(text);
+    });
     global.web_content = win.webContents;
 
     win.loadFile("./login.html")

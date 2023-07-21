@@ -143,6 +143,49 @@
         </div>
     </form>
 </script>
+<script id="invote" type="text/html">
+    <form class="layui-form" action="" lay-filter="invote" style="color: #0c0c0c;font-weight: bold">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">邀请绑定</div>
+                    <div class="layui-card-body">
+                        受邀规则：填写邀请人ID后获得福利（仅限月卡）<br>
+                        邀请人：每次续费月卡可获得7天时长<br>
+                        本人：每次续费月卡可获得3天时长<br>
+                        <br>
+                        <button id="bind_invote" type="button"
+                                class="layui-btn layui-btn-sm layui-btn-warm layui-btn-sm" style="display: none">绑定邀请人
+                        </button>
+                        <span id="bind_id"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">邀请信息</div>
+                    <div class="layui-card-body">
+                        邀请ID：<span id="invote_id"></span><br>
+                        <br>已获得的奖励：<br>
+                        <div id="card_list"></div>
+                        <br>
+                        <button id="copy_id" type="button" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm">
+                            复制邀请ID
+                        </button>
+                        <button id="copy_card" type="button"
+                                class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm">复制卡密
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            &nbsp;
+        </div>
+    </form>
+</script>
 <script>
     fetch('https://oss.tisoz.com/version.txt')
         .then(response => response.json())
@@ -224,6 +267,12 @@
         page_spider.id = "radar_setting_page"
         page_spider.innerHTML = document.getElementById("setting").innerHTML
         body_container.appendChild(page_spider)
+
+        let invote_page = document.createElement("div")
+        invote_page.setAttribute("style", "width:100%;height:100%;position:relative;display:none;overflow:scroll;padding-right:20px;")
+        invote_page.id = "invote_page"
+        invote_page.innerHTML = document.getElementById("invote").innerHTML
+        body_container.appendChild(invote_page)
         layui.form.render()
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
 
@@ -777,7 +826,7 @@
                 formData.append('type', 1);
                 formData.append('text', e.stack);
                 globalThis.update_time = new Date().getTime()
-                fetch('http://8.218.34.95/api/log', {
+                fetch('http://game.tisoz.com/api/log', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -856,6 +905,56 @@
                 if (new Date().getTime() - global.radar_move > 10) ipcRenderer.send('window-drag', window_position)
             }
         })
+        document.getElementById('copy_id').addEventListener('click', () => {
+            ipcRenderer.send("copy", "id")
+            layer.msg("已粘贴到剪贴版", {
+                icon: 1,
+                time: 1000
+            });
+        });
+        document.getElementById('copy_card').addEventListener('click', () => {
+            let text = document.getElementById("card_list").innerText;
+            ipcRenderer.send("copy", text)
+            layer.msg("已粘贴到剪贴版", {
+                icon: 1,
+                time: 1000
+            });
+        });
+
+        document.getElementById('bind_invote').addEventListener('click', () => {
+
+            layer.prompt({
+                formType: 0,
+                value: '',
+                title: '输入绑定ID',//自定义文本域宽高
+            }, function (value, index, elem) {
+                fetch('http://game.tisoz.com/api/bind_id?id=' + value, {
+                    method: 'get',
+                    headers: {
+                        "token": localStorage.getItem('token')
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000
+                        });
+                        if (data['status'] === true) {
+                            setTimeout(() => {
+                                document.getElementById("invote_control").click()
+                            }, 1000)
+                        }
+                    })
+                    .catch(error => {
+                        layer.msg(error, {icon: 2, time: 3000}, function () {
+                        });
+                    })
+                    .finally(() => {
+                        layer.close(index)
+                    })
+            });
+        });
         // 格三秒刷新资源
         setInterval(() => {
             globalThis['local_player_position']['changed_position'] = false;

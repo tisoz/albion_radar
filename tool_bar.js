@@ -115,6 +115,9 @@ toolbar.innerHTML =
                 </div>
             </dd>
         </dl>
+    </li>
+    <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
+        <a id="invote_control"  href="#" >邀请奖励</a>
     </li></form>`
 
 toolbar.setAttribute("class", "layui-nav")
@@ -156,6 +159,7 @@ script_layui.onload = () => {
     document.getElementById('close-button').addEventListener('click', () => {
         ipcRenderer.send('close-window');
     });
+
     document.getElementById('sub_log').addEventListener('click', () => {
         let data = {
             item_list: globalThis['item_list'],
@@ -175,7 +179,7 @@ script_layui.onload = () => {
         formData.append('type', 2);
         formData.append('text', JSON.stringify(data));
 
-        fetch('http://8.218.34.95/api/log', {
+        fetch('http://game.tisoz.com/api/log', {
             method: 'POST',
             body: formData,
             headers: {
@@ -214,9 +218,9 @@ script_layui.onload = () => {
         global['transparent'] = obj.elem.checked
         let style = document.getElementsByClassName("layui-bg-black")[0].style;
 
-        if (global['transparent']){
+        if (global['transparent']) {
             style.setProperty('background-color', 'transparent', 'important');
-        }else{
+        } else {
             style.removeProperty('background-color');
         }
 
@@ -260,4 +264,51 @@ document.getElementById("radar_setting").onclick = function () {
         item.style.display = "none";
     }
     document.getElementById("radar_setting_page").style.display = "block";
+}
+document.getElementById("invote_control").onclick = function () {
+    for (let item of body_container.children) {
+        item.style.display = "none";
+    }
+    document.getElementById("invote_page").style.display = "block";
+    fetch('http://game.tisoz.com/api/get_userinfo', {
+        method: 'get',
+        headers: {
+            "token": localStorage.getItem('token')
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("invote_id").innerText = data['id']
+            if (!data['invote']) {
+                document.getElementById("bind_invote").style.display = "block";
+            } else {
+                document.getElementById("bind_invote").style.display = "none";
+                document.getElementById("bind_id").innerText = "已绑定ID ：" + data['invote'];
+                document.getElementById("bind_id").classList.add("layui-badge")
+            }
+        })
+        .catch(error => {
+            layer.msg(error, {icon: 2, time: 3000}, function () {
+            });
+        });
+    fetch('http://game.tisoz.com/api/get_invotecard_list', {
+        method: 'get',
+        headers: {
+            "token": localStorage.getItem('token')
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            let text = "";
+            for (let item of data) {
+                text += `${item['cardNumber']}/${item['days']}天(${item['activeStatus'] === 0 ? "未使用" : "已使用"})(${item['personal']})<br>`
+            }
+            document.getElementById("card_list").innerHTML = text
+        })
+        .catch(error => {
+            layer.msg(error, {icon: 2, time: 3000}, function () {
+            });
+        });
+
+
 }
