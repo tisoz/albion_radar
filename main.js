@@ -13,19 +13,22 @@ function createWindow() {
     // nodeIntegration: 如果设置为 true，则在渲染进程中启用 Node.js 整合。这允许渲染进程使用 Node.js 的 API。
     // contextIsolation: 如果设置为 true，则启用上下文隔离。这样可以防止恶意网站对你的应用程序造成安全威胁，但也会使得在渲染进程和主进程之间传递数据变得更加复杂。如果设置为 false，则禁用上下文隔离。
     app.commandLine.appendSwitch('no-proxy-server');
+    app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
     session.defaultSession.setProxy({proxyRules: 'direct://'}).then((res) => {
         console.log(res)
     })
     const win = new BrowserWindow({
-        width: 570,
+        width: 600,
         height: 380,
-        minWidth: 570,
+        minWidth: 600,
         minHeight: 380,
         frame: false,
         transparent: true,
         icon: "./favicon.ico",
         webPreferences: {
             webSecurity: false,
+            backgroundThrottling: false,
             devTools: !app.isPackaged,
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
