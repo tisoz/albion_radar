@@ -113,6 +113,10 @@ toolbar.innerHTML =
                     <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口穿透 : F6快捷键</lable>
                         
                 </div>
+                <div class="layui-form-item">
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">遇敌提示音 : F7快捷键</lable>
+                        
+                </div>
             </dd>
         </dl>
     </li>
@@ -230,6 +234,12 @@ script_layui.onload = () => {
             icon: 1,
             time: 1000
         });
+    })
+    ipcRenderer.on("change_voice_tip", function (event, args) {
+        let setting = JSON.parse(localStorage.getItem("config"));
+        setting['tip_for_player_sound'] = !setting['tip_for_player_sound']
+        layui.form.val("setting", setting)
+        localStorage.setItem("config",JSON.stringify(setting))
     })
     layui.form.render()
 }

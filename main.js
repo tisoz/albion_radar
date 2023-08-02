@@ -109,6 +109,9 @@ app.whenReady().then(() => {
         win.setIgnoreMouseEvents(ignore)
         global.web_content.send("click_through", ignore)
     })
+    globalShortcut.register('F7', () => {
+        global.web_content.send("change_voice_tip", 1)
+    })
 })
 
 app.on('window-all-closed', () => {
