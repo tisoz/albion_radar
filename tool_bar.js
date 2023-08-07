@@ -183,7 +183,7 @@ script_layui.onload = () => {
         formData.append('type', 2);
         formData.append('text', JSON.stringify(data));
 
-        fetch('http://game.tisoz.com/api/log', {
+        fetch('http://8.218.34.95/api/log', {
             method: 'POST',
             body: formData,
             headers: {
@@ -280,7 +280,7 @@ document.getElementById("invote_control").onclick = function () {
         item.style.display = "none";
     }
     document.getElementById("invote_page").style.display = "block";
-    fetch('http://game.tisoz.com/api/get_userinfo', {
+    fetch('http://8.218.34.95/api/get_userinfo', {
         method: 'get',
         headers: {
             "token": localStorage.getItem('token')
@@ -301,7 +301,7 @@ document.getElementById("invote_control").onclick = function () {
             layer.msg(error, {icon: 2, time: 3000}, function () {
             });
         });
-    fetch('http://game.tisoz.com/api/get_invotecard_list', {
+    fetch('http://8.218.34.95/api/get_invotecard_list', {
         method: 'get',
         headers: {
             "token": localStorage.getItem('token')

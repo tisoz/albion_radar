@@ -2,7 +2,7 @@ const {app, BrowserWindow, session, ipcMain, globalShortcut, clipboard} = requir
 const path = require('path')
 
 
-process.env.no_proxy = "game.tisoz.com";
+process.env.no_proxy = "8.218.34.95";
 global.ignore = false;
 require("./pcap_model.js")
 

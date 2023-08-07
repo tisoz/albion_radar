@@ -346,7 +346,7 @@
             }
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
-            temp_world_text.text = `当前地图:${current_map['@displayname']}\n当前速度:${local_player_position['speed']}`
+            temp_world_text.text = `当前地图:${current_map['@displayname']}\n当前速度:${local_player_position['speed']}\n当前提示音:${config['tip_for_player_sound'] ? "开启" : "关闭"}`
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
             temp_world_text.style.fill = text_color;
@@ -829,7 +829,7 @@
                 formData.append('type', 1);
                 formData.append('text', e.stack);
                 globalThis.update_time = new Date().getTime()
-                fetch('http://game.tisoz.com/api/log', {
+                fetch('http://8.218.34.95/api/log', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -931,7 +931,7 @@
                 value: '',
                 title: '输入绑定ID',//自定义文本域宽高
             }, function (value, index, elem) {
-                fetch('http://game.tisoz.com/api/bind_id?id=' + value, {
+                fetch('http://8.218.34.95/api/bind_id?id=' + value, {
                     method: 'get',
                     headers: {
                         "token": localStorage.getItem('token')
