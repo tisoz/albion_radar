@@ -20,8 +20,10 @@ ipcMain.on('login', (event, info) => {
     manager.setId(user['id'])
     pcap_session = pcap.createSession(info['dev_name'], {filter: filter, buffer_timeout: 0})
     pcap_session.on('packet', function (raw_packet) {
+        // console.log(raw_packet)
         var packet = pcap.decode.packet(raw_packet),
             data = packet.payload.payload.payload.data;
+        // data = data.slice(10, data.length)
         manager.handle(data);
     });
     pcap_session.warningHandler = function (text) {
