@@ -386,6 +386,20 @@
                         }
                         continue
                     }
+                    if (config['tip_for_player_sound'] && globalThis.white_player_list.indexOf(item['name']) === -1 && !item['tiped']) {
+                        if (current_map['@rareresourcedistribution'] !== "DEFAULT" && ((item['uni_id'].indexOf("red") + 1)
+                            || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
+                            || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
+                            || (current_map['@type'].indexOf("BLACK") + 1)
+                            || (current_map['@type'].indexOf("RED") + 1)
+                            || (!current_map['@displayname']))) {
+                            let temp_audio = new Audio("./resource/tip.mp3");
+                            item['tiped'] = true;
+                            new Promise((resolve, reject) => {
+                                temp_audio.play()
+                            })
+                        }
+                    }
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
@@ -428,19 +442,6 @@
                                 globalThis.white_player_list.push(item['name'])
                             }
                         }
-                        if (config['tip_for_player_sound'] && globalThis.white_player_list.indexOf(item['name']) === -1) {
-                            if (current_map['@rareresourcedistribution'] !== "DEFAULT" && ((item['uni_id'].indexOf("red") + 1)
-                                || (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
-                                || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
-                                || (current_map['@type'].indexOf("BLACK") + 1)
-                                || (current_map['@type'].indexOf("RED") + 1))) {
-                                let temp_audio = new Audio("./resource/tip.mp3");
-                                new Promise((resolve, reject) => {
-                                    temp_audio.play()
-                                })
-                            }
-                        }
-
 
                         let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id']);
                         temp_img.x = -item['position'][0];

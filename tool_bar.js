@@ -174,7 +174,8 @@ script_layui.onload = () => {
             temp_list: globalThis['temp_list'],
             local_player_position: globalThis['local_player_position'],
             white_player_list: globalThis['white_player_list'],
-            current_map: globalThis['current_map']
+            current_map: globalThis['current_map'],
+            config: globalThis['config']
         };
 
 
@@ -239,7 +240,7 @@ script_layui.onload = () => {
         let setting = JSON.parse(localStorage.getItem("config"));
         setting['tip_for_player_sound'] = !setting['tip_for_player_sound']
         layui.form.val("setting", setting)
-        localStorage.setItem("config",JSON.stringify(setting))
+        localStorage.setItem("config", JSON.stringify(setting))
     })
     layui.form.render()
 }
