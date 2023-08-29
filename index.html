@@ -963,7 +963,27 @@
         setInterval(() => {
             globalThis['local_player_position']['changed_position'] = false;
         }, 3000);
-
+        fetch('http://8.218.34.95/api/get_invotecard_list', {
+            method: 'get',
+            headers: {
+                "token": localStorage.getItem('token')
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                let flag = false;
+                for (let item of data) {
+                    if (item['activeStatus'] === 0) flag = true
+                }
+                if (flag) {
+                    layer.msg("邀请奖励存在奖励未领取，前往邀请领取卡密", {icon: 1, time: 3000}, function () {
+                    });
+                }
+            })
+            .catch(error => {
+                layer.msg(error, {icon: 2, time: 3000}, function () {
+                });
+            });
     }
 
 
