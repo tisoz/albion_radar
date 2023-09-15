@@ -199,7 +199,7 @@ ipcRenderer.on("monster_load", (event, data) => {
                     data['level'] = level;
                     data['res_id'] = `T${data['level']}_${data['resource']}_LEVEL${data['quality']}@${data['quality']}`;
                     data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "");
-
+                    data['res_type'] = name;
                     switch (name) {
                         case "WOOD":
                             name = "木头";

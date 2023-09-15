@@ -34,6 +34,6 @@
       "!photon-packet-parser/classes/PhotonCommand.js"
     ]
   },
-  "version": "1.3.6",
+  "version": "1.3.7",
   "name": "Rtadar"
 }

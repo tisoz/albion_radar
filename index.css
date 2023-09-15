@@ -3,15 +3,27 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
+
 * {
     user-select: none;
 }
+
 dd {
     font-family: "JetBrains Mono Bold Italic", Arial, serif;
     font-size: 14px;
     color: #333;
 }
 
+#tool_bar {
+    -webkit-app-region: drag;
+}
+#tool_bar button,
+#tool_bar a,
+#tool_bar input[type="checkbox"],
+#tool_bar .layui-slider-wrap-btn,
+#tool_bar .layui-unselect {
+    -webkit-app-region: no-drag;
+}
 /*@font-face {*/
 /*    font-family: "JetBrains Mono Bold Italic";*/
 /*    src: url("./JetBrainsMono-Bold.woff2") format("woff2");*/

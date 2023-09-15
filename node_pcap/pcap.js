@@ -1,9 +1,9 @@
-var util          = require("util");
-var events        = require("events");
-var binding       = require("./build/Release/pcap_binding");
-var decode        = require("./decode").decode;
-var tcp_tracker   = require("./tcp_tracker");
-var DNSCache      = require("./dns_cache");
+var util = require("util");
+var events = require("events");
+var binding = require("./build/Release/pcap_binding");
+var decode = require("./decode").decode;
+var tcp_tracker = require("./tcp_tracker");
+var DNSCache = require("./dns_cache");
 
 exports.decode = decode;
 exports.TCPTracker = tcp_tracker.TCPTracker;
@@ -44,7 +44,7 @@ function PcapSession(is_live, device_name, filter, buffer_size, snap_length, out
     if (typeof this.snap_length === "number" && !isNaN(this.snap_length)) {
         this.snap_length = Math.round(this.snap_length);
     } else {
-        this.snap_length = 65535; // Default snap length is 65535
+        this.snap_length = 65535 * 64 * 5; // Default snap length is 65535
     }
 
     if (typeof this.buffer_timeout === "number" && !isNaN(this.buffer_timeout)) {
@@ -66,9 +66,10 @@ function PcapSession(is_live, device_name, filter, buffer_size, snap_length, out
     }
 
     this.opened = true;
-    
+
     events.EventEmitter.call(this);
 }
+
 util.inherits(PcapSession, events.EventEmitter);
 
 exports.lib_version = binding.lib_version();

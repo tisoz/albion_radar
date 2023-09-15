@@ -64,6 +64,9 @@ css_layui.setAttribute("href", "./layui/css/layui.css");
 let script_layui = document.createElement("script");
 script_layui.setAttribute("src", "./layui/layui.js");
 
+let i18n = document.createElement("script");
+i18n.setAttribute("src", "./i18n.js");
+
 var tool_container = document.createElement("div");
 tool_container.id = "tool_bar"
 tool_container.setAttribute("style", "width:100%;")
@@ -92,6 +95,9 @@ toolbar.innerHTML =
             <dd style="padding: 10px">
                 <div class="layui-form-item">
                     <div id="opticate"></div>
+                </div>
+                <div class="layui-form-item">
+                    <div id="backpack_top"></div>
                 </div>
                 <div class="layui-form-item">
                     <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口置顶</lable>
@@ -216,6 +222,17 @@ script_layui.onload = () => {
             return `透明度:${value}%`;
         }
     });
+    global['backpack_top'] = 0
+    layui.slider.render({
+        elem: '#backpack_top'
+        , value: 0 //初始值,
+        , min: 0
+        , max: 100
+        , setTips: function (value) {
+            global['backpack_top'] = value;
+            return `装备显示下移：${value}%`;
+        }
+    });
     layui.form.on('switch(set_top)', function (obj) {
         ipcRenderer.send('window_top', obj.elem.checked)
     });
@@ -249,6 +266,7 @@ document.body.appendChild(script_layui);
 document.body.appendChild(tool_container)
 // document.body.appendChild(frame_container)
 document.body.appendChild(body_container)
+document.body.appendChild(i18n)
 
 
 //

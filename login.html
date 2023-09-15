@@ -21,27 +21,28 @@
             <div id="sel" class="layui-input"
                  style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
                 <select id="dev" name="dev" lay-verify="required">
-                    <option value="">选择网卡适配</option>
+                    <option language="login_elink" value=""></option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-username admin-icon admin-icon-username"></i>
-            <input type="text" id="username" name="username" placeholder="请输入用户名"
+            <input type="text" id="username" name="username"
+                   language="login_name"
                    autocomplete="off"
                    class="layui-input admin-input admin-input-username">
         </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-password admin-icon admin-icon-password"></i>
             <input type="password" id="password" name="password"
-                   placeholder="请输入密码"
+                   language="login_pwd"
                    autocomplete="off"
                    class="layui-input admin-input">
         </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-template-1 admin-icon admin-icon-username"></i>
             <input type="text" id="card" name="card"
-                   placeholder="请输入卡密注册(已激活可忽略)"
+                   language="login_card"
                    autocomplete="off"
                    class="layui-input admin-input">
         </div>
@@ -60,9 +61,13 @@
     let script_layui = document.createElement("script");
     script_layui.setAttribute("src", "./layui/layui.js");
 
+    let i18n = document.createElement("script");
+    i18n.setAttribute("src", "./i18n.js");
+
 
     document.head.appendChild(css_layui);
     document.body.appendChild(script_layui);
+    document.body.appendChild(i18n);
 
     window.onload = () => {
         let dev = document.getElementById("dev")
@@ -151,6 +156,7 @@
         background-color: #f2f2f2;
         /*background-color: transparent;*/
     }
+
     #container {
         width: 100%;
         height: 100%;

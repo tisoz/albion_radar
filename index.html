@@ -9,48 +9,48 @@
 <script id="setting" type="text/html">
     <form class="layui-form" action="" lay-filter="setting">
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend>玩家配置</legend>
+            <legend language="player_setting"></legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示玩家装备</label>
+            <label class="layui-form-label" style="width: auto" language="show_player_equipment"></label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_player_backpack" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">危险区遭遇时在坐骑上显示绿色</label>
+            <label class="layui-form-label" style="width: auto" language="show_green_on_mount_in_danger"></label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_player_in_danger_show_green" lay-skin="switch"
                        lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">红黑区遇敌提示音（F7快捷键）</label>
+            <label class="layui-form-label" style="width: auto" language="red_black_area_enemy_sound_alert"></label>
             <div class="layui-input-block">
                 <input type="checkbox" name="tip_for_player_sound" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend>友方单位配置</legend>
+            <legend language="friend_unit_setting"></legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">屏蔽队友/盟友</label>
+            <label class="layui-form-label" style="width: auto" language="block_teammate_alliance">屏蔽队友/盟友</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_green_friend" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend>洞穴配置</legend>
+            <legend language="cave_setting">洞穴配置</legend>
         </fieldset>
         <div class="layui-row">
             <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-                <label class="layui-form-label" style="width: auto">显示普通洞穴</label>
+                <label class="layui-form-label" style="width: auto" language="show_common_cave">显示普通洞穴</label>
                 <div class="layui-input-block">
                     <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
                 </div>
             </div>
             <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-                <label class="layui-form-label" style="width: auto">显示稀有洞穴</label>
+                <label class="layui-form-label" style="width: auto" language="show_rare_cave">显示稀有洞穴</label>
                 <div class="layui-input-block">
                     <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
                 </div>
@@ -58,61 +58,64 @@
         </div>
 
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend>怪物配置</legend>
+            <legend language="monster_setting">怪物配置</legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示普通怪物</label>
+            <label class="layui-form-label" style="width: auto" language="show_common_monster">显示普通怪物</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_monster_normal" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示资源怪物</label>
+            <label class="layui-form-label" style="width: auto" language="show_resource_monster">显示资源怪物</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示稀有怪物(附魔品质>1)</label>
+            <label class="layui-form-label" style="width: auto"
+                   language="show_rare_monster">显示稀有怪物(附魔品质>1)</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">关闭怪物名称显示</label>
+            <label class="layui-form-label" style="width: auto"
+                   language="close_monster_name_display">关闭怪物名称显示</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_no_mobs_name" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示迷雾精灵</label>
+            <label class="layui-form-label" style="width: auto" language="show_mist_spirit">显示迷雾精灵</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_monster_mist" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示灯笼怪</label>
+            <label class="layui-form-label" style="width: auto" language="show_cage_monster">显示灯笼怪</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_cage_mist" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend>物资配置</legend>
+            <legend language="resource_setting">物资配置</legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label">物资类型</label>
+            <label class="layui-form-label" language="resource_type">物资类型</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="filter_item_rock" title="石头">
-                <input type="checkbox" name="filter_item_ore" title="矿物">
-                <input type="checkbox" name="filter_item_wood" title="树木">
-                <input type="checkbox" name="filter_item_fiber" title="棉花">
+                <input type="checkbox" name="filter_item_rock" language="stone" title="石头">
+                <input type="checkbox" name="filter_item_ore" language="mineral" title="矿物">
+                <input type="checkbox" name="filter_item_wood" language="wood" title="树木">
+                <input type="checkbox" name="filter_item_fiber" language="cotton" title="棉花">
+                <input type="checkbox" name="filter_item_hide" language="leather" title="皮革">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">物资等级</label>
+            <label class="layui-form-label" language="resource_level">物资等级</label>
             <div class="layui-input-inline">
                 <select name="filter_item_level">
-                    <option value="0">全部</option>
+                    <option value="0" language="all">全部</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -123,7 +126,7 @@
             </div>
             <div class="layui-input-inline">
                 <select name="filter_item_quality">
-                    <option value="0">全部</option>
+                    <option value="0" language="all">全部</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -133,7 +136,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto">显示数量在0以上的资源</label>
+            <label class="layui-form-label" style="width: auto" language="show_resources_above_zero">显示数量在0以上的资源</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_item_show_zero_count" lay-skin="switch" lay-text="ON|OFF">
             </div>
@@ -201,6 +204,7 @@
         "filter_item_ore": "off",
         "filter_item_wood": "off",
         "filter_item_fiber": "off",
+        "filter_item_hide": "off",
         "filter_item_level": "0",
         "filter_item_quality": "0",
         "filter_show_monster_normal": "off",
@@ -214,7 +218,8 @@
         "tip_for_player_sound": "off",
         "filter_show_no_mobs_name": "off",
         "filter_show_cage_mist": "off",
-        "filter_green_friend": "off"
+        "filter_green_friend": "off",
+        "backpack_top": 0
     }
 
     // 配置文件
@@ -376,7 +381,6 @@
             try {
                 let player_count = 0;
                 for (let index in player_list) {
-                    player_count += 1;
                     item = player_list[index]
                     if (config['filter_green_friend'] && globalThis.white_player_list.indexOf(item['name']) + 1) {
                         if (item['in_container']) {
@@ -400,6 +404,7 @@
                             })
                         }
                     }
+                    player_count += 1;
                     if (item['in_container']) {
                         let temp_img = container.getChildByName(item['in_container_index']);
                         if (temp_img == null || item == null) continue
@@ -413,7 +418,7 @@
                             if (temp_back != null) {
                                 temp_back.scale.x = 1 / app.stage.scale.x / 2
                                 temp_back.scale.y = 1 / app.stage.scale.y / 2
-                                temp_back.y = (player_count - 1) * 70 / app.stage.scale.y
+                                temp_back.y = ((player_count - 1) * 70 + 500 * global.backpack_top / 100) / app.stage.scale.y
                             }
                         }
                         // 计算物资位置与玩家位置
@@ -480,8 +485,7 @@
                             backpack.name = item['id'].toString();
                             backpack.scale.x = 1 / app.stage.scale.x / 2
                             backpack.scale.y = 1 / app.stage.scale.y / 2
-                            backpack.y = (backpack_container.children.length) * 70 / app.stage.scale.y
-
+                            backpack.y = ((backpack_container.children.length) * 70 + 500 * global.backpack_top / 100) / app.stage.scale.y
                             let powersum = 0
                             for (let i in item['backpack']) {
                                 let index = item['backpack'][i];
@@ -646,21 +650,73 @@
                 //加载怪物信息
                 for (let index in monster_list) {
                     item = monster_list[index]
+                    if (item['level'] < config['filter_item_level']) {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (item['quality'] < config['filter_item_quality']) {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (!config['filter_item_ore'] && item['res_type'] === "ORE") {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (!config['filter_item_wood'] && item['res_type'] === "WOOD") {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (!config['filter_item_rock'] && item['res_type'] === "ROCK") {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (!config['filter_item_fiber'] && item['res_type'] === "FIBER") {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (!config['filter_item_hide'] && item['res_type'] === "HIDE") {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
                     if (!config['filter_show_monster_normal']) {
                         if (item['quality'] < 1 && item['type'] > 10 && !item['resource']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
                             continue
                         }
                     }
                     if (!config['filter_show_monster_quality']) {
                         if (item['quality'] >= 1 && item['type'] > 10) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
                             continue
                         }
                     }
                     if (!config['filter_show_monster_mist']) {
                         if (item['type'] < 10) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
                             continue
                         }
                     }
@@ -670,6 +726,7 @@
                     if (!config['filter_show_mobs_icon_for_item']) {
                         if (item['resource']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
                             continue
                         }
                     }
@@ -895,20 +952,20 @@
 
         let tool_bar = document.getElementById('tool_bar')
         let window_position = []
-        document.addEventListener('mousedown', (event) => {
-            if (event.button === 0) {
-                window_position = {x: event.screenX, y: event.screenY}
-                document.body.style.cursor = "move";
-            }
-        })
-        document.addEventListener('mouseup', (event) => {
-            if (event.button === 0) {
-                window_position.x = event.screenX - window_position.x
-                window_position.y = event.screenY - window_position.y
-                document.body.style.cursor = "auto";
-                if (new Date().getTime() - global.radar_move > 10) ipcRenderer.send('window-drag', window_position)
-            }
-        })
+        // document.addEventListener('mousedown', (event) => {
+        //     if (event.button === 0) {
+        //         window_position = {x: event.screenX, y: event.screenY}
+        //         document.body.style.cursor = "move";
+        //     }
+        // })
+        // document.addEventListener('mouseup', (event) => {
+        //     if (event.button === 0) {
+        //         window_position.x = event.screenX - window_position.x
+        //         window_position.y = event.screenY - window_position.y
+        //         document.body.style.cursor = "auto";
+        //         if (new Date().getTime() - global.radar_move > 10) ipcRenderer.send('window-drag', window_position)
+        //     }
+        // })
         document.getElementById('copy_id').addEventListener('click', () => {
             ipcRenderer.send("copy", "id")
             layer.msg("已粘贴到剪贴版", {
