@@ -9,29 +9,30 @@
 <script id="setting" type="text/html">
     <form class="layui-form" action="" lay-filter="setting">
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="player_setting"></legend>
+            <legend language="player_setting">友方单位配置</legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_player_equipment"></label>
+            <label class="layui-form-label" style="width: auto" language="show_player_equipment">显示玩家装备</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_player_backpack" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_green_on_mount_in_danger"></label>
+            <label class="layui-form-label" style="width: auto"
+                   language="show_green_on_mount_in_danger">危险区遭遇时在坐骑上显示绿色</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_show_player_in_danger_show_green" lay-skin="switch"
                        lay-text="ON|OFF">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="red_black_area_enemy_sound_alert"></label>
+            <label class="layui-form-label" style="width: auto" language="red_black_area_enemy_sound_alert">红黑区遇敌提示音（F7快捷键）</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="tip_for_player_sound" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="friend_unit_setting"></legend>
+            <legend language="friend_unit_setting">屏蔽队友/盟友</legend>
         </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: auto" language="block_teammate_alliance">屏蔽队友/盟友</label>
@@ -113,30 +114,34 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" language="resource_level">物资等级</label>
-            <div class="layui-input-inline">
-                <select name="filter_item_level">
-                    <option value="0" language="all">全部</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </div>
-            <div class="layui-input-inline">
-                <select name="filter_item_quality">
-                    <option value="0" language="all">全部</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
 
-                    <option value="4">4</option>
-                </select>
-            </div>
+            <div id="resource_transfer"></div>
+            <!--            -->
+            <!--            <div class="layui-input-inline">-->
+            <!--                <select name="filter_item_level">-->
+            <!--                    <option value="0" language="all">全部</option>-->
+            <!--                    <option value="3">3</option>-->
+            <!--                    <option value="4">4</option>-->
+            <!--                    <option value="5">5</option>-->
+            <!--                    <option value="6">6</option>-->
+            <!--                    <option value="7">7</option>-->
+            <!--                    <option value="8">8</option>-->
+            <!--                </select>-->
+            <!--            </div>-->
+            <!--            <div class="layui-input-inline">-->
+            <!--                <select name="filter_item_quality">-->
+            <!--                    <option value="0" language="all">全部</option>-->
+            <!--                    <option value="1">1</option>-->
+            <!--                    <option value="2">2</option>-->
+            <!--                    <option value="3">3</option>-->
+
+            <!--                    <option value="4">4</option>-->
+            <!--                </select>-->
+            <!--            </div>-->
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_resources_above_zero">显示数量在0以上的资源</label>
+            <label class="layui-form-label" style="width: auto"
+                   language="show_resources_above_zero">显示数量在0以上的资源</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="filter_item_show_zero_count" lay-skin="switch" lay-text="ON|OFF">
             </div>
@@ -151,14 +156,15 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md6">
                 <div class="layui-card">
-                    <div class="layui-card-header">邀请绑定</div>
+                    <div class="layui-card-header" language="Invite_bind">邀请绑定</div>
                     <div class="layui-card-body">
-                        受邀规则：填写邀请人ID后获得福利（仅限月卡）<br>
-                        邀请人：每次续费月卡可获得7天时长<br>
-                        本人：每次续费月卡可获得3天时长<br>
+                        <span language="Invite_information1">受邀规则：填写邀请人ID后获得福利（仅限月卡）</span><br>
+                        <span language="Invite_information2">邀请人：每次续费月卡可获得7天时长</span><br>
+                        <span language="Invite_information3">本人：每次续费月卡可获得3天时长</span><br>
                         <br>
                         <button id="bind_invote" type="button"
-                                class="layui-btn layui-btn-sm layui-btn-warm layui-btn-sm" style="display: none">绑定邀请人
+                                class="layui-btn layui-btn-sm layui-btn-warm layui-btn-sm" style="display: none"
+                                language="bind_inviter">绑定邀请人
                         </button>
                         <span id="bind_id"></span>
                     </div>
@@ -166,17 +172,19 @@
             </div>
             <div class="layui-col-md6">
                 <div class="layui-card">
-                    <div class="layui-card-header">邀请信息</div>
+                    <div class="layui-card-header" language="Invite_information">邀请信息</div>
                     <div class="layui-card-body">
-                        邀请ID：<span id="invote_id"></span><br>
-                        <br>已获得的奖励：<br>
+                        <span language="Invite_id">邀请ID：</span>
+                        <span id="invote_id"></span><br><br>
+                        <span language="Rewards_received">已获得的奖励：</span><br>
                         <div id="card_list"></div>
                         <br>
-                        <button id="copy_id" type="button" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm">
-                            复制邀请ID
+                        <button id="copy_id" type="button" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm"
+                                language="copy_id">复制邀请ID
                         </button>
                         <button id="copy_card" type="button"
-                                class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm">复制卡密
+                                class="layui-btn layui-btn-sm layui-btn-normal layui-btn-sm"
+                                language="copy_card">复制卡密
                         </button>
                     </div>
 
@@ -198,7 +206,7 @@
         .then(data => console.log(data))
         .catch(error => console.error(error))
 
-    const raw_json_deault = {
+    let raw_json_deault = {
         "filter_show_player_backpack": "off",
         "filter_item_rock": "off",
         "filter_item_ore": "off",
@@ -207,6 +215,7 @@
         "filter_item_hide": "off",
         "filter_item_level": "0",
         "filter_item_quality": "0",
+        "filter_item_resouce": [],
         "filter_show_monster_normal": "off",
         "filter_show_monster_quality": "off",
         "filter_show_monster_mist": "off",
@@ -224,6 +233,8 @@
 
     // 配置文件
     setInterval(() => {
+        raw_json_deault = Object.assign(raw_json_deault, {"filter_item_resouce": JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resouce'] || []})
+
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
             if (value === "on") {
                 return true;
@@ -245,8 +256,7 @@
         localStorage.setItem("config", save_config)
     }, 3000)
 
-
-    window.onload = () => {
+    document.addEventListener("lanDataLoaded", () => {
         window.addEventListener('keydown', (event) => {
             // 如果按下 F5
             if (event.key === 'F5') {
@@ -283,6 +293,30 @@
         body_container.appendChild(invote_page)
         layui.form.render()
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
+        let data = []
+        for (let i in new Array(6).fill(1)) {
+            for (let o in new Array(5).fill(1)) {
+                data.push({"value": `${parseInt(i) + 3}.${o}`, "title": `${parseInt(i) + 3}.${o}`})
+            }
+        }
+        // change_change(localStorage.getItem("language"))
+        layui.transfer.render({
+            elem: '#resource_transfer'
+            , title: [lan_data['block_resource_list'], lan_data['white_resource_list']]  //自定义标题
+            , data: data
+            //,width: 150 //定义宽度
+            , height: 210 //定义高度
+            , id: "resource_transfer"
+            , value: JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resouce'] || []
+            , onchange: () => {
+                let config = JSON.parse(localStorage.getItem("config"))
+                let result_list = layui.transfer.getData("resource_transfer")
+                for (let i in result_list) result_list[i] = result_list[i].value
+                config['filter_item_resouce'] = result_list
+                localStorage.setItem("config", JSON.stringify(config))
+            }
+        })
+
 
         let app = new PIXI.Application({
             width: 400, height: 300, backgroundAlpha: 0,
@@ -332,7 +366,7 @@
 
 
         // 添加地图信息
-        let temp_world_text = new PIXI.Text(`当前地图:${current_map['@displayname']}`, {
+        let temp_world_text = new PIXI.Text(`${lan_data['current_map']}:${current_map['@displayname']}`, {
             align: "right",
             fontFamily: 'JetBrainsMono-Bold',
             fontSize: 14,
@@ -351,7 +385,7 @@
             }
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
-            temp_world_text.text = `当前地图:${current_map['@displayname']}\n当前速度:${local_player_position['speed']}\n当前提示音:${config['tip_for_player_sound'] ? "开启" : "关闭"}`
+            temp_world_text.text = `${lan_data['current_map']}:${current_map['@displayname']}\n${lan_data['current_speed']}:${local_player_position['speed']}\n${lan_data['current_tip']}:${config['tip_for_player_sound'] ? lan_data['on'] : lan_data['off']}`
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
             temp_world_text.style.fill = text_color;
@@ -425,7 +459,7 @@
                         let x = item['position'][0] - globalThis['local_player_position']['current_postion'][0];
                         let y = item['position'][1] - globalThis['local_player_position']['current_postion'][1];
 
-                        let state_text = item['mounted'] ? "骑乘" : "下马";
+                        let state_text = item['mounted'] ? lan_data['up'] : lan_data['down'];
                         let distance = Math.sqrt(x * x + y * y).toFixed(2)
                         if (distance > 80) {
                             if (globalThis['local_player_position']['current_postion'][0] !== 0) {
@@ -507,7 +541,7 @@
                                 backpack.addChild(model);
                             }
 
-                            temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})(强度:${parseInt(powersum / 6)})`, {
+                            temp_text = new PIXI.Text(`${item['name']}(${item['hp']}/${item['hp_max']})(${lan_data['ip']}:${parseInt(powersum / 6)})`, {
                                 fontFamily: 'JetBrainsMono-Bold',
                                 fontSize: 34,
                                 fill: 'white',
@@ -575,32 +609,46 @@
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
-                    if (item['level'] < config['filter_item_level']) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
-                        continue
-                    }
-                    if (item['quality'] < config['filter_item_quality']) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                    if (!(config['filter_item_resouce'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (!config['filter_item_ore'] && item['type'] === 23) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (!config['filter_item_wood'] && item['type'] === 0) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (!config['filter_item_rock'] && item['type'] === 6) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (!config['filter_item_fiber'] && item['type'] === 12) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (config['filter_item_show_zero_count'] && item['count'] === 0) {
-                        if (item['in_container']) container.removeChild(container.getChildByName(item['id'].toString()))
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
                         continue
                     }
                     if (item['in_container']) {
@@ -650,14 +698,7 @@
                 //加载怪物信息
                 for (let index in monster_list) {
                     item = monster_list[index]
-                    if (item['level'] < config['filter_item_level']) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (item['quality'] < config['filter_item_quality']) {
+                    if (item['res_type'] && !(config['filter_item_resouce'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
@@ -699,14 +740,14 @@
                         }
                         continue
                     }
-                    if (!config['filter_show_monster_normal']) {
+                    if (!config['filter_show_monster_normal'] && !item['res_type']) {
                         if (item['quality'] < 1 && item['type'] > 10 && !item['resource']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
                             continue
                         }
                     }
-                    if (!config['filter_show_monster_quality']) {
+                    if (!config['filter_show_monster_quality'] && !item['res_type']) {
                         if (item['quality'] >= 1 && item['type'] > 10) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
@@ -968,7 +1009,7 @@
         // })
         document.getElementById('copy_id').addEventListener('click', () => {
             ipcRenderer.send("copy", "id")
-            layer.msg("已粘贴到剪贴版", {
+            layer.msg(lan_data['copied_info'], {
                 icon: 1,
                 time: 1000
             });
@@ -976,7 +1017,7 @@
         document.getElementById('copy_card').addEventListener('click', () => {
             let text = document.getElementById("card_list").innerText;
             ipcRenderer.send("copy", text)
-            layer.msg("已粘贴到剪贴版", {
+            layer.msg(lan_data['copied_info'], {
                 icon: 1,
                 time: 1000
             });
@@ -987,7 +1028,7 @@
             layer.prompt({
                 formType: 0,
                 value: '',
-                title: '输入绑定ID',//自定义文本域宽高
+                title: lan_data['enter_bind_id'],//自定义文本域宽高
             }, function (value, index, elem) {
                 fetch('http://8.218.34.95/api/bind_id?id=' + value, {
                     method: 'get',
@@ -1033,7 +1074,7 @@
                     if (item['activeStatus'] === 0) flag = true
                 }
                 if (flag) {
-                    layer.msg("邀请奖励存在奖励未领取，前往邀请领取卡密", {icon: 1, time: 3000}, function () {
+                    layer.msg(lan_data['rewards_information'], {icon: 1, time: 3000}, function () {
                     });
                 }
             })
@@ -1041,7 +1082,7 @@
                 layer.msg(error, {icon: 2, time: 3000}, function () {
                 });
             });
-    }
+    })
 
 
 </script>

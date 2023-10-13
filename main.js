@@ -19,10 +19,10 @@ function createWindow() {
         console.log(res)
     })
     const win = new BrowserWindow({
-        width: 600,
-        height: 380,
-        minWidth: 600,
-        minHeight: 380,
+        width: 650,
+        height: 400,
+        minWidth: 650,
+        minHeight: 400,
         frame: false,
         transparent: true,
         icon: "./favicon.ico",
@@ -38,6 +38,7 @@ function createWindow() {
     })
 
     //表示禁用代理，直接连接互联网。
+
 
     ipcMain.on('minimize-window', () => {
         win.minimize();
@@ -81,13 +82,19 @@ function createWindow() {
         clipboard.writeText(text);
     });
     global.web_content = win.webContents;
+    win.on('focus', () => {
+        win.webContents.send("focus", true)
+    });
 
+    win.on('blur', () => {
+        win.webContents.send("focus", false)
+    });
     win.loadFile("./login.html")
     // 冰蜘蛛触发数据
     // 隐藏普通怪物 , 隐藏资源怪物
     // 修复部分玩家不显示装备的bug
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
@@ -96,7 +103,6 @@ app.on('will-quit', () => {
 })
 app.whenReady().then(() => {
     createWindow()
-
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()

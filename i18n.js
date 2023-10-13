@@ -1,10 +1,9 @@
-let language = ["zh-cn", "en"]
-let choice = 0;
+var language = localStorage.getItem("language") || "zh-cn";
+localStorage.setItem("language", language);
 
 document.onreadystatechange = (state) => {
-    if (document.readyState == "complete") {
-        let language_script = language[choice];
-        change_change(language_script)
+    if (document.readyState === "complete") {
+        change_change(language)
     }
 }
 
@@ -12,18 +11,25 @@ function change_change(language) {
     let script = document.createElement("script")
     script.onload = function (obj) {
         // let inputs = document.getElementsByTagName("input");
-        let inputs = document.all;
-        for (let i of inputs) {
-            let attr = i.getAttribute("language");
-            if (attr) {
-                i['placeholder'] = lan_data[attr];
-                i['textContent'] = lan_data[attr];
-                if (i['title']){
-                    i['title'] = lan_data[attr]
-                }
+        document.dispatchEvent(new Event('lanDataLoaded'));
+        translate()
+    }
+    script.src = `./${language}.js`
+    document.body.appendChild(script);
+}
+
+function translate() {
+    let inputs = document.all;
+    for (let i of inputs) {
+        let attr = i.getAttribute("language");
+        if (attr) {
+            i['placeholder'] = lan_data[attr];
+            if (i['childNodes'][0]) {
+                i['childNodes'][0]['data'] = lan_data[attr]
+            }
+            if (i['title']) {
+                i['title'] = lan_data[attr]
             }
         }
     }
-    script.src = "./zh-cn.js"
-    document.body.appendChild(script);
 }

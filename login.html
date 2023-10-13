@@ -10,18 +10,28 @@
 </head>
 <body>
 
-<div id="container">
+<form class="layui-form" id="container">
     <!--<div class="admin-header">-->
     <!--<img src="image/ex_logo.png" class="admin-logo">-->
     <!--</div>-->
-    <form class="layui-form login-form">
+    <div class="layui-form-item"
+         style="display: block;right: 0;top: 0;width: 200px;padding:20px;position: absolute;z-index: 999">
+        <div class="layui-input"
+             style="display: inline-block;padding-left:0px;">
+            <select id="language" name="language" lay-filter="language">
+                <option value="zh-cn">ZH-CN | 中文</option>
+                <option value="en">EN | English</option>
+            </select>
+        </div>
+    </div>
+    <div class="login-form">
         <div style="font-size:32px;text-align: center;"></div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
             <div id="sel" class="layui-input"
                  style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
                 <select id="dev" name="dev" lay-verify="required">
-                    <option language="login_elink" value=""></option>
+                    <option language="login_elink" value="">选择网卡适配</option>
                 </select>
             </div>
         </div>
@@ -49,8 +59,8 @@
         <div align="center">
             <button class="layui-btn admin-button" style="margin: auto" type="button" onclick="login()">登陆</button>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 <script>
     const pcap = require("npcap");
     const {ipcRenderer} = require('electron');
@@ -81,8 +91,16 @@
         }
 
         layui.form.render("select");
-    }
+        layui.form.on('select(language)', function (data) {
+            localStorage.setItem("language", data.value)
 
+            change_change(data.value)
+        });
+    }
+    document.addEventListener("lanDataLoaded", () => {
+        translate()
+        layui.form.render()
+    })
 
     function login() {
         //校验
@@ -91,17 +109,17 @@
         var card = document.getElementById("card").value;
         var dev_name = document.getElementById("dev").value;
         if (username == "") {
-            layer.msg("账号不能为空", {icon: 2, time: 3000}, function () {
+            layer.msg(lan_data['check_user'], {icon: 2, time: 3000}, function () {
             });
             return false;
         }
         if (password == "") {
-            layer.msg("密码不能为空", {icon: 2, time: 3000}, function () {
+            layer.msg(lan_data['check_pwd'], {icon: 2, time: 3000}, function () {
             });
             return false;
         }
         if (dev_name == "") {
-            layer.msg("请选择网卡适配器", {icon: 2, time: 3000}, function () {
+            layer.msg(lan_data['check_lan'], {icon: 2, time: 3000}, function () {
             });
             return false;
         }
@@ -121,7 +139,7 @@
                     localStorage.setItem("token", data.token);
                     data['dev_name'] = dev_name;
                     ipcRenderer.send("login", data)
-                    layer.msg(`${data.message} , 到期时间 : ${layui.util.toDateString(parseInt(data['valid_time'] + "000"))}`, {
+                    layer.msg(`${data.message} , ${lan_data['expire_date']} : ${layui.util.toDateString(parseInt(data['valid_time'] + "000"))}`, {
                         icon: 1,
                         time: 2500
                     }, function () {

@@ -1,51 +1,104 @@
 const {ipcRenderer} = require('electron');
+const resource_item_list = require("./item_list.json");
+const resource_item_info = require("./item_info.json");
+const resource_world = require("./world.json");
 new Promise((resolve) => {
     const resource_item_list = require('./item_list.json');
     const resource_item_info = require('./item_info.json');
     const resource_world = require('./world.json');
-    global.mobs_list = require('./mobs.json').Mobs.Mob;
-    global.name_tag_list = require('./name_tag.json');
-    global.item_list_json = {}
-    global.item_info_json = {}
-    global['transparent'] = false
-    global.world_list = {}
-    for (let item of resource_item_list) {
-        global.item_list_json[item['Index']] = {
-            unique: item['UniqueName'],
-            name: item['LocalizedNames'] ? item['LocalizedNames']['ZH-CN'] : ""
-        }
-    }
-    for (let items in resource_item_info['items']) {
-        if (!(resource_item_info['items'][items] instanceof Array)) continue
-        for (let item of resource_item_info['items'][items]) {
-            if (!item['@uniquename']) continue
-            global.item_info_json[item['@uniquename']] = {
-                itempower: item['@itempower'] || 0,
-            }
-            global.item_info_json[`${item['@uniquename']}@1`] = {
-                itempower: item['@itempower'] || 0,
-            }
-            if (item['enchantments']) {
-                if (item['enchantments']['enchantment']['@enchantmentlevel']) {
-                    global.item_info_json[`${item['@uniquename']}@${item['enchantments']['enchantment']['@enchantmentlevel']}`] = {
-                        itempower: item['enchantments']['enchantment']['@itempower'] || 0,
-                    }
-                    continue
-                }
+    if (localStorage.getItem("language").toLowerCase() === "zh-cn") {
+        global.mobs_list = require('./mobs.json').Mobs.Mob;
+        global.name_tag_list = require('./name_tag.json');
+        global.item_list_json = {}
+        global.item_info_json = {}
+        global['transparent'] = false
+        global.world_list = {}
 
-                for (let enc of item['enchantments']['enchantment']) {
-                    global.item_info_json[`${item['@uniquename']}@${enc['@enchantmentlevel']}`] = {
-                        itempower: enc['@itempower'] || 0,
+        for (let item of resource_item_list) {
+            global.item_list_json[item['Index']] = {
+                unique: item['UniqueName'],
+                name: item['LocalizedNames'] ? item['LocalizedNames']['ZH-CN'] : ""
+            }
+        }
+        for (let items in resource_item_info['items']) {
+            if (!(resource_item_info['items'][items] instanceof Array)) continue
+            for (let item of resource_item_info['items'][items]) {
+                if (!item['@uniquename']) continue
+                global.item_info_json[item['@uniquename']] = {
+                    itempower: item['@itempower'] || 0,
+                }
+                global.item_info_json[`${item['@uniquename']}@1`] = {
+                    itempower: item['@itempower'] || 0,
+                }
+                if (item['enchantments']) {
+                    if (item['enchantments']['enchantment']['@enchantmentlevel']) {
+                        global.item_info_json[`${item['@uniquename']}@${item['enchantments']['enchantment']['@enchantmentlevel']}`] = {
+                            itempower: item['enchantments']['enchantment']['@itempower'] || 0,
+                        }
+                        continue
+                    }
+
+                    for (let enc of item['enchantments']['enchantment']) {
+                        global.item_info_json[`${item['@uniquename']}@${enc['@enchantmentlevel']}`] = {
+                            itempower: enc['@itempower'] || 0,
+                        }
                     }
                 }
             }
         }
+        for (let item of resource_world.world.clusters.cluster) {
+            world_list[item['@id']] = item
+        }
+        for (let item of resource_world.world.clusters.cluster) {
+            world_list[item['@id']] = item
+        }
     }
-    for (let item of resource_world.world.clusters.cluster) {
-        world_list[item['@id']] = item
-    }
-    for (let item of resource_world.world.clusters.cluster) {
-        world_list[item['@id']] = item
+    if (localStorage.getItem("language") === "en") {
+        global.mobs_list = require('./mobs.json').Mobs.Mob;
+        global.name_tag_list = require('./name_tag_en.json');
+        global.item_list_json = {}
+        global.item_info_json = {}
+        global['transparent'] = false
+        global.world_list = {}
+
+        for (let item of resource_item_list) {
+            global.item_list_json[item['Index']] = {
+                unique: item['UniqueName'],
+                name: item['LocalizedNames'] ? item['LocalizedNames']['EN-US'] : ""
+            }
+        }
+        for (let items in resource_item_info['items']) {
+            if (!(resource_item_info['items'][items] instanceof Array)) continue
+            for (let item of resource_item_info['items'][items]) {
+                if (!item['@uniquename']) continue
+                global.item_info_json[item['@uniquename']] = {
+                    itempower: item['@itempower'] || 0,
+                }
+                global.item_info_json[`${item['@uniquename']}@1`] = {
+                    itempower: item['@itempower'] || 0,
+                }
+                if (item['enchantments']) {
+                    if (item['enchantments']['enchantment']['@enchantmentlevel']) {
+                        global.item_info_json[`${item['@uniquename']}@${item['enchantments']['enchantment']['@enchantmentlevel']}`] = {
+                            itempower: item['enchantments']['enchantment']['@itempower'] || 0,
+                        }
+                        continue
+                    }
+
+                    for (let enc of item['enchantments']['enchantment']) {
+                        global.item_info_json[`${item['@uniquename']}@${enc['@enchantmentlevel']}`] = {
+                            itempower: enc['@itempower'] || 0,
+                        }
+                    }
+                }
+            }
+        }
+        for (let item of resource_world.world.clusters.cluster) {
+            world_list[item['@id']] = item
+        }
+        for (let item of resource_world.world.clusters.cluster) {
+            world_list[item['@id']] = item
+        }
     }
 }).then(() => {
     console.log("load pcap")
@@ -79,18 +132,18 @@ toolbar.innerHTML =
     <li class="layui-nav-item"><button id="close-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#x1006; </i> </button></li>
     <li class="layui-nav-item"><button id="maximize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe622; </i> </button></li>
     <li class="layui-nav-item"><button id="minimize-button" type="button" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon layui-icon-subtraction"> </i> </button></li>
-    <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm">上传日志</button></li>
+    <li class="layui-nav-item" style="margin: 0 20px;"><button id="sub_log" type="button" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius layui-btn-sm" language="submit_log">上传日志</button></li>
     
     <li class="layui-nav-item" style="position: relative;float: left;font-weight: bold"><i class="layui-icon layui-icon-rss"></i>T Radar</li>
     <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
-        <a href="#" >雷达</a>
+        <a href="#" language="radar">雷达</a>
         <dl class="layui-nav-child">
-          <dd><a id="radar_main" href="#">雷达</a></dd>
-          <dd><a id="radar_setting" href="#">参数设置</a></dd>
+          <dd><a id="radar_main" href="#" language="radar">雷达</a></dd>
+          <dd><a id="radar_setting" href="#" language="radar_setting">参数设置</a></dd>
         </dl>
     </li>
     <li class="layui-nav-item" style="position: relative;float: left;text-align:left;direction: ltr">
-        <a href="#" >置顶</a>
+        <a href="#"  language="set_top">置顶</a>
         <dl class="layui-nav-child">
             <dd style="padding: 10px">
                 <div class="layui-form-item">
@@ -100,7 +153,7 @@ toolbar.innerHTML =
                     <div id="backpack_top"></div>
                 </div>
                 <div class="layui-form-item">
-                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口置顶</lable>
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left" language="software_window_top">窗口置顶</lable>
                 
                     <div class="layui-input-block">
                         <input type="checkbox" lay-filter="set_top" lay-skin="switch" lay-text="ON|OFF">
@@ -108,7 +161,7 @@ toolbar.innerHTML =
                         
                 </div>
                  <div class="layui-form-item">
-                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">透明模式</lable>
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left" language="opticate_mode">透明模式</lable>
                 
                     <div class="layui-input-block">
                         <input type="checkbox" lay-filter="set_transparent" lay-skin="switch" lay-text="ON|OFF">
@@ -116,18 +169,18 @@ toolbar.innerHTML =
                         
                 </div>
                 <div class="layui-form-item">
-                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">窗口穿透 : F6快捷键</lable>
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left" language="cross_window">窗口穿透 : F6快捷键</lable>
                         
                 </div>
                 <div class="layui-form-item">
-                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left">遇敌提示音 : F7快捷键</lable>
+                    <lable class="layui-form-label" style="font-family: 'Microsoft YaHei UI',serif;text-align: left" language="tip_player_sound">遇敌提示音 : F7快捷键</lable>
                         
                 </div>
             </dd>
         </dl>
     </li>
     <li class="layui-nav-item" style="position: relative;float: left;text-align:left">
-        <a id="invote_control"  href="#" >邀请奖励</a>
+        <a id="invote_control"  href="#" language="invite_rewards">邀请奖励</a>
     </li></form>`
 
 toolbar.setAttribute("class", "layui-nav")
@@ -219,7 +272,7 @@ script_layui.onload = () => {
             } else {
                 ipcRenderer.send('window_opt', value)
             }
-            return `透明度:${value}%`;
+            return `${lan_data['opacity']}:${value}%`;
         }
     });
     global['backpack_top'] = 0
@@ -230,7 +283,7 @@ script_layui.onload = () => {
         , max: 100
         , setTips: function (value) {
             global['backpack_top'] = value;
-            return `装备显示下移：${value}%`;
+            return `${lan_data['backpack_display_down']}：${value}%`;
         }
     });
     layui.form.on('switch(set_top)', function (obj) {
@@ -247,11 +300,21 @@ script_layui.onload = () => {
         }
 
     });
+    ipcRenderer.on("focus", function (event, args) {
+        console.log(args)
+
+    })
     ipcRenderer.on("click_through", function (event, args) {
-        layer.msg(`当前鼠标穿透 : ${args}`, {
+
+        layer.msg(`${lan_data['current_cross']} : ${args}`, {
             icon: 1,
             time: 1000
         });
+        if (args) {
+            document.getElementById("tool_bar").style.opacity = 0
+        } else {
+            document.getElementById("tool_bar").style.opacity = 1
+        }
     })
     ipcRenderer.on("change_voice_tip", function (event, args) {
         let setting = JSON.parse(localStorage.getItem("config"));
@@ -261,12 +324,12 @@ script_layui.onload = () => {
     })
     layui.form.render()
 }
+document.body.appendChild(i18n)
 document.head.appendChild(css_layui);
 document.body.appendChild(script_layui);
 document.body.appendChild(tool_container)
 // document.body.appendChild(frame_container)
 document.body.appendChild(body_container)
-document.body.appendChild(i18n)
 
 
 //
@@ -312,7 +375,7 @@ document.getElementById("invote_control").onclick = function () {
                 document.getElementById("bind_invote").style.display = "block";
             } else {
                 document.getElementById("bind_invote").style.display = "none";
-                document.getElementById("bind_id").innerText = "已绑定ID ：" + data['invote'];
+                document.getElementById("bind_id").innerText = lan_data['had_bind'] + " ：" + data['invote'];
                 document.getElementById("bind_id").classList.add("layui-badge")
             }
         })
@@ -330,7 +393,7 @@ document.getElementById("invote_control").onclick = function () {
         .then(data => {
             let text = "";
             for (let item of data) {
-                text += `${item['cardNumber']}/${item['days']}天(${item['activeStatus'] === 0 ? "未使用" : "已使用"})(${item['personal']})<br>`
+                text += `${item['cardNumber']}(${item['days']} ${lan_data['day']})(${item['activeStatus'] === 0 ? lan_data['not_use'] : lan_data['use']})(${item['personal']})<br>`
             }
             document.getElementById("card_list").innerHTML = text
         })

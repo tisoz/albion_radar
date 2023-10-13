@@ -147,43 +147,42 @@ ipcRenderer.on("monster_load", (event, data) => {
     if (data['name'].indexOf("BOSS") + 1) data['quality'] = 1;
     data['name'] = name_tag_list[data['name']]
     switch (data['name']) {
-        case "鬼火":
-            data['name'] = "小鬼火"
+        case lan_data['solo_wisp']:
             data['uni_id'] = "mist_mob.png"
             break
-        case "大鬼火":
+        case lan_data['duo_wisp']:
             data['uni_id'] = "mist_mob.png"
             break
-        case "阿瓦隆探宝无人机":
+        case lan_data['avalon_robot']:
             data['quality'] = 3;
             break
-        case "隐藏宝藏":
+        case lan_data['roming_chest']:
             data['quality'] = 3;
             break
-        case "纪元造物":
+        case lan_data['anniversary_place']:
             data['quality'] = 3;
             break
-        case "水晶蜘蛛":
+        case lan_data['might_spider']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
-        case "妖精龙":
+        case lan_data['mist_dragon']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
-        case "织纱者":
+        case lan_data['mist_spider']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
-        case "狮鹫":
+        case lan_data['mist_griffin']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
-        case "无名英雄":
+        case lan_data['soldier_boss']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
-        case "奥术小蜘蛛":
+        case lan_data['personal_spider']:
             data['uni_id'] = "spider_boss.png";
             data['quality'] = 4;
             break
@@ -202,19 +201,19 @@ ipcRenderer.on("monster_load", (event, data) => {
                     data['res_type'] = name;
                     switch (name) {
                         case "WOOD":
-                            name = "木头";
+                            name = lan_data['wood'];
                             break
                         case "ORE":
-                            name = "矿石";
+                            name = lan_data['mineral'];
                             break
                         case "HIDE":
-                            name = "皮革";
+                            name = lan_data['leather'];
                             break
                         case "FIBER":
-                            name = "棉花";
+                            name = lan_data['cotton'];
                             break
                         case "ROCK":
-                            name = "石头";
+                            name = lan_data['stone'];
                             break
                     }
                     data['resource'] = name;
@@ -355,10 +354,10 @@ ipcRenderer.on("dungeon_load", (event, data) => {
     data = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
     data['uni_id'] = `dungeon_${data['quality']}.png`
-    if (data['obj']['8']) data['name'] = "腐蚀地下城"
-    if (data['obj']['9']) data['name'] = "2V2炼狱之门"
-    if (data['type'] === 2) data['name'] = "团队地下城"
-    if (data['name'].indexOf("SOLO") + 1 && data['type'] === 1) data['name'] = "单人地下城";
+    if (data['obj']['8']) data['name'] = lan_data['corrupted']
+    if (data['obj']['9']) data['name'] = lan_data['hellgate2v2']
+    if (data['type'] === 2) data['name'] = lan_data['groupdungeon']
+    if (data['name'].indexOf("SOLO") + 1 && data['type'] === 1) data['name'] = lan_data['solodungeon'];
     globalThis['dungeon_list'][data['id']] = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
 })
@@ -396,7 +395,7 @@ ipcRenderer.on("cage_load", (event, data) => {
 
     if (data['name'].indexOf("FILL_CAGE") + 1) {
         data['uni_id'] = `heretic.png`;
-        data['name'] = "灯笼怪"
+        data['name'] = lan_data['mob_cage']
     }
 
     globalThis['temp_list'][data['id']] = Object.assign(globalThis['temp_list'][data['id']], data);
