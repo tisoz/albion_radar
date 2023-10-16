@@ -30,17 +30,17 @@ let event_list = {
     18: filter, //待处理
     21: filter,//路上装饰
     27: other_player_load,
-    35: course_load_list,
-    36: course_load_simple,
-    42: course_load_change,
-    43: monster_quality_change,
-    57: course_done,
-    86: new_monster_damage, //新怪物攻击事件
+    36: course_load_list,
+    37: course_load_simple,
+    43: course_load_change,
+    // 44: monster_quality_change,
+    58: course_done,
+    // 87: new_monster_damage, //新怪物攻击事件
 
-    90: monster_normal_move_change,             //脱战事件
-    98: club_load,
+    // 91: monster_normal_move_change,             //脱战事件
+    // 99: club_load,
 
-    117: monster_load,
+    118: monster_load,
     200: firstmounted,
     201: secondmounted,
     220: firend_list,
