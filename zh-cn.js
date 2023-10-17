@@ -3,6 +3,7 @@ window.lan_data = {
     "login_pwd": "请输入密码",
     "login_name": "请输入账号",
     "login_elink": "选择网卡适配",
+    "login": "登陆",
     "player_setting": "玩家配置",
     "show_player_equipment": "显示玩家装备",
     "show_green_on_mount_in_danger": "危险区遭遇时在坐骑上显示绿色",

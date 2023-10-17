@@ -22,10 +22,10 @@ class Other_player_load {
         this.union = data[44] || "";     //名称
         this.hp = data[19]
         this.hp_max = data[20]
-        this.lp = data[23]
-        this.lp_max = data[24]
+        this.lp = data[24]
+        this.lp_max = data[25]
         this.position = data[13];  //玩家位置
-        this.backpack = data[34]  //玩家装备
+        this.backpack = data[37]  //玩家装备
         this.obj = data;
         // console.log(JSON.stringify(data))
         global.web_content.send("other_player_load", this)

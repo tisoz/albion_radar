@@ -3,6 +3,7 @@ window.lan_data = {
     "login_pwd": "Please enter password",
     "login_name": "Please enter account",
     "login_elink": "Choose network card adapter",
+    "login": "Login",
     "player_setting": "Player settings",
     "show_player_equipment": "Show player's equipment",
     "show_green_on_mount_in_danger": "Show green when in danger while on mount",
