@@ -33,12 +33,12 @@ let event_list = {
     36: course_load_list,
     37: course_load_simple,
     43: course_load_change,
-    // 44: monster_quality_change,
+    44: monster_quality_change,
     58: course_done,
-    // 87: new_monster_damage, //新怪物攻击事件
+    87: new_monster_damage, //新怪物攻击事件
 
-    // 91: monster_normal_move_change,             //脱战事件
-    // 99: club_load,
+    91: monster_normal_move_change,             //脱战事件
+    99: club_load,
 
     118: monster_load,
     201: firstmounted,
