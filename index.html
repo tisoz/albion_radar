@@ -299,6 +299,7 @@
                 data.push({"value": `${parseInt(i) + 3}.${o}`, "title": `${parseInt(i) + 3}.${o}`})
             }
         }
+        layui.transfer.config = {text: {none: lan_data['no_data']}}
         // change_change(localStorage.getItem("language"))
         layui.transfer.render({
             elem: '#resource_transfer'

@@ -88,5 +88,6 @@ window.lan_data = {
     "groupdungeon": "Group Dungeons",
     "solodungeon": "Solo Dungeons",
     "mob_cage": "Cage Mob",
+    "no_data": "No Data",
 
 }

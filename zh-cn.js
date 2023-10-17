@@ -88,6 +88,7 @@ window.lan_data = {
     "groupdungeon":"团队地下城",
     "solodungeon":"单人地下城",
     "mob_cage":"灯笼怪",
+    "no_data":"无数据",
 }
 
 
