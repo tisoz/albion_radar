@@ -139,11 +139,11 @@ ipcRenderer.on("monster_load", (event, data) => {
     // console.log(data)
     // if (!data['hp']) data['hp'] = 0
     if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
-
+    let mob_left = 14;
     globalThis['monster_list'][data['id']] ||= {};
     data = Object.assign(globalThis['monster_list'][data['id']], data);
     data['uni_id'] = "monster.png";
-    data['name'] = mobs_list[data['type'] - 14]['@namelocatag'] || `@MOB_${mobs_list[data['type'] - 14]['@uniquename']}` || ""; //英文串
+    data['name'] = mobs_list[data['type'] - mob_left]['@namelocatag'] || `@MOB_${mobs_list[data['type'] - mob_left]['@uniquename']}` || ""; //英文串
     if (data['name'].indexOf("BOSS") + 1) data['quality'] = 1;
     data['name'] = name_tag_list[data['name']]
     switch (data['name']) {
@@ -187,9 +187,9 @@ ipcRenderer.on("monster_load", (event, data) => {
             data['quality'] = 4;
             break
     }
-    if (mobs_list[data['type'] - 2]['Loot'] && mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
-        if (mobs_list[data['type'] - 2]['Loot']['LootListReference'] instanceof Array)
-            for (let i of mobs_list[data['type'] - 2]['Loot']['LootListReference']) {
+    if (mobs_list[data['type'] - mob_left]['Loot'] && mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
+        if (mobs_list[data['type'] - mob_left]['Loot']['LootListReference'] instanceof Array)
+            for (let i of mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
                 if (i['@name'].indexOf("DIRECTLOOTDROP_GATHERER") + 1) {
                     let name = findall(/T(\d)_DIRECTLOOTDROP_GATHERER_(\S+)/g, i['@name'])[0]
                     let level = findall(/T(\d)_DIRECTLOOTDR/g, i['@name'])[0]
