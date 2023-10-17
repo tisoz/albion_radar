@@ -41,16 +41,16 @@ let event_list = {
     // 99: club_load,
 
     118: monster_load,
-    200: firstmounted,
-    201: secondmounted,
-    220: firend_list,
-    229: firend_load,
-    308: dungeon,
-    337: filter,
-    342: filter,//钓鱼
-    377: chest_load,
-    511: cage_load,//灯笼怪
-    512: cage_free,
+    201: firstmounted,
+    202: secondmounted,
+    221: firend_list,
+    230: firend_load,
+    309: dungeon,
+    338: filter,
+    343: filter,//钓鱼
+    378: chest_load,
+    512: cage_load,//灯笼怪
+    513: cage_free,
     20: filter,//钓鱼
 }
 module.exports = event_list;
