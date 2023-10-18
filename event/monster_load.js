@@ -15,7 +15,7 @@ class Other_player_load {
         this.position = data[8];  //玩家位置
         this.hp = data[13];
         this.hp_max = data[14];
-        this.quality = data[31] || 0;
+        this.quality = data[33] || 0;
         this.obj = data;
         // console.log(JSON.stringify(data))
         global.web_content.send("monster_load", this)

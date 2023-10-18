@@ -742,14 +742,14 @@
                         continue
                     }
                     if (!config['filter_show_monster_normal'] && !item['res_type']) {
-                        if (item['quality'] < 1 && item['type'] > 10 && !item['resource']) {
+                        if (item['quality'] < 1 && item['type'] > 64 && !item['resource']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
                             continue
                         }
                     }
                     if (!config['filter_show_monster_quality'] && !item['res_type']) {
-                        if (item['quality'] >= 1 && item['type'] > 10) {
+                        if (item['quality'] >= 1 && item['type'] > 64) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
                             continue

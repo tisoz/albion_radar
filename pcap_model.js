@@ -18,7 +18,11 @@ global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
     global.user = info;
     manager.setId(user['id'])
-    pcap_session = pcap.createSession(info['dev_name'], {filter: filter, buffer_timeout: 50})
+    pcap_session = pcap.createSession(info['dev_name'], {
+        filter: filter,
+        buffer_timeout: 50,
+        buffer_size: 256 * 1024 * 1024
+    })
     pcap_session.on('packet', function (raw_packet) {
         // console.log(raw_packet)
 
