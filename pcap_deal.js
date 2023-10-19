@@ -5,8 +5,6 @@ globalThis['white_player_list'] ||= [];
 globalThis['dungeon_list'] ||= {};
 globalThis['chest_list'] ||= {};
 globalThis['temp_list'] ||= {};
-globalThis['club'] ||= "tradar";
-globalThis['union'] ||= "tradar";
 globalThis['local_player_position'] ||= {current_postion: [0, 0]}
 globalThis['current_map'] ||= {
     '@rareresourcedistribution': "",

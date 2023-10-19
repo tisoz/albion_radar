@@ -32,8 +32,30 @@
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="friend_unit_setting">屏蔽队友/盟友</legend>
+            <legend language="friend_unit_setting">友方单位配置</legend>
         </fieldset>
+        <div class="layui-form-item">
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <label class="layui-form-label" style="width: auto"
+                       language="club">屏蔽队友/盟友</label>
+                <div class=" layui-inline">
+
+                    <input type="text" id="club" name="club"
+                           autocomplete="off"
+                           class="layui-input layui-inline">
+                </div>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <label class="layui-form-label" style="width: auto"
+                       language="union">屏蔽队友/盟友</label>
+                <div class=" layui-inline">
+
+                    <input type="text" id="union" name="union"
+                           autocomplete="off"
+                           class="layui-input layui-inline">
+                </div>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: auto" language="block_teammate_alliance">屏蔽队友/盟友</label>
             <div class="layui-input-block">
@@ -228,7 +250,9 @@
         "filter_show_no_mobs_name": "off",
         "filter_show_cage_mist": "off",
         "filter_green_friend": "off",
-        "backpack_top": 0
+        "backpack_top": 0,
+        "club": "tes",
+        "union": "tes"
     }
 
     // 配置文件
@@ -386,7 +410,12 @@
             }
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let temp_world_text = app.stage.getChildByName("map_info");
-            temp_world_text.text = `${lan_data['current_map']}:${current_map['@displayname']}\n${lan_data['current_speed']}:${local_player_position['speed']}\n${lan_data['current_tip']}:${config['tip_for_player_sound'] ? lan_data['on'] : lan_data['off']}`
+            temp_world_text.text = `${lan_data['current_map']}:${current_map['@displayname']}
+            ${lan_data['current_speed']}:${local_player_position['speed']}
+            ${lan_data['current_tip']}:${config['tip_for_player_sound'] ? lan_data['on'] : lan_data['off']}
+            ${lan_data['club']}:${config['club']}
+            ${lan_data['union']}:${config['union']}`
+
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']
             temp_world_text.style.fill = text_color;
@@ -477,7 +506,7 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
-                        if ((item['club'] !== "" && globalThis['club'] === item['club']) || (item['union'] !== "" && globalThis['union'] === item['union'])) {
+                        if ((item['club'] !== "" && config['club'] === item['club']) || (item['union'] !== "" && config['union'] === item['union'])) {
                             if (globalThis.white_player_list.indexOf(item['name']) === -1) {
                                 globalThis.white_player_list.push(item['name'])
                             }

@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron');
+const packageJson = require('./package.json');
 const resource_item_list = require("./item_list.json");
 const resource_item_info = require("./item_info.json");
 const resource_world = require("./world.json");
@@ -234,7 +235,8 @@ script_layui.onload = () => {
             local_player_position: globalThis['local_player_position'],
             white_player_list: globalThis['white_player_list'],
             current_map: globalThis['current_map'],
-            config: globalThis['config']
+            config: globalThis['config'],
+            version: packageJson.version
         };
 
 

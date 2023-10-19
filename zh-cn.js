@@ -90,6 +90,8 @@ window.lan_data = {
     "solodungeon":"单人地下城",
     "mob_cage":"灯笼怪",
     "no_data":"无数据",
+    "club":"工会",
+    "union":"联盟",
 }
 
 

@@ -90,5 +90,6 @@ window.lan_data = {
     "solodungeon": "Solo Dungeons",
     "mob_cage": "Cage Mob",
     "no_data": "No Data",
-
+    "club": "Club",
+    "union": "Union",
 }

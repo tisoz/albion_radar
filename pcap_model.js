@@ -20,12 +20,12 @@ ipcMain.on('login', (event, info) => {
     manager.setId(user['id'])
     pcap_session = pcap.createSession(info['dev_name'], {
         filter: filter,
+        snap_length: 65535 * 32,
         buffer_timeout: 50,
         buffer_size: 256 * 1024 * 1024
     })
     pcap_session.on('packet', function (raw_packet) {
         // console.log(raw_packet)
-
         let packet = pcap.decode.packet(raw_packet)
         let data = packet.payload.payload.payload.data;
         // data = data.slice(10, data.length)
