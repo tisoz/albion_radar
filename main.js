@@ -1,4 +1,4 @@
-const {app, BrowserWindow, session, ipcMain, globalShortcut, clipboard} = require('electron')
+const {app, dialog, BrowserWindow, session, ipcMain, globalShortcut, clipboard} = require('electron')
 const path = require('path')
 
 
@@ -50,6 +50,22 @@ function createWindow() {
         } else {
             win.maximize();
         }
+    });
+    ipcMain.on('open-file-dialog', () => {
+        dialog.showOpenDialog({
+            properties: ['openFile'], // 允许用户选择文件
+            filters: [
+                {name: 'Voices', extensions: ['mp3', 'wav']}
+            ]
+        }).then(result => {
+            if (!result.canceled) {
+                console.log(result.filePaths);
+                // 这里可以处理选中的文件路径
+                win.webContents.send("file_path", result.filePaths)
+            }
+        }).catch(err => {
+            console.error(err);
+        });
     });
     ipcMain.on('close-window', () => {
         win.close();

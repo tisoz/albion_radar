@@ -1,8 +1,10 @@
 const {ipcRenderer} = require('electron');
+
 const packageJson = require('./package.json');
 const resource_item_list = require("./item_list.json");
 const resource_item_info = require("./item_info.json");
 const resource_world = require("./world.json");
+const {debug} = require("electron-log");
 new Promise((resolve) => {
     const resource_item_list = require('./item_list.json');
     const resource_item_info = require('./item_info.json');
@@ -318,6 +320,9 @@ script_layui.onload = () => {
             document.getElementById("tool_bar").style.opacity = 1
         }
     })
+    ipcRenderer.on("file_path", function (event, args) {
+        layui.form.val("setting", {"audio_path": args[0].replaceAll("\\", "/")})
+    })
     ipcRenderer.on("change_voice_tip", function (event, args) {
         let setting = JSON.parse(localStorage.getItem("config"));
         setting['tip_for_player_sound'] = !setting['tip_for_player_sound']
@@ -359,6 +364,7 @@ document.getElementById("radar_setting").onclick = function () {
     }
     document.getElementById("radar_setting_page").style.display = "block";
 }
+
 document.getElementById("invote_control").onclick = function () {
     for (let item of body_container.children) {
         item.style.display = "none";

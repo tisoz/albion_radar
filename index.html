@@ -9,7 +9,7 @@
 <script id="setting" type="text/html">
     <form class="layui-form" action="" lay-filter="setting">
         <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="player_setting">友方单位配置</legend>
+            <legend language="player_setting">玩家配置</legend>
         </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: auto" language="show_player_equipment">显示玩家装备</label>
@@ -31,146 +31,170 @@
                 <input type="checkbox" name="tip_for_player_sound" lay-skin="switch" lay-text="ON|OFF">
             </div>
         </div>
-        <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="friend_unit_setting">友方单位配置</legend>
-        </fieldset>
         <div class="layui-form-item">
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+            <div class="layui-form-item">
+                <div class="layui-col-xs10 layui-col-sm10 layui-col-md10">
+                    <label class="layui-form-label" style="width: auto" language="edit_audio">自定义声音文件</label>
+                    <div class="layui-inline">
+
+                        <input type="text" id="audio_path" name="audio_path"
+                               disabled
+                               autocomplete="off"
+                               class="layui-input layui-inline layui-disabled">
+
+                    </div>
+                    <div class="layui-inline">
+
+                        <button id="add_audio_path" type="button"
+                                class="layui-btn layui-btn-warm layui-inline "
+                                language="add_audio_path">选择音频文件
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="">
+                <legend language="friend_unit_setting">友方单位配置</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                    <label class="layui-form-label" style="width: auto"
+                           language="club">屏蔽队友/盟友</label>
+                    <div class=" layui-inline">
+
+                        <input type="text" id="club" name="club"
+                               autocomplete="off"
+                               class="layui-input layui-inline">
+                    </div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                    <label class="layui-form-label" style="width: auto"
+                           language="union">屏蔽队友/盟友</label>
+                    <div class=" layui-inline">
+
+                        <input type="text" id="union" name="union"
+                               autocomplete="off"
+                               class="layui-input layui-inline">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label" style="width: auto"
-                       language="club">屏蔽队友/盟友</label>
-                <div class=" layui-inline">
-
-                    <input type="text" id="club" name="club"
-                           autocomplete="off"
-                           class="layui-input layui-inline">
+                       language="block_teammate_alliance">屏蔽队友/盟友</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_green_friend" lay-skin="switch" lay-text="ON|OFF">
                 </div>
             </div>
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+            <fieldset class="layui-elem-field layui-field-title" style="">
+                <legend language="cave_setting">洞穴配置</legend>
+            </fieldset>
+            <div class="layui-row">
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                    <label class="layui-form-label" style="width: auto" language="show_common_cave">显示普通洞穴</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
+                    </div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                    <label class="layui-form-label" style="width: auto" language="show_rare_cave">显示稀有洞穴</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
+                    </div>
+                </div>
+            </div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="">
+                <legend language="monster_setting">怪物配置</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto" language="show_common_monster">显示普通怪物</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_monster_normal" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label" style="width: auto"
-                       language="union">屏蔽队友/盟友</label>
-                <div class=" layui-inline">
-
-                    <input type="text" id="union" name="union"
-                           autocomplete="off"
-                           class="layui-input layui-inline">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="block_teammate_alliance">屏蔽队友/盟友</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_green_friend" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="cave_setting">洞穴配置</legend>
-        </fieldset>
-        <div class="layui-row">
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-                <label class="layui-form-label" style="width: auto" language="show_common_cave">显示普通洞穴</label>
+                       language="show_resource_monster">显示资源怪物</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="filter_show_dungeon_normal" lay-skin="switch" lay-text="ON|OFF">
+                    <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
                 </div>
             </div>
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
-                <label class="layui-form-label" style="width: auto" language="show_rare_cave">显示稀有洞穴</label>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto"
+                       language="show_rare_monster">显示稀有怪物(附魔品质>1)</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="filter_show_dungeon_quality" lay-skin="switch" lay-text="ON|OFF">
+                    <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
                 </div>
             </div>
-        </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto"
+                       language="close_monster_name_display">关闭怪物名称显示</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_no_mobs_name" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto" language="show_mist_spirit">显示迷雾精灵</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_monster_mist" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto" language="show_cage_monster">显示灯笼怪</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_cage_mist" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="">
+                <legend language="resource_setting">物资配置</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label" language="resource_type">物资类型</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_item_rock" language="stone" title="石头">
+                    <input type="checkbox" name="filter_item_ore" language="mineral" title="矿物">
+                    <input type="checkbox" name="filter_item_wood" language="wood" title="树木">
+                    <input type="checkbox" name="filter_item_fiber" language="cotton" title="棉花">
+                    <input type="checkbox" name="filter_item_hide" language="leather" title="皮革">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" language="resource_level">物资等级</label>
 
-        <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="monster_setting">怪物配置</legend>
-        </fieldset>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_common_monster">显示普通怪物</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_monster_normal" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_resource_monster">显示资源怪物</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_mobs_icon_for_item" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto"
-                   language="show_rare_monster">显示稀有怪物(附魔品质>1)</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_monster_quality" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto"
-                   language="close_monster_name_display">关闭怪物名称显示</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_no_mobs_name" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_mist_spirit">显示迷雾精灵</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_monster_mist" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto" language="show_cage_monster">显示灯笼怪</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_show_cage_mist" lay-skin="switch" lay-text="ON|OFF">
-            </div>
-        </div>
-        <fieldset class="layui-elem-field layui-field-title" style="">
-            <legend language="resource_setting">物资配置</legend>
-        </fieldset>
-        <div class="layui-form-item">
-            <label class="layui-form-label" language="resource_type">物资类型</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_item_rock" language="stone" title="石头">
-                <input type="checkbox" name="filter_item_ore" language="mineral" title="矿物">
-                <input type="checkbox" name="filter_item_wood" language="wood" title="树木">
-                <input type="checkbox" name="filter_item_fiber" language="cotton" title="棉花">
-                <input type="checkbox" name="filter_item_hide" language="leather" title="皮革">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" language="resource_level">物资等级</label>
+                <div id="resource_transfer"></div>
+                <!--            -->
+                <!--            <div class="layui-input-inline">-->
+                <!--                <select name="filter_item_level">-->
+                <!--                    <option value="0" language="all">全部</option>-->
+                <!--                    <option value="3">3</option>-->
+                <!--                    <option value="4">4</option>-->
+                <!--                    <option value="5">5</option>-->
+                <!--                    <option value="6">6</option>-->
+                <!--                    <option value="7">7</option>-->
+                <!--                    <option value="8">8</option>-->
+                <!--                </select>-->
+                <!--            </div>-->
+                <!--            <div class="layui-input-inline">-->
+                <!--                <select name="filter_item_quality">-->
+                <!--                    <option value="0" language="all">全部</option>-->
+                <!--                    <option value="1">1</option>-->
+                <!--                    <option value="2">2</option>-->
+                <!--                    <option value="3">3</option>-->
 
-            <div id="resource_transfer"></div>
-            <!--            -->
-            <!--            <div class="layui-input-inline">-->
-            <!--                <select name="filter_item_level">-->
-            <!--                    <option value="0" language="all">全部</option>-->
-            <!--                    <option value="3">3</option>-->
-            <!--                    <option value="4">4</option>-->
-            <!--                    <option value="5">5</option>-->
-            <!--                    <option value="6">6</option>-->
-            <!--                    <option value="7">7</option>-->
-            <!--                    <option value="8">8</option>-->
-            <!--                </select>-->
-            <!--            </div>-->
-            <!--            <div class="layui-input-inline">-->
-            <!--                <select name="filter_item_quality">-->
-            <!--                    <option value="0" language="all">全部</option>-->
-            <!--                    <option value="1">1</option>-->
-            <!--                    <option value="2">2</option>-->
-            <!--                    <option value="3">3</option>-->
-
-            <!--                    <option value="4">4</option>-->
-            <!--                </select>-->
-            <!--            </div>-->
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: auto"
-                   language="show_resources_above_zero">显示数量在0以上的资源</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="filter_item_show_zero_count" lay-skin="switch" lay-text="ON|OFF">
+                <!--                    <option value="4">4</option>-->
+                <!--                </select>-->
+                <!--            </div>-->
             </div>
-        </div>
-        <div class="layui-form-item">
-            &nbsp;
-        </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto"
+                       language="show_resources_above_zero">显示数量在0以上的资源</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_item_show_zero_count" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                &nbsp;
+            </div>
     </form>
 </script>
 <script id="invote" type="text/html">
@@ -251,6 +275,7 @@
         "filter_show_cage_mist": "off",
         "filter_green_friend": "off",
         "backpack_top": 0,
+        "audio_path": "./resource/tip.mp3",
         "club": "tes",
         "union": "tes"
     }
@@ -355,15 +380,19 @@
         global.container = new PIXI.Container();
         container.rotation = -(Math.PI / 4 * 3)
         global.backpack_container = new PIXI.Container();
+        global.center_container = new PIXI.Container();
+        center_container.rotation = -(Math.PI / 4 * 3)
+
         // container.scale.x = -1
         // let graphics = new PIXI.Graphics();
         // graphics.lineStyle(2, 0x666666, 1); // 设置线条样式（宽度、颜色、透明度）
         // graphics.drawRect(0, 0, 100, 100); // 绘制矩形（x, y, width, height）
-        // container.addChild(graphics);
+        // center_container.addChild(graphics);
 
 
         app.stage.addChild(backpack_container)
         app.stage.addChild(container)
+        app.stage.addChild(center_container)
         app.stage.scale.x = 5
         app.stage.scale.y = 5
 
@@ -371,7 +400,7 @@
         center.scale.x = 1 / app.stage.scale.x
         center.scale.y = 1 / app.stage.scale.y
         center.anchor.set(0.5)
-        container.addChild(center)
+        center_container.addChild(center)
 
         page_radar.appendChild(app.view);
 
@@ -461,7 +490,7 @@
                             || (current_map['@type'].indexOf("BLACK") + 1)
                             || (current_map['@type'].indexOf("RED") + 1)
                             || (!current_map['@displayname']))) {
-                            let temp_audio = new Audio("./resource/tip.mp3");
+                            let temp_audio = new Audio(config['audio_path']);
                             item['tiped'] = true;
                             new Promise((resolve, reject) => {
                                 temp_audio.play()
@@ -628,6 +657,10 @@
 
                 let x_flag = 1;
                 if (globalThis['local_player_position']['current_postion'][0] < 0) x_flag = -1;
+                TweenMax.to(center_container.position, 0.2, {
+                    x: app.screen.width / 2 / app.stage.scale.x - globalThis['local_player_center_postion'][0] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag,
+                    y: app.screen.height / 2 / app.stage.scale.y + globalThis['local_player_center_postion'][1] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag
+                });
                 TweenMax.to(container.position, 0.2, {
                     x: app.screen.width / 2 / app.stage.scale.x - globalThis['local_player_center_postion'][0] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag,
                     y: app.screen.height / 2 / app.stage.scale.y + globalThis['local_player_center_postion'][1] - Math.sqrt(Math.pow(2 * globalThis['local_player_position']['current_postion'][0], 2) / 2) * x_flag
@@ -1052,7 +1085,9 @@
                 time: 1000
             });
         });
-
+        document.getElementById("add_audio_path").addEventListener('click', () => {
+            ipcRenderer.send("open-file-dialog", "")
+        });
         document.getElementById('bind_invote').addEventListener('click', () => {
 
             layer.prompt({
