@@ -49,8 +49,8 @@ let event_list = {
     338: filter,
     343: filter,//钓鱼
     378: chest_load,
-    512: cage_load,//灯笼怪
-    513: cage_free,
+    515: cage_load,//灯笼怪
+    516: cage_free,
     20: filter,//钓鱼
 }
 module.exports = event_list;
