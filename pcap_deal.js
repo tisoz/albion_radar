@@ -195,7 +195,7 @@ ipcRenderer.on("monster_load", (event, data) => {
                     data['resource'] = name;
                     data['level'] = level;
                     data['res_id'] = `T${data['level']}_${data['resource']}_LEVEL${data['quality']}@${data['quality']}`;
-                    data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "");
+                    data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "") + ".png";
                     data['res_type'] = name;
                     switch (name) {
                         case "WOOD":
@@ -350,7 +350,7 @@ ipcRenderer.on("dungeon_load", (event, data) => {
     console.log(data)
     globalThis['dungeon_list'][data['id']] ||= {};
     data = Object.assign(globalThis['dungeon_list'][data['id']], data);
-
+    if (data['quality'] === true) data['quality'] = 0;
     data['uni_id'] = `dungeon_${data['quality']}.png`
     if (data['obj']['8']) data['name'] = lan_data['corrupted']
     if (data['obj']['9']) data['name'] = lan_data['hellgate2v2']

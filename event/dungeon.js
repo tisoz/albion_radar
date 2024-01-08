@@ -13,7 +13,7 @@ class dungeon {
         this.type = data[14]      //1洞穴 , 2团队地下城
         this.position = data[1];  //玩家位置
         this.name = data[3]
-        this.quality = data[5] || 0;
+        this.quality = data[6] || 0;
         this.obj = data;
         // console.log(JSON.stringify(data))
         global.web_content.send("dungeon_load", this)
