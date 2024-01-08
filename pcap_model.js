@@ -58,7 +58,7 @@ global.manager.on('event', (packet) => {
         try {
             let code = packet.parameters[252]
             if (event_list[code]) {
-                // (new event_list[code]).parse(packet.parameters)
+                (new event_list[code]).parse(packet.parameters)
             } else {
                 // console.log(JSON.stringify(packet.parameters))
             }
