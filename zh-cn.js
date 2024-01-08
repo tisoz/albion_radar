@@ -88,6 +88,8 @@ window.lan_data = {
     "hellgate2v2": "2v2炼狱之门",
     "groupdungeon": "团队地下城",
     "solodungeon": "单人地下城",
+    "downhouse": "堕落殿堂",
+    "solodungeon": "单人地下城",
     "mob_cage": "灯笼怪",
     "no_data": "无数据",
     "club": "工会",

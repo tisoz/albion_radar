@@ -355,6 +355,8 @@ ipcRenderer.on("dungeon_load", (event, data) => {
     if (data['obj']['8']) data['name'] = lan_data['corrupted']
     if (data['obj']['9']) data['name'] = lan_data['hellgate2v2']
     if (data['type'] === 2) data['name'] = lan_data['groupdungeon']
+    if (data['type'] === 3732) data['name'] = lan_data['downhouse']
+    if (data['obj']['17'] === 6) data['name'] = lan_data['downhouse']
     if (data['name'].indexOf("SOLO") + 1 && data['type'] === 1) data['name'] = lan_data['solodungeon'];
     globalThis['dungeon_list'][data['id']] = Object.assign(globalThis['dungeon_list'][data['id']], data);
 
