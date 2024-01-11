@@ -97,11 +97,14 @@ global.manager.on('response', (packet) => {
             if (request_list[code]) {
                 (new request_list[code]).parse(packet.parameters);
             } else {
-                console.log(packet)
+                console.log("response", packet)
             }
         } catch (e) {
             console.log(e)
         }
+    }else{
+        console.log("response other", packet)
+
     }
 });
 
