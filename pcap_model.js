@@ -63,11 +63,16 @@ global.manager.on('event', (packet) => {
                 // console.log(JSON.stringify(packet.parameters))
             }
         } catch (e) {
-            // console.log(e)
+            console.log(e)
         }
 
     } else if (packet.code === 3) {
-        (new event_list[packet.code]).parse(packet.parameters)
+        try {
+            (new event_list[packet.code]).parse(packet.parameters)
+        } catch (e) {
+            console.log(e)
+        }
+
         // console.log(JSON.stringify([packet.parameters[0],[packet.parameters[1].readFloatLE(9),packet.parameters[1].readFloatLE(13)]]))
         // console.log(packet.parameters)
     }

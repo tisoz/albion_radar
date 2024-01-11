@@ -29,7 +29,7 @@ function createWindow() {
         webPreferences: {
             webSecurity: false,
             backgroundThrottling: false,
-            // devTools: !app.isPackaged,
+            devTools: !app.isPackaged,
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
             contextIsolation: false,

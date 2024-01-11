@@ -2,13 +2,9 @@
   "dependencies": {
     "electron-builder-squirrel-windows": "^24.2.0",
     "electron-log": "^4.4.8",
-    "html-webpack-plugin": "^5.5.0",
     "node-addon-api": "^6.0.0",
     "npcap": "file:./node_pcap",
-    "photon-packet-parser": "file:./photon-packet-parser",
-    "webpack": "^5.78.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.2"
+    "photon-packet-parser": "file:./photon-packet-parser"
   },
   "scripts": {
     "start": "electron .",
@@ -34,6 +30,6 @@
       "!photon-packet-parser/classes/PhotonCommand.js"
     ]
   },
-  "version": "1.5.1",
+  "version": "1.5.2",
   "name": "Rtadar"
 }
