@@ -51,6 +51,7 @@ BigInt.prototype.toJSON = function () {
 }
 global.manager.on('event', (packet) => {
     // 在这里处理接收到的结果
+    log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
     if (packet.code === 1 && packet.parameters) {
         // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
 
@@ -79,6 +80,7 @@ global.manager.on('event', (packet) => {
 });
 global.manager.on('request', (packet) => {
     // 在这里处理接收到的结果
+    log.info("request | " + JSON.stringify(packet.parameters))
     if (packet.operationCode == 1 && packet.parameters) {
         //进行事件处理
         try {
@@ -94,10 +96,11 @@ global.manager.on('request', (packet) => {
 });
 global.manager.on('response', (packet) => {
     // 在这里处理接收到的结果
+    log.info("response | " + JSON.stringify(packet.parameters))
+
     if ((packet.operationCode === 1) && packet.parameters) {
         //进行事件处理
         try {
-            // log.info("response | " + JSON.stringify(packet.parameters))
             let code = packet.parameters[253]
             if (request_list[code]) {
                 (new request_list[code]).parse(packet.parameters);

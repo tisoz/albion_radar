@@ -492,8 +492,10 @@
                             || (!current_map['@displayname']))) {
                             let temp_audio = new Audio(config['audio_path']);
                             item['tiped'] = true;
-                            new Promise((resolve, reject) => {
-                                temp_audio.play()
+                            temp_audio.play().then(() => {
+                                console.log("tip player")
+                            }).catch((e) => {
+                                throw new Error("sound error " + e.toString())
                             })
                         }
                     }
@@ -733,7 +735,7 @@
                     } else {
                         if (!item['position']) continue
 
-                            let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id'] + ".png");
+                        let temp_img = PIXI.Sprite.from('./resource/' + item['uni_id'] + ".png");
                         temp_img.x = -(item['position'][0]);
                         temp_img.y = (item['position'][1]);
                         temp_img.scale.x = 1 / app.stage.scale.x / 2
