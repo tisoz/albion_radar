@@ -4,7 +4,7 @@ let course_load_simple = require("./course_load_simple.js")
 let course_load_change = require("./course_load_change.js")
 let other_player_load = require("./other_player_load.js")
 let monster_quality_change = require("./monster_quality_change.js")
-let map_load = require("./map_load.js")
+let map_change = require("./map_change.js")
 let move_event = require("./move_event.js")
 let leave_event = require("./leave_event.js")
 let monster_normal_move_change = require("./monster_normal_move_change.js")
@@ -49,6 +49,7 @@ let event_list = {
     338: filter,
     343: filter,//钓鱼
     378: chest_load,
+    504: map_change,//传送阵传送
     515: cage_load,//灯笼怪
     516: cage_free,
     20: filter,//钓鱼

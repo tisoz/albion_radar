@@ -43,7 +43,7 @@ class Protocol16Deserializer {
             case this.protocol16Type.ObjectArray:
                 return this.deserializeObjectArray(input);
             default:
-                alert(`Type code: ${typeCode} not implemented.`)
+                // alert(`Type code: ${typeCode} not implemented.`)
                 throw new Error(`Type code: ${typeCode} not implemented.`);
         }
     }
