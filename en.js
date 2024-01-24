@@ -92,4 +92,6 @@ window.lan_data = {
     "no_data": "No Data",
     "club": "Club",
     "union": "Union",
+    "edit_audio": "Audio Custom",
+    "add_audio_path": "Choose File"
 }

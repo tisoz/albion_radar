@@ -18,22 +18,28 @@ global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
     global.user = info;
     manager.setId(user['id'])
-    pcap_session = pcap.createSession(info['dev_name'], {
-        filter: filter,
-        snap_length: 65535 * 32,
-        buffer_timeout: 50,
-        buffer_size: 256 * 1024 * 1024
-    })
-    pcap_session.on('packet', function (raw_packet) {
-        // console.log(raw_packet)
-        let packet = pcap.decode.packet(raw_packet)
-        let data = packet.payload.payload.payload.data;
-        // data = data.slice(10, data.length)
-        manager.handle(data);
-    });
-    pcap_session.warningHandler = function (text) {
-        log.info("waring " + text)
+    try {
+        pcap_session = pcap.createSession(info['dev_name'], {
+            filter: filter,
+            snap_length: 65535 * 32,
+            buffer_timeout: 50,
+            buffer_size: 256 * 1024 * 1024
+        })
+        pcap_session.on('packet', function (raw_packet) {
+            // console.log(raw_packet)
+            let packet = pcap.decode.packet(raw_packet)
+            let data = packet.payload.payload.payload.data;
+            // data = data.slice(10, data.length)
+            manager.handle(data);
+        });
+        pcap_session.warningHandler = function (text) {
+            log.info("waring " + text)
+        }
+    } catch (e) {
+        console.log("npcap failed", e)
     }
+
+
 });
 var sourcePort = 5056;
 var destinationPort = 5056;
@@ -52,31 +58,24 @@ BigInt.prototype.toJSON = function () {
 global.manager.on('event', (packet) => {
     // 在这里处理接收到的结果
     // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
-    if (packet.code === 1 && packet.parameters) {
-        // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
+    try {
+        if (packet.code === 1 && packet.parameters) {
+            // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
 
-        //进行事件处理
-        try {
+            //进行事件处理
             let code = packet.parameters[252]
             if (event_list[code]) {
                 (new event_list[code]).parse(packet.parameters)
             } else {
                 // console.log(JSON.stringify(packet.parameters))
             }
-        } catch (e) {
-            console.log(e)
-        }
-
-    } else if (packet.code === 3) {
-        try {
+        } else if (packet.code === 3) {
             (new event_list[packet.code]).parse(packet.parameters)
-        } catch (e) {
-            console.log(e)
         }
-
-        // console.log(JSON.stringify([packet.parameters[0],[packet.parameters[1].readFloatLE(9),packet.parameters[1].readFloatLE(13)]]))
-        // console.log(packet.parameters)
+    } catch (e) {
+        console.log("error event ", e)
     }
+
 });
 global.manager.on('request', (packet) => {
     // 在这里处理接收到的结果
@@ -90,7 +89,7 @@ global.manager.on('request', (packet) => {
                 (new request_list[code]).parse(packet.parameters);
             }
         } catch (e) {
-            console.log(e)
+            console.log("error request", e)
         }
     }
 });
@@ -108,9 +107,9 @@ global.manager.on('response', (packet) => {
                 console.log("response", packet)
             }
         } catch (e) {
-            console.log(e)
+            console.log("error response", e)
         }
-    }else{
+    } else {
         console.log("response other", packet)
 
     }
