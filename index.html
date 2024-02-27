@@ -495,6 +495,9 @@
                         if (current_map['@type'].indexOf("TUNNEL_BLACK") + 1) {
                             item['tiped'] = true;
                         }
+                        if (current_map['@id'] === "MIST_") {
+                            item['tiped'] = true;
+                        }
                         if (item['tiped']) {
                             let temp_audio = new Audio(config['audio_path']);
                             temp_audio.play().then(() => {
