@@ -545,6 +545,8 @@
                         temp_img.scale.y = 1 / app.stage.scale.y
                     } else {
                         if (!item['position']) continue
+                        item['club'] ||= ""
+                        item['union'] ||= ""
                         if ((item['club'] !== "" && config['club'].toLowerCase() === item['club'].toLowerCase()) || (item['union'] !== "" && config['union'].toLowerCase() === item['union'].toLowerCase())) {
                             if (globalThis.white_player_list.indexOf(item['name']) === -1) {
                                 globalThis.white_player_list.push(item['name'])
