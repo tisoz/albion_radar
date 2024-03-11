@@ -19,13 +19,13 @@ class Other_player_load {
         this.id = data[0];        //物资ID
         this.name = data[1];        //名称
         this.club = data[8] || "";     //名称
-        this.union = data[48] || "";     //名称
-        this.hp = data[19]
-        this.hp_max = data[20]
-        this.lp = data[24]
-        this.lp_max = data[25]
-        this.position = data[13];  //玩家位置
-        this.backpack = data[37]  //玩家装备
+        this.union = data[49] || "";     //名称
+        this.hp = data[20]
+        this.hp_max = data[21]
+        this.lp = data[25]
+        this.lp_max = data[26]
+        this.position = data[14];  //玩家位置
+        this.backpack = data[38]  //玩家装备
         this.obj = data;
         // console.log(JSON.stringify(data))
         global.web_content.send("other_player_load", this)
