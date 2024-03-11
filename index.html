@@ -595,6 +595,7 @@
                             for (let i in item['backpack']) {
                                 let index = item['backpack'][i];
                                 if (index === 0) continue;
+                                if (index > 3000) index = index - 44
                                 let model = PIXI.Sprite.from('./resource/' + item_list_json[index]['unique'] + ".png")
                                 if (item_info_json[item_list_json[index]['unique']] === undefined) {
                                     console.log(item_list_json[index]['unique'])
