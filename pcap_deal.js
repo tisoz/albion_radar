@@ -80,7 +80,100 @@ function rotatePoint(x1, y1, angle) {
 
     return [x2, y2];
 }
-try{
+
+function monster_load(data) {
+    if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
+    let mob_left = 14;
+    globalThis['monster_list'][data['id']] ||= {};
+    data = Object.assign(globalThis['monster_list'][data['id']], data);
+    data['uni_id'] = "monster.png";
+    data['name'] = mobs_list[data['type'] - mob_left]['@namelocatag'] || `@MOB_${mobs_list[data['type'] - mob_left]['@uniquename']}` || ""; //英文串
+    if (data['name'].indexOf("BOSS") + 1) data['quality'] = 1;
+    data['name'] = name_tag_list[data['name']]
+    switch (data['name']) {
+        case lan_data['solo_wisp']:
+            data['uni_id'] = "mist_mob.png"
+            break
+        case lan_data['duo_wisp']:
+            data['uni_id'] = "mist_mob.png"
+            break
+        case lan_data['avalon_robot']:
+            data['quality'] = 3;
+            break
+        case lan_data['roming_chest']:
+            data['quality'] = 3;
+            break
+        case lan_data['anniversary_place']:
+            data['quality'] = 3;
+            break
+        case lan_data['egg']:
+            data['uni_id'] = "egg.png";
+            data['quality'] = 4;
+            break
+        case lan_data['might_spider']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case lan_data['mist_dragon']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case lan_data['mist_spider']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case lan_data['mist_griffin']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case lan_data['soldier_boss']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+        case lan_data['personal_spider']:
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
+            break
+    }
+    if (mobs_list[data['type'] - mob_left]['Loot'] && mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
+        if (mobs_list[data['type'] - mob_left]['Loot']['LootListReference'] instanceof Array)
+            for (let i of mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
+                if (i['@name'].indexOf("DIRECTLOOTDROP_GATHERER") + 1) {
+                    let name = findall(/T(\d)_DIRECTLOOTDROP_GATHERER_(\S+)/g, i['@name'])[0]
+                    let level = findall(/T(\d)_DIRECTLOOTDR/g, i['@name'])[0]
+
+                    data['resource'] = name;
+                    data['level'] = level;
+                    data['res_id'] = `T${data['level']}_${data['resource']}_LEVEL${data['quality']}@${data['quality']}`;
+                    data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "") + ".png";
+                    data['res_type'] = name;
+                    switch (name) {
+                        case "WOOD":
+                            name = lan_data['wood'];
+                            break
+                        case "ORE":
+                            name = lan_data['mineral'];
+                            break
+                        case "HIDE":
+                            name = lan_data['leather'];
+                            break
+                        case "FIBER":
+                            name = lan_data['cotton'];
+                            break
+                        case "ROCK":
+                            name = lan_data['stone'];
+                            break
+                    }
+                    data['resource'] = name;
+                }
+            }
+    }
+
+    globalThis['monster_list'][data['id']] = Object.assign(globalThis['monster_list'][data['id']], data);
+
+}
+
+try {
     ipcRenderer.on("local_player_position", (event, data) => {
         // console.log(data['current_postion'])
         temp_road.push(data['current_postion'])
@@ -133,94 +226,7 @@ try{
         // }
     })
     ipcRenderer.on("monster_load", (event, data) => {
-
-        // console.log(data)
-        // if (!data['hp']) data['hp'] = 0
-        if (data['hp'] && data['hp'] >= 11 && data['hp'] <= 100) return
-        let mob_left = 14;
-        globalThis['monster_list'][data['id']] ||= {};
-        data = Object.assign(globalThis['monster_list'][data['id']], data);
-        data['uni_id'] = "monster.png";
-        data['name'] = mobs_list[data['type'] - mob_left]['@namelocatag'] || `@MOB_${mobs_list[data['type'] - mob_left]['@uniquename']}` || ""; //英文串
-        if (data['name'].indexOf("BOSS") + 1) data['quality'] = 1;
-        data['name'] = name_tag_list[data['name']]
-        switch (data['name']) {
-            case lan_data['solo_wisp']:
-                data['uni_id'] = "mist_mob.png"
-                break
-            case lan_data['duo_wisp']:
-                data['uni_id'] = "mist_mob.png"
-                break
-            case lan_data['avalon_robot']:
-                data['quality'] = 3;
-                break
-            case lan_data['roming_chest']:
-                data['quality'] = 3;
-                break
-            case lan_data['anniversary_place']:
-                data['quality'] = 3;
-                break
-            case lan_data['might_spider']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-            case lan_data['mist_dragon']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-            case lan_data['mist_spider']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-            case lan_data['mist_griffin']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-            case lan_data['soldier_boss']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-            case lan_data['personal_spider']:
-                data['uni_id'] = "spider_boss.png";
-                data['quality'] = 4;
-                break
-        }
-        if (mobs_list[data['type'] - mob_left]['Loot'] && mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
-            if (mobs_list[data['type'] - mob_left]['Loot']['LootListReference'] instanceof Array)
-                for (let i of mobs_list[data['type'] - mob_left]['Loot']['LootListReference']) {
-                    if (i['@name'].indexOf("DIRECTLOOTDROP_GATHERER") + 1) {
-                        let name = findall(/T(\d)_DIRECTLOOTDROP_GATHERER_(\S+)/g, i['@name'])[0]
-                        let level = findall(/T(\d)_DIRECTLOOTDR/g, i['@name'])[0]
-
-                        data['resource'] = name;
-                        data['level'] = level;
-                        data['res_id'] = `T${data['level']}_${data['resource']}_LEVEL${data['quality']}@${data['quality']}`;
-                        data['res_id'] = data['res_id'].replaceAll("_LEVEL0@0", "") + ".png";
-                        data['res_type'] = name;
-                        switch (name) {
-                            case "WOOD":
-                                name = lan_data['wood'];
-                                break
-                            case "ORE":
-                                name = lan_data['mineral'];
-                                break
-                            case "HIDE":
-                                name = lan_data['leather'];
-                                break
-                            case "FIBER":
-                                name = lan_data['cotton'];
-                                break
-                            case "ROCK":
-                                name = lan_data['stone'];
-                                break
-                        }
-                        data['resource'] = name;
-                    }
-                }
-        }
-
-        globalThis['monster_list'][data['id']] = Object.assign(globalThis['monster_list'][data['id']], data);
-
+        monster_load(data)
     })
     ipcRenderer.on("other_player_load", (event, data) => {
 
@@ -505,7 +511,7 @@ try{
         globalThis['current_map'] = new_map;
 
     })
-}catch (e) {
+} catch (e) {
     let formData = new FormData();
     formData.append('type', 3);
     formData.append('text', `pcap error ${e} ${e.stack}`);

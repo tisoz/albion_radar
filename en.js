@@ -61,6 +61,7 @@ window.lan_data = {
     "current_map": "Current Map",
     "current_speed": "Current Speed",
     "current_tip": "Current tip flag",
+    "current_map_tip": "Current tip sound status",
     "current_cross": "Current Mouse Cross status",
     "copied_info": "Copied to clipboard",
     "enter_bind_id": "Enter binding ID",
@@ -93,5 +94,6 @@ window.lan_data = {
     "club": "Club",
     "union": "Union",
     "edit_audio": "Audio Custom",
-    "add_audio_path": "Choose File"
+    "add_audio_path": "Choose File",
+    "egg": "Colored Eggs"
 }

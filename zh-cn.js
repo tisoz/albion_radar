@@ -60,7 +60,8 @@ window.lan_data = {
     "bind_inviter": "绑定邀请人",
     "current_map": "当前地图",
     "current_speed": "当前速度",
-    "current_tip": "当前提示音",
+    "current_tip": "当前提示音功能",
+    "current_map_tip": "当前地图提示音",
     "current_cross": "当前鼠标穿透",
     "copied_info": "已粘贴到剪贴版",
     "enter_bind_id": "输入绑定ID",
@@ -95,7 +96,8 @@ window.lan_data = {
     "club": "工会",
     "union": "联盟",
     "edit_audio": "自定义提示音",
-    "add_audio_path": "选择音频文件"
+    "add_audio_path": "选择音频文件",
+    "egg": "彩蛋"
 }
 
 
