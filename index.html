@@ -440,16 +440,18 @@
             globalThis.config = JSON.parse(localStorage.getItem("config"));
             let tiped = false;
             if (config['tip_for_player_sound']) {
-                if (current_map['@rareresourcedistribution'] !== "DEFAULT" && (
-                    (current_map['@rareresourcedistribution'].indexOf("RED") + 1)
-                    || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
-                    || (current_map['@type'].indexOf("BLACK") + 1)
-                    || (current_map['@type'].indexOf("RED") + 1)
-                    || (!current_map['@displayname']))) {
+                if (current_map['@rareresourcedistribution'] !== "DEFAULT"
+                    && !current_map['@displayname']) {
                     tiped = true;
                 }
                 if (current_map['@type'].indexOf("TUNNEL_BLACK") + 1) {
                     tiped = true;
+                }
+                if ((current_map['@rareresourcedistribution'].indexOf("RED") + 1)
+                    || (current_map['@rareresourcedistribution'].indexOf("OUT") + 1)
+                    || (current_map['@type'].indexOf("BLACK") + 1)
+                    || (current_map['@type'].indexOf("RED") + 1)) {
+                    tiped = true
                 }
                 if (current_map['@id'] === "MIST_") {
                     tiped = true;
