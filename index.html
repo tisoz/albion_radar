@@ -456,6 +456,9 @@
                 if (current_map['@id'] === "MIST_") {
                     tiped = true;
                 }
+                if (black_map_list.indexOf(current_map['displayname'])) {
+                    tiped = true;
+                }
             }
             let temp_world_text = app.stage.getChildByName("map_info");
             temp_world_text.text = `${lan_data['current_map']}:${current_map['@displayname']}

@@ -57,7 +57,7 @@ BigInt.prototype.toJSON = function () {
 }
 global.manager.on('event', (packet) => {
     // 在这里处理接收到的结果
-    log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
+    // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
     try {
         if (packet.code === 1 && packet.parameters) {
             // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
