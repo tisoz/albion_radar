@@ -561,7 +561,7 @@
                             }
                         }
                         // 更新文本数据
-                        temp_img.getChildAt(0).text = `${item['name']}[${distance}m]\n[${state_text}][hp:${item['hp']}/${item['hp_max']}]`
+                        temp_img.getChildAt(0).text = `${item['name']}[${distance}m]\n[${state_text}][hp:${parseInt(item['hp'])}/${item['hp_max']}]`
 
                         TweenMax.to(temp_img.position, 0.2, {x: -item['position'][0], y: item['position'][1]});
                         temp_img.scale.x = 1 / app.stage.scale.x
