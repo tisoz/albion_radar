@@ -60,7 +60,7 @@ global.manager.on('event', (packet) => {
     // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
     try {
         if (packet.code === 1 && packet.parameters) {
-            log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
+            // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
 
             //进行事件处理
             let code = packet.parameters[252]
