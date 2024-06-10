@@ -15,7 +15,6 @@ class Course_load_simple {
         this.quality = data[11] || 0;
         this.position = [data[8][0], data[8][1]]
         this.count = data[10] || 0
-        if (typeof data[3] == "object") return
         // console.log(JSON.stringify(data))
         global.web_content.send("course_item", this)
 

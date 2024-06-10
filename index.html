@@ -466,7 +466,9 @@
             ${lan_data['current_tip']}:${config['tip_for_player_sound'] ? lan_data['on'] : lan_data['off']}
             ${lan_data['current_map_tip']}:${tiped ? lan_data['on'] : lan_data['off']}
             ${lan_data['club']}:${config['club']}
-            ${lan_data['union']}:${config['union']}`
+            ${lan_data['union']}:${config['union']}
+            ${lan_data['clear_key']}:DEL
+            ${lan_data['now_version']}:${packageJson.version}`
 
             let text_color = "white";
             if (['YELLOW', 'RED'].indexOf(current_map['@rareresourcedistribution']) + 1) text_color = current_map['@rareresourcedistribution']

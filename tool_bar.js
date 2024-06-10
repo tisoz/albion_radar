@@ -725,6 +725,9 @@ script_layui.onload = () => {
     ipcRenderer.on("file_path", function (event, args) {
         layui.form.val("setting", {"audio_path": args[0].replaceAll("\\", "/")})
     })
+    ipcRenderer.on("del_info", function (event, args) {
+        global.clear_data = true
+    })
     ipcRenderer.on("change_voice_tip", function (event, args) {
         let setting = JSON.parse(localStorage.getItem("config"));
         setting['tip_for_player_sound'] = !setting['tip_for_player_sound']

@@ -95,5 +95,7 @@ window.lan_data = {
     "union": "Union",
     "edit_audio": "Audio Custom",
     "add_audio_path": "Choose File",
-    "egg": "Colored Eggs"
+    "egg": "Colored Eggs",
+    "clear_key":"Clear Map Key",
+    "now_version":"Current version"
 }

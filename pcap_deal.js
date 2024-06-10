@@ -325,22 +325,96 @@ try {
 
         // 加载图片id
         switch (data['type']) {
-            case 23:
-                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+
             case 0:
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
                 break
-            case 17:
-                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                data['uni_id'] = "UNIQUE_HIDEOUT"
-
+            case 1:
+                data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 2:
+                data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 3:
+                data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 4:
+                data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 5:
+                data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
                 break
             case 6:
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
                 break
+            case 7:
+                data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 8:
+                data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 9:
+                data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 10:
+                data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 11:
+                data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
+                break
             case 12:
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 13:
+                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 14:
+                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 15:
+                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 16:
+                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 17:
+                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 18:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 19:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 20:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 21:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 22:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
+                break;
+            case 23:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 24:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 25:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 26:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 27:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 28:
+                data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
+                break
+            case 43:
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             default:
                 // console.log("type", data['type'])

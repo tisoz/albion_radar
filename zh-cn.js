@@ -97,7 +97,9 @@ window.lan_data = {
     "union": "联盟",
     "edit_audio": "自定义提示音",
     "add_audio_path": "选择音频文件",
-    "egg": "彩蛋"
+    "egg": "彩蛋",
+    "clear_key": "清除地图信息按键",
+    "now_version": "当前版本"
 }
 
 
