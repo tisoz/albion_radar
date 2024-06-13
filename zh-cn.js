@@ -99,7 +99,8 @@ window.lan_data = {
     "add_audio_path": "选择音频文件",
     "egg": "彩蛋",
     "clear_key": "清除地图信息按键",
-    "now_version": "当前版本"
+    "now_version": "当前版本",
+    "filter_undefined_player": "过滤undefined玩家显示（建议：团战时使用）",
 }
 
 

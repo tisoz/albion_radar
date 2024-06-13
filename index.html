@@ -18,6 +18,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label" style="width: auto" language="filter_undefined_player">过滤undefined玩家显示（建议：团战时使用）</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="filter_undefined_player" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label" style="width: auto"
                    language="show_green_on_mount_in_danger">危险区遭遇时在坐骑上显示绿色</label>
             <div class="layui-input-block">
@@ -501,6 +507,14 @@
                 for (let index in player_list) {
                     item = player_list[index]
                     if (config['filter_green_friend'] && globalThis.white_player_list.indexOf(item['name']) + 1) {
+                        if (item['in_container']) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            backpack_container.removeChild(backpack_container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                        }
+                        continue
+                    }
+                    if (config['filter_undefined_player'] && item['name'] === undefined) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             backpack_container.removeChild(backpack_container.getChildByName(item['id'].toString()))

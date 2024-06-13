@@ -96,6 +96,7 @@ window.lan_data = {
     "edit_audio": "Audio Custom",
     "add_audio_path": "Choose File",
     "egg": "Colored Eggs",
-    "clear_key":"Clear Map Key",
-    "now_version":"Current version"
+    "clear_key": "Clear Map Key",
+    "now_version": "Current version",
+    "filter_undefined_player": "Filter undefined player(sg. when PVP use)",
 }
