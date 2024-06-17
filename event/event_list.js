@@ -29,29 +29,29 @@ let event_list = {
     10: filter,
     18: filter, //待处理
     21: filter,//路上装饰
-    28: other_player_load,
-    38: course_load_list,
-    39: course_load_simple,
-    45: course_load_change,
-    46: monster_quality_change,
-    60: course_done,
-    89: new_monster_damage, //新怪物攻击事件
+    29: other_player_load,
+    39: course_load_list,
+    40: course_load_simple,
+    46: course_load_change,
+    47: monster_quality_change,
+    61: course_done,
+    90: new_monster_damage, //新怪物攻击事件
 
-    93: monster_normal_move_change,             //脱战事件
-    101: club_load,
+    94: monster_normal_move_change,             //脱战事件
+    102: club_load,
 
-    121: monster_load,
-    204: firstmounted,
-    205: secondmounted,
-    224: firend_list,
-    233: firend_load,
-    312: dungeon,
+    122: monster_load,
+    205: firstmounted,
+    206: secondmounted,
+    225: firend_list,
+    234: firend_load,
+    313: dungeon,
     339: filter,
     344: filter,//钓鱼
-    381: chest_load,
-    507: map_change,//传送阵传送
-    518: cage_load,//灯笼怪
-    519: cage_free,
+    382: chest_load,
+    508: map_change,//传送阵传送
+    519: cage_load,//灯笼怪
+    520: cage_free,
     20: filter,//钓鱼
 }
 module.exports = event_list;

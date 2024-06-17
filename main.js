@@ -134,7 +134,7 @@ app.whenReady().then(() => {
     globalShortcut.register('F7', () => {
         global.web_content.send("change_voice_tip", 1)
     })
-    globalShortcut.register('DEL', () => {
+    globalShortcut.register('Delete', () => {
         global.web_content.send("del_info", 1)
     })
 })

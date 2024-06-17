@@ -375,10 +375,10 @@ try {
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 16:
-                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 17:
-                data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
+                data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 18:
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
