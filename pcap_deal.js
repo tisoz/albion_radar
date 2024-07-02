@@ -16,6 +16,47 @@ globalThis['temp_road'] = []
 globalThis['web_host'] = "http://8.218.34.95"
 globalThis['local_player_center_postion'] = [0, 0]
 
+item_list = {
+    "434": {
+        "id": 434,
+        "type": 23,
+        "level": 6,
+        "quality": 1,
+        "resource_type": "hide",
+        "position": [
+            98,
+            176
+        ],
+        "count": 1,
+        "uni_id": "T6_HIDE_LEVEL1@1"
+    },
+    "439": {
+        "id": 439,
+        "type": 23,
+        "level": 4,
+        "quality": 0,
+        "resource_type": "ore",
+        "position": [
+            111,
+            238
+        ],
+        "count": 2,
+        "uni_id": "T4_ORE"
+    },
+    "443": {
+        "id": 443,
+        "type": 23,
+        "level": 4,
+        "quality": 0,
+        "resource_type": "ore",
+        "position": [
+            115,
+            240
+        ],
+        "count": 1,
+        "uni_id": "T4_ORE"
+    }
+}
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
@@ -327,93 +368,123 @@ try {
         switch (data['type']) {
 
             case 0:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 1:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 2:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 3:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 4:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 5:
+                data['resource_type'] = "wood";
                 data['uni_id'] = `T${data['level']}_WOOD_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 6:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 7:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 8:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 9:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 10:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 11:
+                data['resource_type'] = "rock";
                 data['uni_id'] = `T${data['level']}_ROCK_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 12:
+                data['resource_type'] = "fiber";
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 13:
+                data['resource_type'] = "fiber";
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 14:
+                data['resource_type'] = "fiber";
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 15:
+                data['resource_type'] = "fiber";
                 data['uni_id'] = `T${data['level']}_FIBER_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 16:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 17:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 18:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 19:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 20:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 21:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 22:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             case 23:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 24:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 25:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 26:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 27:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 28:
+                data['resource_type'] = "ore";
                 data['uni_id'] = `T${data['level']}_ORE_LEVEL${data['quality']}@${data['quality']}`;
-                break
+                break;
             case 43:
+                data['resource_type'] = "hide";
                 data['uni_id'] = `T${data['level']}_HIDE_LEVEL${data['quality']}@${data['quality']}`;
                 break;
             default:

@@ -157,11 +157,16 @@
             <div class="layui-form-item">
                 <label class="layui-form-label" language="resource_type">物资类型</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="filter_item_rcheck" value="stone" language="stone" title="石头">
-                    <input type="radio" name="filter_item_rcheck" value="mineral" language="mineral" title="矿物">
-                    <input type="radio" name="filter_item_rcheck" value="wood" language="wood" title="树木">
-                    <input type="radio" name="filter_item_rcheck" value="cotton" language="cotton" title="棉花">
-                    <input type="radio" name="filter_item_rcheck" value="leather" language="leather" title="皮革">
+                    <input type="radio" name="filter_item_rcheck" lay-filter="rcheck" value="rock" language="stone"
+                           title="石头">
+                    <input type="radio" name="filter_item_rcheck" lay-filter="rcheck" value="ore" language="mineral"
+                           title="矿物">
+                    <input type="radio" name="filter_item_rcheck" lay-filter="rcheck" value="wood" language="wood"
+                           title="树木">
+                    <input type="radio" name="filter_item_rcheck" lay-filter="rcheck" value="fiber" language="cotton"
+                           title="棉花">
+                    <input type="radio" name="filter_item_rcheck" lay-filter="rcheck" value="hide" language="leather"
+                           title="皮革">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -332,21 +337,21 @@
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
         load_profile()
 
-        let data = []
+        let data_resource_init = []
         for (let i in new Array(6).fill(1)) {
             for (let o in new Array(5).fill(1)) {
-                data.push({"value": `${parseInt(i) + 3}.${o}`, "title": `${parseInt(i) + 3}.${o}`})
+                data_resource_init.push({"value": `${parseInt(i) + 3}.${o}`, "title": `${parseInt(i) + 3}.${o}`})
             }
         }
         layui.transfer.config = {text: {none: lan_data['no_data']}}
-        let config = JSON.parse(localStorage.getItem("config") || "{}")
-        let default_list = config['filter_item_resource'] || []
-        default_list = default_list[config['filter_item_rcheck']] || []
+        let config_temp = JSON.parse(localStorage.getItem("config") || "{}")
+        let default_list = config_temp['filter_item_resource'] || []
+        default_list = default_list[config_temp['filter_item_rcheck']] || []
 
         layui.transfer.render({
             elem: '#resource_transfer'
             , title: [lan_data['block_resource_list'], lan_data['white_resource_list']]  //自定义标题
-            , data: data
+            , data: data_resource_init
             //,width: 150 //定义宽度
             , height: 210 //定义高度
             , id: "resource_transfer"
@@ -360,7 +365,27 @@
                 localStorage.setItem("config", JSON.stringify(config))
             }
         })
-
+        layui.form.on('radio(rcheck)', function (data) {
+            let config = JSON.parse(localStorage.getItem("config") || "{}")
+            var value = data.elem.value; // 获得 radio 值
+            layui.transfer.render({
+                elem: '#resource_transfer'
+                , title: [lan_data['block_resource_list'], lan_data['white_resource_list']]  //自定义标题
+                , data: data_resource_init
+                //,width: 150 //定义宽度
+                , height: 210 //定义高度
+                , id: "resource_transfer"
+                , value: config['filter_item_resource'][value]
+                , onchange: () => {
+                    let config = JSON.parse(localStorage.getItem("config"))
+                    let result_list = layui.transfer.getData("resource_transfer")
+                    for (let i in result_list) result_list[i] = result_list[i].value
+                    if (typeof config['filter_item_resource'] != "object") config['filter_item_resource'] = {}
+                    config['filter_item_resource'][config['filter_item_rcheck']] = result_list
+                    localStorage.setItem("config", JSON.stringify(config))
+                }
+            })
+        });
 
         let app = new PIXI.Application({
             width: 400, height: 300, backgroundAlpha: 0,
@@ -714,35 +739,7 @@
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
-                    if (!(config['filter_item_resource'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_ore'] && item['type'] === 23) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_wood'] && item['type'] === 0) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_rock'] && item['type'] === 6) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_fiber'] && item['type'] === 12) {
+                    if (!(config['filter_item_resource'][item['resource_type']].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
