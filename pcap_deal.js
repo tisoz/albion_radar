@@ -13,6 +13,7 @@ globalThis['current_map'] ||= {
 globalThis['white_road'] = []
 globalThis['black_road'] = []
 globalThis['temp_road'] = []
+globalThis['log_info'] = {}
 globalThis['web_host'] = "http://8.218.34.95"
 globalThis['local_player_center_postion'] = [0, 0]
 
@@ -551,6 +552,12 @@ try {
 
         globalThis['temp_list'][data['id']] = Object.assign(globalThis['temp_list'][data['id']], data);
 
+    })
+    ipcRenderer.on("photo", (event, data) => {
+        let info = JSON.parse(data)
+        log_info[info['252']] ||= []
+        if (log_info[info['252']].length === 0) console.log(info['252'], info)
+        log_info[info['252']].push(info)
     })
     ipcRenderer.on("map_load", (event, data) => {
         globalThis['local_player_position'] = {current_postion: [0, 0]}

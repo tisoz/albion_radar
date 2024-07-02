@@ -739,7 +739,7 @@
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
-                    if (!(config['filter_item_resource'][item['resource_type']].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
+                    if (item['resource_type'] && !(config['filter_item_resource'][item['resource_type']].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
@@ -800,13 +800,13 @@
                 //加载怪物信息
                 for (let index in monster_list) {
                     item = monster_list[index]
-                    if (item['res_type'] && !(config['filter_item_resource'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
+                    // if (item['res_type'] && !(config['filter_item_resource'][].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
+                    //     if (item['in_container']) {
+                    //         container.removeChild(container.getChildByName(item['id'].toString()))
+                    //         item['in_container'] = false
+                    //     }
+                    //     continue
+                    // }
                     if (!config['filter_item_ore'] && item['res_type'] === "ORE") {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))

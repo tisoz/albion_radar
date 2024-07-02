@@ -4,8 +4,8 @@ const {spawn} = require('child_process');
 
 process.env.no_proxy = "8.218.34.95";
 global.ignore = false;
+require("./pcap_model.js")
 
-// require("./pcap_model.js")
 function runNpcap() {
     const currentWorkingDirectory = process.cwd();
 

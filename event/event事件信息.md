@@ -1,9 +1,4 @@
-```angular2html
-namespace Albion.Common.Photon
-{
-    public enum EventCodes : short
-    {
-        Leave = 1, // 离开
+ Leave = 1, // 离开
         JoinFinished, // 加入完成
         Move, // 移动
         Teleport, // 传送
