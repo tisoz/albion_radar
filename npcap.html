@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title></title>
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+            border: 2px solid bisque; /* 边框颜色和宽度 */
+            background-color: #ffffff; /* 背景颜色 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 可选：阴影效果 */
+            box-sizing: border-box; /* 关键属性：包含边框和内边距 */
+        }
+
+        body * {
+            font-family: "Microsoft YaHei", sans-serif;
+            font-weight: bold;
+            line-height: 22px;
+        }
+    </style>
+</head>
+
+<body style="padding: 5px;">
+<blockquote style="border-left: 5px solid #ffbc00" class="layui-elem-quote">
+    当前未安装NPCAP基础依赖库，请按照指引完成安装
+</blockquote>
+
+<div class="layui-carousel" id="ID-carousel-demo-1">
+    <div carousel-item>
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-sm8 layui-col-xs8 layui-row">
+                <img style="width: 100%;height: 100%;" src="./npcap_img/tip1.png">
+            </div>
+            <div style="padding: 5px;" class="layui-col-md4 layui-col-sm4 layui-col-xs4 layui-row">
+                <fieldset style="color: #0c0c0c !important;" class="layui-border-orange layui-elem-field">
+                    <legend>第一步</legend>
+                    <div class="layui-field-box">
+                        NPCAP安装程序应该被自动运行
+                        <br>
+                        如果没有显示安装界面，请点击下方按钮手动运行
+                    </div>
+                </fieldset>
+                <button class="layui-btn layui-btn-fluid layui-btn-warm" onclick="ipcRenderer.send('install-npcap')">
+                    手动安装NPCAP
+                </button>
+                <hr class="layui-border-orange">
+                <fieldset style="color: #0c0c0c !important;" class="layui-border-orange layui-elem-field">
+                    <legend>第二步</legend>
+                    <div class="layui-field-box">
+                        选中 <span class="layui-badge-rim" style="color: blue">I Agree</span>
+                        <br>
+                        进入安装选项界面
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-sm8 layui-col-xs8 layui-row">
+                <img style="width: 100%;height: 100%;" src="./npcap_img/tip2.png">
+            </div>
+            <div style="padding: 5px;" class="layui-col-md4 layui-col-sm4 layui-col-xs4 layui-row">
+                <fieldset style="color: #0c0c0c !important;" class="layui-border-orange layui-elem-field">
+                    <legend>第三步</legend>
+                    <div class="layui-field-box">
+                        使用WIFI需要勾选中间的选项
+                        <br>
+                        其余选项<span class="layui-badge-rim" style="color: red">取消勾选</span>即可
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-sm8 layui-col-xs8 layui-row">
+                <img style="width: 100%;height: 100%;" src="./npcap_img/tip3.png">
+            </div>
+            <div style="padding: 5px;" class="layui-col-md4 layui-col-sm4 layui-col-xs4 layui-row">
+                <fieldset style="color: #0c0c0c !important;" class="layui-border-orange layui-elem-field">
+                    <legend>第四步</legend>
+                    <div class="layui-field-box">
+                        此时已完成安装
+                        <br>
+                        程序将自动检测运行库状态，成功后会自动跳转
+                    </div>
+                </fieldset>
+                <button class="layui-btn layui-btn-fluid layui-btn-warm" onclick="check_npcap_status()">
+                    检查安装状态
+                </button>
+                <hr class="layui-border-orange">
+                <fieldset style="color: #0c0c0c !important;" class="layui-border-orange layui-elem-field">
+                    <legend>当前状态</legend>
+                    <div id="npcap_status" class="layui-field-box">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const {execSync} = require('child_process');
+    const {ipcRenderer} = require('electron');
+    let css_layui = document.createElement("link");
+    css_layui.setAttribute("rel", "stylesheet");
+    css_layui.setAttribute("href", "./layui/css/layui.css");
+
+    let script_layui = document.createElement("script");
+    script_layui.setAttribute("src", "./layui/layui.js");
+
+    let i18n = document.createElement("script");
+    i18n.setAttribute("src", "./i18n.js");
+
+    document.head.appendChild(css_layui);
+    document.body.appendChild(script_layui);
+    document.body.appendChild(i18n);
+
+
+    document.addEventListener("lanDataLoaded", () => {
+        translate()
+        layui.form.render()
+    })
+    window.onload = () => {
+        layui.use(function () {
+            var carousel = layui.carousel;
+            // 渲染 - 常规轮播
+            carousel.render({
+                elem: '#ID-carousel-demo-1',
+                arrow: "hover",
+                autoplay: false,
+                anim: 'fade',
+                width: 'auto',
+                height: '425px'
+            });
+        });
+
+        function change_text(text) {
+            document.getElementById("npcap_status").textContent = text;
+        }
+
+        function check_npcap_status() {
+            let status = false;
+            try {
+                const stdout = execSync('sc query npcap');
+                if (stdout.includes('RUNNING')) {
+                    status = true;
+                    console.log('Npcap 服务正在运行');
+                } else {
+                    console.log('Npcap 服务未运行');
+                }
+            } catch (error) {
+                console.error(`执行错误: ${error}`);
+            }
+            if (status) {
+                change_text("Npcap 服务正在运行,3秒后跳转.")
+                setTimeout(() => {
+                    change_text("Npcap 服务正在运行,2秒后跳转.")
+                }, 1000)
+                setTimeout(() => {
+                    change_text("Npcap 服务正在运行,1秒后跳转.")
+                }, 2000)
+                setTimeout(() => {
+                    location.href = "./login.html"
+                }, 3000)
+            } else {
+                change_text("Npcap 服务未运行")
+            }
+        }
+        window.check_npcap_status = check_npcap_status;
+        ipcRenderer.send('install-npcap')
+        check_npcap_status()
+        setInterval(check_npcap_status, 3000)
+    }
+
+</script>
+</body>
+</html>

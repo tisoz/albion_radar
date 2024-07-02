@@ -1,10 +1,34 @@
 const {app, dialog, BrowserWindow, session, ipcMain, globalShortcut, clipboard} = require('electron')
 const path = require('path')
-
+const {spawn} = require('child_process');
 
 process.env.no_proxy = "8.218.34.95";
 global.ignore = false;
-require("./pcap_model.js")
+
+// require("./pcap_model.js")
+function runNpcap() {
+    const currentWorkingDirectory = process.cwd();
+
+    const npcapPath = path.join(currentWorkingDirectory + "/npcap_img", 'npcap.exe');
+
+    const npcap = spawn(npcapPath, [], {shell: true});
+
+    npcap.stdout.on('data', (data) => {
+        console.log(`标准输出: ${data}`);
+    });
+
+    npcap.stderr.on('data', (data) => {
+        console.error(`标准错误输出: ${data}`);
+    });
+
+    npcap.on('close', (code) => {
+        console.log(`子进程退出，退出码 ${code}`);
+    });
+
+    npcap.on('error', (error) => {
+        console.error(`执行错误: ${error}`);
+    });
+}
 
 function createWindow() {
     // webSecurity: 如果设置为 false，则禁用跨站点安全策略，允许加载来自不同源的资源。这对于开发和测试时很有用，但在生产环境中禁用跨站点安全策略会带来安全风险。
@@ -20,9 +44,9 @@ function createWindow() {
     })
     const win = new BrowserWindow({
         width: 650,
-        height: 400,
+        height: 500,
         minWidth: 650,
-        minHeight: 400,
+        minHeight: 500,
         frame: false,
         transparent: true,
         icon: "./favicon.ico",
@@ -97,6 +121,10 @@ function createWindow() {
     ipcMain.on('copy', (event, text) => {
         clipboard.writeText(text);
     });
+    ipcMain.on('install-npcap', (event, arg) => {
+        // run npcap install exe
+        runNpcap()
+    });
     global.web_content = win.webContents;
     win.on('focus', () => {
         win.webContents.send("focus", true)
@@ -109,8 +137,8 @@ function createWindow() {
     // 冰蜘蛛触发数据
     // 隐藏普通怪物 , 隐藏资源怪物
     // 修复部分玩家不显示装备的bug
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {

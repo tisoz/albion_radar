@@ -14,24 +14,31 @@
     <!--<div class="admin-header">-->
     <!--<img src="image/ex_logo.png" class="admin-logo">-->
     <!--</div>-->
-    <div class="layui-form-item"
-         style="display: block;right: 0;top: 0;width: 200px;padding:20px;position: absolute;z-index: 999">
-        <div class="layui-input"
-             style="display: inline-block;padding-left:0px;">
-            <select id="language" name="language" lay-filter="language">
-                <option value="zh-cn">ZH-CN | 中文</option>
-                <option value="en">EN | English</option>
-            </select>
-        </div>
-    </div>
+
     <div class="login-form">
         <div style="font-size:32px;text-align: center;"></div>
+        <div class="layui-form-item"
+             style="position: relative;float: left;font-weight: bold;line-height: 40px;width: 100%;text-align: center">
+            <i class="layui-icon"
+               style="padding-left: 40px; font-size: 40px; background: url('./favicon.ico') no-repeat left; background-size: contain;">
+                TRadar</i>
+        </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
             <div id="sel" class="layui-input"
-                 style="width: 300px;display: inline-block;padding-left: 0px;margin-left: 10px;">
+                 style="width: 300px;display: inline-block;padding-left: 0px">
                 <select id="dev" name="dev" lay-verify="required">
                     <option language="login_elink" value="">选择网卡适配</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <i class="layui-icon layui-icon-fonts-u admin-icon admin-icon-username"></i>
+            <div class="layui-input"
+                 style="width: 300px;display: inline-block;padding-left: 0px">
+                <select id="language" name="language" lay-filter="language">
+                    <option value="zh-cn">ZH-CN | 中文</option>
+                    <option value="en">EN | English</option>
                 </select>
             </div>
         </div>
@@ -57,12 +64,30 @@
                    class="layui-input admin-input">
         </div>
         <div align="center">
-            <button class="layui-btn admin-button" style="margin: auto" type="button" onclick="login()" language="login">登陆</button>
+            <button class="layui-btn layui-btn-warm admin-button" style="margin: auto" type="button" onclick="login()"
+                    language="login">登陆
+            </button>
         </div>
     </div>
 </form>
 <script>
-    const pcap = require("npcap");
+    const {execSync} = require('child_process');
+    const {machineIdSync} = require('node-machine-id');
+    const machineId = machineIdSync();
+    var pcap = {}
+    try {
+        const stdout = execSync('sc query npcap');
+        if (stdout.includes('RUNNING')) {
+            console.log('Npcap 服务正在运行');
+        } else {
+            console.log('Npcap 服务未运行');
+        }
+        pcap = require("npcap");
+
+    } catch (error) {
+        console.error(`执行错误: ${error}`);
+        location.href = "npcap.html"
+    }
     const {ipcRenderer} = require('electron');
     let css_layui = document.createElement("link");
     css_layui.setAttribute("rel", "stylesheet");
@@ -129,6 +154,7 @@
         formData.append('username', username);
         formData.append('password', password);
         formData.append('card', card);
+        formData.append('uni_id', machineId);
         fetch('http://8.218.34.95/api/login', {
             method: 'POST',
             body: formData
@@ -162,16 +188,30 @@
 </body>
 
 <style>
+    html {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid bisque; /* 边框颜色和宽度 */
+        padding: 20px; /* 内边距 */
+        background-color: #ffffff; /* 背景颜色 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 可选：阴影效果 */
+        box-sizing: border-box; /* 关键属性：包含边框和内边距 */
+
+    }
+
     body {
 
-        background-size: cover;
-        background-attachment: fixed;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #f2f2f2;
+        /*background-size: cover;*/
+        /*background-attachment: fixed;*/
+        /*position: fixed;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+        /*background-color: #ffffff;*/
         /*background-color: transparent;*/
     }
 
@@ -187,9 +227,12 @@
         padding: 20px;
         margin: auto;
         position: absolute;
-        top: 50%;
+        top: 30%;
         left: 50%;
         transform: translate(-50%, -50%);
+
+        /*display: flex;*/
+
     }
 
     .login-form > div {
@@ -206,15 +249,15 @@
     .login-form input {
         width: 300px;
         display: inline-block;
+    }
+
+    .login-form .layui-form-item > .layui-input {
         margin-left: 10px;
     }
 
     .login-form #sel input {
         width: 300px;
         display: inline-block;
-        margin-left: 0;
-        padding-left: 10px;
-        padding-right: 10px;
     }
 
     /*.login-form select {*/

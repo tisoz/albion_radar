@@ -286,8 +286,7 @@
         "union": "tes"
     }
 
-    // 配置文件
-    setInterval(() => {
+    function load_profile() {
         raw_json_deault = Object.assign(raw_json_deault, {"filter_item_resouce": JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resouce'] || []})
 
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
@@ -309,9 +308,15 @@
             }
         });
         localStorage.setItem("config", save_config)
-    }, 3000)
+    }
 
+    // 配置文件
+    setInterval(() => {
+        load_profile()
+    }, 3000)
     document.addEventListener("lanDataLoaded", () => {
+        load_profile()
+
         window.addEventListener('keydown', (event) => {
             // 如果按下 F5
             if (event.key === 'F5') {

@@ -3,6 +3,7 @@
     "electron-builder-squirrel-windows": "^24.2.0",
     "electron-log": "^4.4.8",
     "node-addon-api": "^6.0.0",
+    "node-machine-id": "^1.1.12",
     "npcap": "file:./node_pcap",
     "photon-packet-parser": "file:./photon-packet-parser"
   },
@@ -27,7 +28,17 @@
     },
     "files": [
       "**/*",
+      "npcap_img/npcap.exe",
       "!photon-packet-parser/classes/PhotonCommand.js"
+    ],
+    "extraResources": [
+      {
+        "from": "npcap_img/",
+        "to": "../npcap_img/",
+        "filter": [
+          "npcap.exe"
+        ]
+      }
     ]
   },
   "version": "1.7.3",
