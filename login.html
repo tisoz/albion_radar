@@ -111,6 +111,22 @@
         for (let i of pcap.findalldevs()) {
             let temp = document.createElement("option")
             temp.value = i.name;
+            if (i.description.indexOf("MHz") !== -1) {
+                temp.selected = true;
+            }
+            if (i.description.indexOf("Realtek") !== -1) {
+                temp.selected = true;
+            }
+            if (i.description.indexOf("TAP") !== -1) {
+                temp.selected = true;
+            }
+            if (i.description.indexOf("UU") !== -1) {
+                temp.selected = true;
+            }
+            if (i.description.indexOf("Kuai") !== -1) {
+                temp.selected = true;
+            }
+            temp.classList.add("test")
             temp.textContent = i.description;
             dev.appendChild(temp);
         }

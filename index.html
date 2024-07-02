@@ -157,39 +157,17 @@
             <div class="layui-form-item">
                 <label class="layui-form-label" language="resource_type">物资类型</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="filter_item_rock" language="stone" title="石头">
-                    <input type="checkbox" name="filter_item_ore" language="mineral" title="矿物">
-                    <input type="checkbox" name="filter_item_wood" language="wood" title="树木">
-                    <input type="checkbox" name="filter_item_fiber" language="cotton" title="棉花">
-                    <input type="checkbox" name="filter_item_hide" language="leather" title="皮革">
+                    <input type="radio" name="filter_item_rcheck" value="stone" language="stone" title="石头">
+                    <input type="radio" name="filter_item_rcheck" value="mineral" language="mineral" title="矿物">
+                    <input type="radio" name="filter_item_rcheck" value="wood" language="wood" title="树木">
+                    <input type="radio" name="filter_item_rcheck" value="cotton" language="cotton" title="棉花">
+                    <input type="radio" name="filter_item_rcheck" value="leather" language="leather" title="皮革">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label" language="resource_level">物资等级</label>
 
                 <div id="resource_transfer"></div>
-                <!--            -->
-                <!--            <div class="layui-input-inline">-->
-                <!--                <select name="filter_item_level">-->
-                <!--                    <option value="0" language="all">全部</option>-->
-                <!--                    <option value="3">3</option>-->
-                <!--                    <option value="4">4</option>-->
-                <!--                    <option value="5">5</option>-->
-                <!--                    <option value="6">6</option>-->
-                <!--                    <option value="7">7</option>-->
-                <!--                    <option value="8">8</option>-->
-                <!--                </select>-->
-                <!--            </div>-->
-                <!--            <div class="layui-input-inline">-->
-                <!--                <select name="filter_item_quality">-->
-                <!--                    <option value="0" language="all">全部</option>-->
-                <!--                    <option value="1">1</option>-->
-                <!--                    <option value="2">2</option>-->
-                <!--                    <option value="3">3</option>-->
-
-                <!--                    <option value="4">4</option>-->
-                <!--                </select>-->
-                <!--            </div>-->
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: auto"
@@ -260,14 +238,15 @@
 
     let raw_json_deault = {
         "filter_show_player_backpack": "off",
-        "filter_item_rock": "off",
-        "filter_item_ore": "off",
-        "filter_item_wood": "off",
-        "filter_item_fiber": "off",
-        "filter_item_hide": "off",
+        "filter_item_rock": [],
+        "filter_item_ore": [],
+        "filter_item_wood": [],
+        "filter_item_fiber": [],
+        "filter_item_hide": [],
         "filter_item_level": "0",
         "filter_item_quality": "0",
-        "filter_item_resouce": [],
+        "filter_item_rcheck": "",
+        "filter_item_resource": {},
         "filter_show_monster_normal": "off",
         "filter_show_monster_quality": "off",
         "filter_show_monster_mist": "off",
@@ -287,7 +266,7 @@
     }
 
     function load_profile() {
-        raw_json_deault = Object.assign(raw_json_deault, {"filter_item_resouce": JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resouce'] || []})
+        raw_json_deault = Object.assign(raw_json_deault, {"filter_item_resource": JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resource'] || {}})
 
         let raw_config_default = JSON.stringify(raw_json_deault, function (key, value) {
             if (value === "on") {
@@ -315,8 +294,6 @@
         load_profile()
     }, 3000)
     document.addEventListener("lanDataLoaded", () => {
-        load_profile()
-
         window.addEventListener('keydown', (event) => {
             // 如果按下 F5
             if (event.key === 'F5') {
@@ -353,6 +330,8 @@
         body_container.appendChild(invote_page)
         layui.form.render()
         layui.form.val("setting", Object.assign(JSON.parse(raw_config_default), JSON.parse(localStorage.getItem("config"))))
+        load_profile()
+
         let data = []
         for (let i in new Array(6).fill(1)) {
             for (let o in new Array(5).fill(1)) {
@@ -360,7 +339,10 @@
             }
         }
         layui.transfer.config = {text: {none: lan_data['no_data']}}
-        // change_change(localStorage.getItem("language"))
+        let config = JSON.parse(localStorage.getItem("config") || "{}")
+        let default_list = config['filter_item_resource'] || []
+        default_list = default_list[config['filter_item_rcheck']] || []
+
         layui.transfer.render({
             elem: '#resource_transfer'
             , title: [lan_data['block_resource_list'], lan_data['white_resource_list']]  //自定义标题
@@ -368,12 +350,13 @@
             //,width: 150 //定义宽度
             , height: 210 //定义高度
             , id: "resource_transfer"
-            , value: JSON.parse(localStorage.getItem("config") || "{}")['filter_item_resouce'] || []
+            , value: default_list
             , onchange: () => {
                 let config = JSON.parse(localStorage.getItem("config"))
                 let result_list = layui.transfer.getData("resource_transfer")
                 for (let i in result_list) result_list[i] = result_list[i].value
-                config['filter_item_resouce'] = result_list
+                if (typeof config['filter_item_resource'] != "object") config['filter_item_resource'] = {}
+                config['filter_item_resource'][config['filter_item_rcheck']] = result_list
                 localStorage.setItem("config", JSON.stringify(config))
             }
         })
@@ -731,7 +714,7 @@
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
-                    if (!(config['filter_item_resouce'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
+                    if (!(config['filter_item_resource'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
@@ -820,7 +803,7 @@
                 //加载怪物信息
                 for (let index in monster_list) {
                     item = monster_list[index]
-                    if (item['res_type'] && !(config['filter_item_resouce'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
+                    if (item['res_type'] && !(config['filter_item_resource'].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
