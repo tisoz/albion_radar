@@ -14,50 +14,50 @@ globalThis['white_road'] = []
 globalThis['black_road'] = []
 globalThis['temp_road'] = []
 globalThis['log_info'] = {}
-globalThis['web_host'] = "http://8.218.34.95"
+globalThis['web_host'] = "http://175.178.35.173"
 globalThis['local_player_center_postion'] = [0, 0]
 
-item_list = {
-    "434": {
-        "id": 434,
-        "type": 23,
-        "level": 6,
-        "quality": 1,
-        "resource_type": "hide",
-        "position": [
-            98,
-            176
-        ],
-        "count": 1,
-        "uni_id": "T6_HIDE_LEVEL1@1"
-    },
-    "439": {
-        "id": 439,
-        "type": 23,
-        "level": 4,
-        "quality": 0,
-        "resource_type": "ore",
-        "position": [
-            111,
-            238
-        ],
-        "count": 2,
-        "uni_id": "T4_ORE"
-    },
-    "443": {
-        "id": 443,
-        "type": 23,
-        "level": 4,
-        "quality": 0,
-        "resource_type": "ore",
-        "position": [
-            115,
-            240
-        ],
-        "count": 1,
-        "uni_id": "T4_ORE"
-    }
-}
+// item_list = {
+//     "434": {
+//         "id": 434,
+//         "type": 23,
+//         "level": 6,
+//         "quality": 1,
+//         "resource_type": "hide",
+//         "position": [
+//             98,
+//             176
+//         ],
+//         "count": 1,
+//         "uni_id": "T6_HIDE_LEVEL1@1"
+//     },
+//     "439": {
+//         "id": 439,
+//         "type": 23,
+//         "level": 4,
+//         "quality": 0,
+//         "resource_type": "ore",
+//         "position": [
+//             111,
+//             238
+//         ],
+//         "count": 2,
+//         "uni_id": "T4_ORE"
+//     },
+//     "443": {
+//         "id": 443,
+//         "type": 23,
+//         "level": 4,
+//         "quality": 0,
+//         "resource_type": "ore",
+//         "position": [
+//             115,
+//             240
+//         ],
+//         "count": 1,
+//         "uni_id": "T4_ORE"
+//     }
+// }
 // globalThis['monster_white_list'] = {
 //     860: "纵火怪"
 // }
@@ -668,7 +668,7 @@ try {
     formData.append('type', 3);
     formData.append('text', `pcap error ${e} ${e.stack}`);
     globalThis.update_time = new Date().getTime()
-    fetch('http://8.218.34.95/api/log', {
+    fetch('http://175.178.35.173/api/log', {
         method: 'POST',
         body: formData,
         headers: {

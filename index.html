@@ -1030,7 +1030,7 @@
                 formData.append('type', 1);
                 formData.append('text', e.stack);
                 globalThis.update_time = new Date().getTime()
-                fetch('http://8.218.34.95/api/log', {
+                fetch('http://175.178.35.173/api/log', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -1134,7 +1134,7 @@
                 value: '',
                 title: lan_data['enter_bind_id'],//自定义文本域宽高
             }, function (value, index, elem) {
-                fetch('http://8.218.34.95/api/bind_id?id=' + value, {
+                fetch('http://175.178.35.173/api/bind_id?id=' + value, {
                     method: 'get',
                     headers: {
                         "token": localStorage.getItem('token')
@@ -1165,7 +1165,7 @@
         setInterval(() => {
             globalThis['local_player_position']['changed_position'] = false;
         }, 3000);
-        fetch('http://8.218.34.95/api/get_invotecard_list', {
+        fetch('http://175.178.35.173/api/get_invotecard_list', {
             method: 'get',
             headers: {
                 "token": localStorage.getItem('token')

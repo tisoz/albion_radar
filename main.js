@@ -2,7 +2,7 @@ const {app, dialog, BrowserWindow, session, ipcMain, globalShortcut, clipboard} 
 const path = require('path')
 const {spawn} = require('child_process');
 
-process.env.no_proxy = "8.218.34.95";
+process.env.no_proxy = "175.178.35.173";
 global.ignore = false;
 require("./pcap_model.js")
 
@@ -137,8 +137,8 @@ function createWindow() {
     // 冰蜘蛛触发数据
     // 隐藏普通怪物 , 隐藏资源怪物
     // 修复部分玩家不显示装备的bug
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
