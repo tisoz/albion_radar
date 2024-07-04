@@ -49,7 +49,7 @@ let event_list = {
     339: filter,
     344: filter,//钓鱼
     382: chest_load,
-    508: map_change,//传送阵传送
+    507: map_change,//传送阵传送
     519: cage_load,//灯笼怪
     520: cage_free,
     20: filter,//钓鱼

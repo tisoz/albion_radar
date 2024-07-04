@@ -2,10 +2,9 @@ const {app, dialog, BrowserWindow, session, ipcMain, globalShortcut, clipboard} 
 const path = require('path')
 const {spawn} = require('child_process');
 
-process.env.no_proxy = "175.178.35.173";
+process.env.no_proxy = "game.tisoz.com";
 global.ignore = false;
 require("./pcap_model.js")
-
 function runNpcap() {
     const currentWorkingDirectory = process.cwd();
 
@@ -122,7 +121,6 @@ function createWindow() {
         clipboard.writeText(text);
     });
     ipcMain.on('install-npcap', (event, arg) => {
-        // run npcap install exe
         runNpcap()
     });
     global.web_content = win.webContents;

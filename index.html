@@ -739,6 +739,7 @@
                 //动态加入物资信息
                 for (let index in item_list) {
                     item = item_list[index]
+                    config['filter_item_resource'][item['resource_type']] ||= []
                     if (item['resource_type'] && !(config['filter_item_resource'][item['resource_type']].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
@@ -800,42 +801,8 @@
                 //加载怪物信息
                 for (let index in monster_list) {
                     item = monster_list[index]
-                    // if (item['res_type'] && !(config['filter_item_resource'][].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
-                    //     if (item['in_container']) {
-                    //         container.removeChild(container.getChildByName(item['id'].toString()))
-                    //         item['in_container'] = false
-                    //     }
-                    //     continue
-                    // }
-                    if (!config['filter_item_ore'] && item['res_type'] === "ORE") {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_wood'] && item['res_type'] === "WOOD") {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_rock'] && item['res_type'] === "ROCK") {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_fiber'] && item['res_type'] === "FIBER") {
-                        if (item['in_container']) {
-                            container.removeChild(container.getChildByName(item['id'].toString()))
-                            item['in_container'] = false
-                        }
-                        continue
-                    }
-                    if (!config['filter_item_hide'] && item['res_type'] === "HIDE") {
+                    config['filter_item_resource'][item['resource_type']] ||= []
+                    if (item['resource_type'] && !(config['filter_item_resource'][item['resource_type']].indexOf(`${item['level']}.${item['quality']}`) + 1)) {
                         if (item['in_container']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
@@ -1030,7 +997,7 @@
                 formData.append('type', 1);
                 formData.append('text', e.stack);
                 globalThis.update_time = new Date().getTime()
-                fetch('http://175.178.35.173/api/log', {
+                fetch('http://game.tisoz.com/api/log', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -1134,7 +1101,7 @@
                 value: '',
                 title: lan_data['enter_bind_id'],//自定义文本域宽高
             }, function (value, index, elem) {
-                fetch('http://175.178.35.173/api/bind_id?id=' + value, {
+                fetch('http://game.tisoz.com/api/bind_id?id=' + value, {
                     method: 'get',
                     headers: {
                         "token": localStorage.getItem('token')
@@ -1165,7 +1132,7 @@
         setInterval(() => {
             globalThis['local_player_position']['changed_position'] = false;
         }, 3000);
-        fetch('http://175.178.35.173/api/get_invotecard_list', {
+        fetch('http://game.tisoz.com/api/get_invotecard_list', {
             method: 'get',
             headers: {
                 "token": localStorage.getItem('token')

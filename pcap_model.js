@@ -1,4 +1,3 @@
-const pcap = require("npcap");
 const PhotonParser = require('photon-packet-parser');
 const event_list = require("./event/event_list")
 const request_list = require("./event/request_list")
@@ -16,6 +15,7 @@ log.info('init pacap model');
 global.event_list = event_list;
 global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
+    const pcap = require("npcap");
     global.user = info;
     manager.setId(user['id'])
     try {
@@ -45,12 +45,6 @@ var sourcePort = 5056;
 var destinationPort = 5056;
 var filter = "udp and (src port " + sourcePort + " or dst port " + destinationPort + ")";
 
-for (let i of pcap.findalldevs()) {
-    console.log("network", i.description)
-    if (i.description === 'TAP-Windows Adapter V9') {
-        var dev = i.name;
-    }
-}
 //https://saas.daxue.dingtalk.com/dingtalk/resource/sign/add
 BigInt.prototype.toJSON = function () {
     return this.toString();
@@ -61,7 +55,7 @@ global.manager.on('event', (packet) => {
     try {
         if (packet.code === 1 && packet.parameters) {
             // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
-            web_content.send("photo", JSON.stringify(packet.parameters))
+            // web_content.send("photo", JSON.stringify(packet.parameters))
 
             //进行事件处理
             let code = packet.parameters[252]
@@ -84,7 +78,7 @@ global.manager.on('request', (packet) => {
     if (packet.operationCode == 1 && packet.parameters) {
         //进行事件处理
         try {
-            web_content.send("photo", JSON.stringify(packet.parameters))
+            // web_content.send("photo", JSON.stringify(packet.parameters))
             let code = packet.parameters[253]
             if (request_list[code]) {
                 (new request_list[code]).parse(packet.parameters);
@@ -102,7 +96,7 @@ global.manager.on('response', (packet) => {
     if ((packet.operationCode === 1) && packet.parameters) {
         //进行事件处理
         try {
-            web_content.send("photo", JSON.stringify(packet.parameters))
+            // web_content.send("photo", JSON.stringify(packet.parameters))
             let code = packet.parameters[253]
             if (request_list[code]) {
                 (new request_list[code]).parse(packet.parameters);
@@ -119,7 +113,7 @@ global.manager.on('response', (packet) => {
 });
 
 global.manager.on("key_error", () => {
-    fetch("http://175.178.35.173/api/get_key", {
+    fetch("http://game.tisoz.com/api/get_key", {
         headers: {
             "token": user['token']
         }
