@@ -99,4 +99,5 @@ window.lan_data = {
     "clear_key": "Clear Map Key",
     "now_version": "Current version",
     "filter_undefined_player": "Filter undefined player(sg. when PVP use)",
+    "show_chest": "Show Roming Chest"
 }

@@ -146,6 +146,12 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label" style="width: auto" language="show_chest">显示隐藏宝箱</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="filter_show_chest" lay-skin="switch" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label" style="width: auto" language="show_cage_monster">显示灯笼怪</label>
                 <div class="layui-input-block">
                     <input type="checkbox" name="filter_show_cage_mist" lay-skin="switch" lay-text="ON|OFF">
@@ -825,6 +831,13 @@
                     }
                     if (!config['filter_show_monster_mist']) {
                         if (item['type'] < 10) {
+                            container.removeChild(container.getChildByName(item['id'].toString()))
+                            item['in_container'] = false
+                            continue
+                        }
+                    }
+                    if (!config['filter_show_chest']) {
+                        if (item['chest']) {
                             container.removeChild(container.getChildByName(item['id'].toString()))
                             item['in_container'] = false
                             continue

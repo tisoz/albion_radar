@@ -90,7 +90,6 @@ window.lan_data = {
     "groupdungeon": "团队地下城",
     "solodungeon": "单人地下城",
     "downhouse": "堕落殿堂",
-    "solodungeon": "单人地下城",
     "mob_cage": "灯笼怪",
     "no_data": "无数据",
     "club": "工会",
@@ -101,6 +100,7 @@ window.lan_data = {
     "clear_key": "清除地图信息按键",
     "now_version": "当前版本",
     "filter_undefined_player": "过滤undefined玩家显示（建议：团战时使用）",
+    "show_chest": "显示隐藏宝箱"
 }
 
 

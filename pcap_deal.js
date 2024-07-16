@@ -99,9 +99,11 @@ function monster_load(data) {
             break
         case lan_data['roming_chest']:
             data['quality'] = 3;
+            data['chest'] = true;
             break
         case lan_data['anniversary_place']:
-            data['quality'] = 3;
+            data['uni_id'] = "spider_boss.png";
+            data['quality'] = 4;
             break
         case lan_data['egg']:
             data['uni_id'] = "egg.png";
