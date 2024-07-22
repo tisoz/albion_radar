@@ -61,8 +61,6 @@ function createWindow() {
     })
 
     //表示禁用代理，直接连接互联网。
-
-
     ipcMain.on('minimize-window', () => {
         win.minimize();
     });

@@ -18,6 +18,8 @@ ipcMain.on('login', (event, info) => {
     const pcap = require("npcap");
     global.user = info;
     manager.setId(user['id'])
+    log.info('login user');
+
     try {
         pcap_session = pcap.createSession(info['dev_name'], {
             filter: filter,
@@ -36,7 +38,7 @@ ipcMain.on('login', (event, info) => {
             log.info("waring " + text)
         }
     } catch (e) {
-        console.log("npcap failed", e)
+        log.info("npcap failed" + e.toString())
     }
 
 
@@ -55,7 +57,7 @@ global.manager.on('event', (packet) => {
     try {
         if (packet.code === 1 && packet.parameters) {
             // log.info("event | " + packet.code + " | " + JSON.stringify(packet.parameters))
-            // web_content.send("photo", JSON.stringify(packet.parameters))
+            web_content.send("photo", JSON.stringify(packet.parameters))
 
             //进行事件处理
             let code = packet.parameters[252]
