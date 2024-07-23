@@ -41,8 +41,8 @@ let event_list = {
     103: club_load,
 
     123: monster_load,
-    207: firstmounted,
-    208: secondmounted,
+    206: firstmounted,
+    207: secondmounted,
     227: firend_list,
     236: firend_load,
     315: dungeon,
