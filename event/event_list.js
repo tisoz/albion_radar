@@ -41,14 +41,14 @@ let event_list = {
     103: club_load,
 
     123: monster_load,
-    206: firstmounted,
-    207: secondmounted,
-    226: firend_list,
-    235: firend_load,
-    314: dungeon,
+    207: firstmounted,
+    208: secondmounted,
+    227: firend_list,
+    236: firend_load,
+    315: dungeon,
     340: filter,
     345: filter,//钓鱼
-    383: chest_load,
+    384: chest_load,
     510: map_change,//传送阵传送
     521: map_change,//传送阵传送
     522: cage_load,//灯笼怪
