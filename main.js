@@ -140,8 +140,8 @@ function createWindow() {
     // 皮怪杀之前看到有几张皮
     // 屏蔽同队玩家的装备
 
-    win.maximize()
-    win.webContents.openDevTools()
+    // win.maximize()
+    // win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {
