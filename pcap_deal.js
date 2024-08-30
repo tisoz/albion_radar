@@ -14,7 +14,6 @@ globalThis['white_road'] = []
 globalThis['black_road'] = []
 globalThis['temp_road'] = []
 globalThis['log_info'] = {}
-globalThis['web_host'] = "http://game.tisoz.com"
 globalThis['local_player_center_postion'] = [0, 0]
 
 function findall(regex, text) {
@@ -542,11 +541,5 @@ try {
     formData.append('type', 3);
     formData.append('text', `pcap error ${e} ${e.stack}`);
     globalThis.update_time = new Date().getTime()
-    fetch('http://game.tisoz.com/api/log', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            "token": localStorage.getItem('token')
-        }
-    })
+    console.log(e)
 }

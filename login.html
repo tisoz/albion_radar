@@ -21,7 +21,7 @@
              style="position: relative;float: left;font-weight: bold;line-height: 40px;width: 100%;text-align: center">
             <i class="layui-icon"
                style="padding-left: 40px; font-size: 40px; background: url('./favicon.ico') no-repeat left; background-size: contain;">
-                TRadar</i>
+                TISOZ</i>
         </div>
         <div class="layui-form-item">
             <i class="layui-icon layui-icon-website admin-icon admin-icon-username"></i>
@@ -41,27 +41,6 @@
                     <option value="en">EN | English</option>
                 </select>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <i class="layui-icon layui-icon-username admin-icon admin-icon-username"></i>
-            <input type="text" id="username" name="username"
-                   language="login_name"
-                   autocomplete="off"
-                   class="layui-input admin-input admin-input-username">
-        </div>
-        <div class="layui-form-item">
-            <i class="layui-icon layui-icon-password admin-icon admin-icon-password"></i>
-            <input type="password" id="password" name="password"
-                   language="login_pwd"
-                   autocomplete="off"
-                   class="layui-input admin-input">
-        </div>
-        <div class="layui-form-item">
-            <i class="layui-icon layui-icon-template-1 admin-icon admin-icon-username"></i>
-            <input type="text" id="card" name="card"
-                   language="login_card"
-                   autocomplete="off"
-                   class="layui-input admin-input">
         </div>
         <div align="center">
             <button class="layui-btn layui-btn-warm admin-button" style="margin: auto" type="button" onclick="login()"
@@ -106,8 +85,6 @@
 
     window.onload = () => {
         let dev = document.getElementById("dev")
-        document.getElementById("username").value = localStorage.getItem("username") || ""
-        document.getElementById("password").value = localStorage.getItem("password") || ""
         for (let i of pcap.findalldevs()) {
             let temp = document.createElement("option")
             temp.value = i.name;
@@ -145,59 +122,16 @@
 
     function login() {
         //校验
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var card = document.getElementById("card").value;
         var dev_name = document.getElementById("dev").value;
-        if (username == "") {
-            layer.msg(lan_data['check_user'], {icon: 2, time: 3000}, function () {
-            });
-            return false;
-        }
-        if (password == "") {
-            layer.msg(lan_data['check_pwd'], {icon: 2, time: 3000}, function () {
-            });
-            return false;
-        }
         if (dev_name == "") {
             layer.msg(lan_data['check_lan'], {icon: 2, time: 3000}, function () {
             });
             return false;
         }
-        const formData = new FormData();
-
-        // 将数据添加到 FormData 对象中
-        formData.append('username', username);
-        formData.append('password', password);
-        formData.append('card', card);
-        formData.append('uni_id', machineId);
-        fetch('http://game.tisoz.com/api/login', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === true) {
-                    localStorage.setItem("token", data.token);
-                    data['dev_name'] = dev_name;
-                    ipcRenderer.send("login", data)
-                    layer.msg(`${data.message} , ${lan_data['expire_date']} : ${layui.util.toDateString(parseInt(data['valid_time'] + "000"))}`, {
-                        icon: 1,
-                        time: 2500
-                    }, function () {
-                        localStorage.setItem("username", username)
-                        localStorage.setItem("password", password)
-                        location.href = "./index.html"
-                    });
-                } else {
-                    layer.msg(data.message, {icon: 2, time: 3000}, function () {
-                    });
-                }
-            })
-            .catch(error => {
-                layer.msg(error, {icon: 2, time: 3000}, function () {
-                });
-            });
+        let data = {}
+        data['dev_name'] = dev_name;
+        ipcRenderer.send("login", data)
+        location.href = "./index.html"
 
     }
 </script>

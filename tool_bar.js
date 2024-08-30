@@ -643,30 +643,7 @@ script_layui.onload = () => {
             version: packageJson.version
         };
 
-
-        let formData = new FormData();
-
-        formData.append('type', 2);
-        formData.append('text', JSON.stringify(data));
-
-        fetch('http://game.tisoz.com/api/log', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                "token": localStorage.getItem('token')
-            }
-        })
-            .then(response => response.text())
-            .then(response => {
-                layer.msg(response, {
-                    icon: 1,
-                    time: 1000
-                });
-            })
-            .catch(error => {
-                layer.msg(error, {icon: 2, time: 3000}, function () {
-                });
-            });
+        console.log("config", data)
     });
     layui.slider.render({
         elem: '#opticate'
@@ -775,45 +752,4 @@ document.getElementById("invote_control").onclick = function () {
         item.style.display = "none";
     }
     document.getElementById("invote_page").style.display = "block";
-    fetch('http://game.tisoz.com/api/get_userinfo', {
-        method: 'get',
-        headers: {
-            "token": localStorage.getItem('token')
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("invote_id").innerText = data['id']
-            if (!data['invote']) {
-                document.getElementById("bind_invote").style.display = "block";
-            } else {
-                document.getElementById("bind_invote").style.display = "none";
-                document.getElementById("bind_id").innerText = lan_data['had_bind'] + " ：" + data['invote'];
-                document.getElementById("bind_id").classList.add("layui-badge")
-            }
-        })
-        .catch(error => {
-            layer.msg(error, {icon: 2, time: 3000}, function () {
-            });
-        });
-    fetch('http://game.tisoz.com/api/get_invotecard_list', {
-        method: 'get',
-        headers: {
-            "token": localStorage.getItem('token')
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            let text = "";
-            for (let item of data) {
-                text += `${item['cardNumber']}(${item['days']} ${lan_data['day']})(${item['activeStatus'] === 0 ? lan_data['not_use'] : lan_data['use']})(${item['personal']})<br>`
-            }
-            document.getElementById("card_list").innerHTML = text
-        })
-        .catch(error => {
-            layer.msg(error, {icon: 2, time: 3000}, function () {
-            });
-        });
-
-
 }

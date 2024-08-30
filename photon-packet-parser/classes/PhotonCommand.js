@@ -68,12 +68,6 @@ class PhotonCommand {
         let old_messtype = this.messageType;
         let now = new Date().getTime() / 1000;
 
-        // 编码
-        this.messageType = this.messageType ^ (this.parent.parent.id + (now - now % 10800)) % 255;
-
-        // 解码
-        this.messageType = this.messageType ^ (this.parent.parent.key) % 255;
-
         switch (this.messageType) {
             case 2:
                 this.data = Protocol16Deserializer.deserializeOperationRequest(this.payload);

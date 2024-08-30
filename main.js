@@ -2,7 +2,6 @@ const {app, dialog, BrowserWindow, session, ipcMain, globalShortcut, clipboard} 
 const path = require('path')
 const {spawn} = require('child_process');
 
-process.env.no_proxy = "game.tisoz.com";
 global.ignore = false;
 require("./pcap_model.js")
 function runNpcap() {
@@ -52,7 +51,7 @@ function createWindow() {
         webPreferences: {
             webSecurity: false,
             backgroundThrottling: false,
-            devTools: !app.isPackaged,
+            devTools: true,
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
             contextIsolation: false,
@@ -142,8 +141,8 @@ function createWindow() {
     // 皮怪杀之前看到有几张皮
     // 屏蔽同队玩家的装备
 
-    // win.maximize()
-    // win.webContents.openDevTools()
+    win.maximize()
+    win.webContents.openDevTools()
 }
 
 app.on('will-quit', () => {

@@ -17,7 +17,6 @@ global.manager = new PhotonParser();
 ipcMain.on('login', (event, info) => {
     const pcap = require("npcap");
     global.user = info;
-    manager.setId(user['id'])
     try {
         pcap_session = pcap.createSession(info['dev_name'], {
             filter: filter,
@@ -111,14 +110,3 @@ global.manager.on('response', (packet) => {
 
     }
 });
-
-global.manager.on("key_error", () => {
-    fetch("http://game.tisoz.com/api/get_key", {
-        headers: {
-            "token": user['token']
-        }
-    })
-        .then(response => response.text())
-        .then(key => manager.setKey(key))
-})
-

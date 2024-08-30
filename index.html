@@ -242,11 +242,6 @@
     </form>
 </script>
 <script>
-    fetch('https://oss.tisoz.com/version.txt')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error))
-
     let raw_json_deault = {
         "filter_show_player_backpack": "off",
         "filter_item_rock": [],
@@ -1003,20 +998,7 @@
                 }
 
             } catch (e) {
-                console.log(e)
-                if (new Date().getTime() - globalThis.update_time < 60000) return
-
-                let formData = new FormData();
-                formData.append('type', 1);
-                formData.append('text', e.stack);
-                globalThis.update_time = new Date().getTime()
-                fetch('http://game.tisoz.com/api/log', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        "token": localStorage.getItem('token')
-                    }
-                })
+                console.error(e)
             }
 
 
@@ -1107,65 +1089,11 @@
         document.getElementById("add_audio_path").addEventListener('click', () => {
             ipcRenderer.send("open-file-dialog", "")
         });
-        document.getElementById('bind_invote').addEventListener('click', () => {
 
-            layer.prompt({
-                formType: 0,
-                value: '',
-                title: lan_data['enter_bind_id'],//自定义文本域宽高
-            }, function (value, index, elem) {
-                fetch('http://game.tisoz.com/api/bind_id?id=' + value, {
-                    method: 'get',
-                    headers: {
-                        "token": localStorage.getItem('token')
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        layer.msg(data['msg'], {
-                            icon: 1,
-                            time: 1000
-                        });
-                        if (data['status'] === true) {
-                            setTimeout(() => {
-                                document.getElementById("invote_control").click()
-                            }, 1000)
-                        }
-                    })
-                    .catch(error => {
-                        layer.msg(error, {icon: 2, time: 3000}, function () {
-                        });
-                    })
-                    .finally(() => {
-                        layer.close(index)
-                    })
-            });
-        });
         // 格三秒刷新资源
         setInterval(() => {
             globalThis['local_player_position']['changed_position'] = false;
         }, 3000);
-        fetch('http://game.tisoz.com/api/get_invotecard_list', {
-            method: 'get',
-            headers: {
-                "token": localStorage.getItem('token')
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                let flag = false;
-                for (let item of data) {
-                    if (item['activeStatus'] === 0) flag = true
-                }
-                if (flag) {
-                    layer.msg(lan_data['rewards_information'], {icon: 1, time: 3000}, function () {
-                    });
-                }
-            })
-            .catch(error => {
-                layer.msg(error, {icon: 2, time: 3000}, function () {
-                });
-            });
     })
 
 
