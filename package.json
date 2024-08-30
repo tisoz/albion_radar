@@ -17,8 +17,8 @@
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "productName": "Rtadar",
-    "appId": "com.tisoz.tradar",
+    "productName": "Free tools",
+    "appId": "com.tisoz.free-tools",
     "icon": "icon_512.png",
     "directories": {
       "output": "build"
@@ -42,5 +42,5 @@
     ]
   },
   "version": "1.8.4",
-  "name": "Rtdar"
+  "name": "Free tools"
 }
