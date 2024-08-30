@@ -511,10 +511,15 @@ try {
 
     })
     ipcRenderer.on("photo", (event, data) => {
-        let info = JSON.parse(data)
-        log_info[info['252']] ||= []
-        if (log_info[info['252']].length === 0) console.log(info['252'], info)
-        log_info[info['252']].push(info)
+        try {
+            let info = JSON.parse(data)
+            log_info[info['252']] ||= []
+            if (log_info[info['252']].length === 0) console.log(info['252'], info)
+            log_info[info['252']].push(info)
+        } catch (e) {
+            console.log(data)
+        }
+
     })
     ipcRenderer.on("map_load", (event, data) => {
         globalThis['local_player_position'] = {current_postion: [0, 0]}

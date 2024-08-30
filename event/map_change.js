@@ -9,9 +9,8 @@ class Map_change {
         this.id = data[2];        //物资ID
         this.type = ""
         console.log("map", JSON.stringify(this))
-        if (data[3] === true) {
-            global.web_content.send("map_load", this)
-        }
+        if (data['252'] === 518) this.id = 0
+        global.web_content.send("map_load", this)
 
     }
 
