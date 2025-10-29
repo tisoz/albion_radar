@@ -1,17 +1,17 @@
 # 项目环境介绍
-`nodejs`: v18.12.1
-`webstorm`
-`npcap`: include_root_directory , (thanks frankie-zeng : https://github.com/frankie-zeng/node_npcap)
-`photoparser`: include_root_directory , (thanks mr.rise : https://www.npmjs.com/package/photon-packet-parser)
+* `nodejs`: v18.12.1
+* `webstorm`
+* `npcap`: include_root_directory , (thanks frankie-zeng : https://github.com/frankie-zeng/node_npcap)
+* `photoparser`: include_root_directory , (thanks mr.rise : https://www.npmjs.com/package/photon-packet-parser)
 
 
 # 修改指引 
 
-工程项目名称：[package.json](package.json)
-软件启动标题：[main.js](main.js)
-npcap数据捕获管理：[pcap_model.js](pcap_model.js)
-雷达解析数据处理总线：[pcap_deal.js](pcap_deal.js)
-游戏中各类事件：[event](event)目录
+* 工程项目名称：[package.json](package.json)
+* 软件启动标题：[main.js](main.js)
+* npcap数据捕获管理：[pcap_model.js](pcap_model.js)
+* 雷达解析数据处理总线：[pcap_deal.js](pcap_deal.js)
+* 游戏中各类事件：[event](event)目录
 
 # 项目构成
 
