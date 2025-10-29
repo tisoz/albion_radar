@@ -15,12 +15,12 @@
 
 # 项目构成
 
-layui: 前端UI框架
-TweenMax: 动画库
-nodejs: 后端服务
-npcap: 数据捕获
-photoparser: 数据解析
-i18.js：国际化
+* layui: 前端UI框架
+* TweenMax: 动画库
+* nodejs: 后端服务
+* npcap: 数据捕获
+* photoparser: 数据解析
+* i18.js：国际化
 
 ```支持高质量图片以及高帧渲染，创建后存入缓冲池优化总线结构```
 
